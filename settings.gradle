@@ -1,0 +1,2 @@
+include ':app', ':MaterialDesignDialoglibrary'
+rootProject.name='BlueTest2'
