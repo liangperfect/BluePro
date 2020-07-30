@@ -5,17 +5,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.vitalong.bluetest2.GattDetailActivity">
-    <androidx.appcompat.widget.Toolbar
-        xmlns:android="http://schemas.android.com/apk/res/android"
+
+    <androidx.appcompat.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="#009688"
         android:fitsSystemWindows="true"
         android:titleTextColor="@android:color/white"
-        android:background="#009688"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-    </androidx.appcompat.widget.Toolbar>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
 
 
     <RelativeLayout
@@ -29,25 +28,27 @@
             android:id="@+id/tv_properties"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:textColor="@android:color/white"
             android:background="#00796B"
+            android:paddingLeft="16dp"
+            android:paddingTop="5dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="5dp"
             android:text="Properties: Notify &amp; Write &amp; Read &amp; Indicate"
-            android:visibility="gone"/>
+            android:textColor="@android:color/white"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
 
         <RelativeLayout
             android:id="@+id/rl_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
             android:layout_alignParentBottom="true"
             android:background="#009688"
-            android:visibility="gone">
+            android:paddingLeft="2dp"
+            android:paddingRight="2dp"
+            android:visibility="gone"
+            tools:visibility="visible">
 
 
             <ImageButton
@@ -55,17 +56,17 @@
                 android:layout_width="50dp"
                 android:layout_height="40dp"
                 android:layout_marginTop="3dp"
-                android:src="@mipmap/ic_option_more"
-                android:background="@drawable/selector_btn_options"/>
+                android:background="@drawable/selector_btn_options"
+                android:src="@mipmap/ic_option_more" />
 
 
             <View
                 android:layout_width="1dp"
                 android:layout_height="30dp"
-                android:layout_centerVertical="true"
                 android:layout_alignRight="@id/btn_options"
-                android:background="@android:color/white"
-                android:alpha="0.5"/>
+                android:layout_centerVertical="true"
+                android:alpha="0.5"
+                android:background="@android:color/white" />
 
 
             <Button
@@ -73,11 +74,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginTop="3dp"
-                android:textSize="18sp"
                 android:layout_toRightOf="@id/btn_options"
+                android:background="@drawable/selector_btn_options"
                 android:text="Notify"
                 android:textColor="@android:color/white"
-                android:background="@drawable/selector_btn_options"/>
+                android:textSize="18sp" />
 
 
             <RelativeLayout
@@ -86,33 +87,36 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_toRightOf="@id/btn_options"
-                android:visibility="gone">
+                android:visibility="gone"
+                tools:visibility="visible">
+
                 <Button
                     android:id="@+id/btn_send"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_alignParentRight="true"
-                    android:text="send"
                     android:background="@drawable/selector_btn_options"
-                    android:textColor="@android:color/white"/>
+                    android:text="send"
+                    android:textColor="@android:color/white" />
 
                 <View
                     android:layout_width="1dp"
                     android:layout_height="30dp"
-                    android:layout_centerVertical="true"
                     android:layout_alignLeft="@id/btn_send"
-                    android:background="@android:color/white"
-                    android:alpha="0.8"/>
+                    android:layout_centerVertical="true"
+                    android:alpha="0.8"
+                    android:background="@android:color/white" />
 
                 <EditText
                     android:id="@+id/et_write"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/btn_send"
+                    android:hint="input content"
                     android:maxLines="2"
-                    android:textSize="18sp"
+                    android:text="123456"
                     android:textCursorDrawable="@android:color/white"
-                    android:hint="input content"/>
+                    android:textSize="18sp" />
             </RelativeLayout>
 
         </RelativeLayout>
@@ -123,7 +127,8 @@
             android:layout_height="match_parent"
             android:layout_above="@id/rl_bottom"
             android:layout_below="@id/tv_properties"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/view_top_shadow"
@@ -131,7 +136,8 @@
             android:layout_height="3dp"
             android:layout_below="@id/tv_properties"
             android:background="@drawable/shape_shade_bottom"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/view_bottom_shadow"
@@ -140,13 +146,14 @@
             android:layout_alignBottom="@id/lv_msg"
             android:alpha="0.3"
             android:background="@drawable/shape_shade_top"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <View
             android:id="@+id/view_filter"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/colorPrimary"
-            android:visibility="gone"/>
+            android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

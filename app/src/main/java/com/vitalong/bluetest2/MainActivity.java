@@ -53,7 +53,7 @@ import me.drakeet.materialdialog.MaterialDialog;
 
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-public class MainActivity extends MyBaseActivity implements BleFragment.OnRunningAppRefreshListener,View.OnClickListener {
+public class MainActivity extends MyBaseActivity implements BleFragment.OnRunningAppRefreshListener, View.OnClickListener {
     @Bind(R.id.coll_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
     private static BluetoothAdapter mBluetoothAdapter;
@@ -62,9 +62,11 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private ViewPager vpContainer;
     private RadioGroup rgTabButtons;
     private int mCurrentFragment;
+    //    private String[] fragmetns = new String[]{
+//            BleFragment.class.getName(),
+//            SppFragment.class.getName()};
     private String[] fragmetns = new String[]{
-            BleFragment.class.getName(),
-            SppFragment.class.getName()};
+            BleFragment.class.getName()};
     private MDevice mDevice;
     private String mode;
     /**
@@ -130,6 +132,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
 
     /**
      * onCreate 入口
+     *
      * @param savedInstanceState
      */
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +161,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             //搜索按钮点击事件
             case R.id.fab_search:
                 SharedPreferences mSharedPreferences = getSharedPreferences("mode", MainActivity.MODE_PRIVATE);
@@ -198,7 +201,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     }
 
     /**
-     * 初始化服务
+     * 初始化服务，用于连接蓝牙，发送数据，接收数据
      */
     private void initService() {
         Intent gattServiceIntent = new Intent(getApplicationContext(),
@@ -262,7 +265,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
                     //准备列表视图并开始扫描
                     if (mode.equals("SPP")) {
                         doDiscovery();
-                    }else if (mode.equals("BLE")){
+                    } else if (mode.equals("BLE")) {
                         onRefresh();
                     }
                 }
@@ -300,19 +303,20 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private void initView() {
         // 获得ViewPager
         vpContainer = (ViewPager) findViewById(R.id.vpContainer);
-        revealSearchView = (RevealSearchView)findViewById(R.id.realsearchiew);
-        revealBackgroundView = (RevealBackgroundView)findViewById(R.id.reveal_background_view);
+        revealSearchView = (RevealSearchView) findViewById(R.id.realsearchiew);
+        revealBackgroundView = (RevealBackgroundView) findViewById(R.id.reveal_background_view);
         tvSearchDeviceCount = (TextView) findViewById(R.id.tv_search_device_count);
-        rlSearchInfo = (RelativeLayout)findViewById(R.id.rl_search_info);
-        fabSearch = (FloatingActionButton)findViewById(R.id.fab_search);
+        rlSearchInfo = (RelativeLayout) findViewById(R.id.rl_search_info);
+        fabSearch = (FloatingActionButton) findViewById(R.id.fab_search);
         stopSearching = (Button) findViewById(R.id.btn_stop_searching);
     }
+
     /**
      * 初始化blefragment
      */
     private void initbleFragment() {
         //获的recyclerView
-        recyclerView = (RecyclerView)findViewById(R.id.recycleviewble);
+        recyclerView = (RecyclerView) findViewById(R.id.recycleviewble);
         //给recyclerView   设置布局样式
         LinearLayoutManager llm = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(llm);
@@ -325,9 +329,11 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
                 adapter.setDelayStartAnimation(false);
                 return false;
             }
+
             public void onTouchEvent(RecyclerView rv, MotionEvent e) {
 
             }
+
             public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
 
             }
@@ -379,7 +385,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
      */
     private void scanPrevious21Version() {
         //10秒后停止扫描
-        hander.postDelayed(stopScanRunnable,10000);
+        hander.postDelayed(stopScanRunnable, 10000);
         mBluetoothAdapter.startLeScan(mLeScanCallback);
     }
 
@@ -391,7 +397,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         @Override
         public void onLeScan(final BluetoothDevice device, final int rssi,
                              byte[] scanRecord) {
-           runOnUiThread(new Runnable() {
+            runOnUiThread(new Runnable() {
                 public void run() {
                     MDevice mDev = new MDevice(device, rssi);
                     if (list.contains(mDev))
@@ -432,6 +438,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
 
 
     }
+
     /**
      * ble 搜索动画启动
      */
@@ -477,7 +484,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         //如果是连接状态，断开，重新连接
         if (BluetoothLeService.getConnectionState() != BluetoothLeService.STATE_DISCONNECTED)
             BluetoothLeService.disconnect();
-        BluetoothLeService.connect(currentDevAddress, currentDevName,this);
+        BluetoothLeService.connect(currentDevAddress, currentDevName, this);
     }
 
 
@@ -515,6 +522,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     protected void onDestroy() {
         super.onDestroy();
     }
+
     /**
      * 初始化view pager
      */
@@ -535,7 +543,6 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
             // fragment.refresh();
         }
     }
-
 
 
     class KickerFragmentAdapter extends FragmentPagerAdapter {

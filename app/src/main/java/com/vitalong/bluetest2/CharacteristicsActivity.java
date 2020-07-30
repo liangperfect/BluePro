@@ -41,27 +41,26 @@ public class CharacteristicsActivity extends MyBaseActivity {
 
         myApplication = (MyApplication) getApplication();
 
-        List<BluetoothGattCharacteristic> characteristics = ((MyApplication)getApplication()).getCharacteristics();
+        List<BluetoothGattCharacteristic> characteristics = ((MyApplication) getApplication()).getCharacteristics();
         list.addAll(characteristics);
 
         //we create a virtual BluetoothGattCharacteristic just for debug
-        if (getIntent().getBooleanExtra("is_usr_service",false)){
+        if (getIntent().getBooleanExtra("is_usr_service", false)) {
             BluetoothGattCharacteristic usrVirtualCharacteristic =
-                    new BluetoothGattCharacteristic(UUID.fromString(GattAttributes.USR_SERVICE),-1,-1);
+                    new BluetoothGattCharacteristic(UUID.fromString(GattAttributes.USR_SERVICE), -1, -1);
             list.add(usrVirtualCharacteristic);
         }
 
-
-        adapter = new CharacteristicsAdapter(this,list);
+        adapter = new CharacteristicsAdapter(this, list);
         lvCharacteristics.setAdapter(adapter);
 
         lvCharacteristics.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 myApplication.setCharacteristic(list.get(position));
-                Intent intent = new Intent(CharacteristicsActivity.this,GattDetailActivity.class);
+                Intent intent = new Intent(CharacteristicsActivity.this, GattDetailActivity.class);
                 startActivity(intent);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
             }
         });
 
@@ -77,6 +76,7 @@ public class CharacteristicsActivity extends MyBaseActivity {
             });
         }
     }
+
     private void startEndAnimation() {
         filterView.setAlpha(0.0f);
         filterView.setVisibility(View.VISIBLE);
@@ -97,7 +97,7 @@ public class CharacteristicsActivity extends MyBaseActivity {
 
     }
 
-    private void animate2(){
+    private void animate2() {
         filterView.animate()
                 .alpha(0.0f)
                 .setDuration(200)

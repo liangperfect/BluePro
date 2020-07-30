@@ -56,16 +56,16 @@ public class ServicesActivity extends MyBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_services);
         bindToolBar();
-        myApplication =  (MyApplication) getApplication();
-        List<MService> services =myApplication.getServices();
+        myApplication = (MyApplication) getApplication();
+        List<MService> services = myApplication.getServices();
         list.addAll(services);
         adapter = new ServicesAdapter(this, list);
         lvServices.setAdapter(adapter);
 
         Intent intent = getIntent();
-        tvServiceName.setText("NAME:"+intent.getStringExtra("dev_name"));
-        tvServiceMac.setText("MAC:"+intent.getStringExtra("dev_mac"));
-        tvServiceCount.setText("SERVICES:"+String.valueOf(list.size()));
+        tvServiceName.setText("NAME:" + intent.getStringExtra("dev_name"));
+        tvServiceMac.setText("MAC:" + intent.getStringExtra("dev_mac"));
+        tvServiceCount.setText("SERVICES:" + String.valueOf(list.size()));
 
 
         lvServices.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -74,7 +74,7 @@ public class ServicesActivity extends MyBaseActivity {
                 MService mService = list.get(position);
                 BluetoothGattService service = mService.getService();
 
-                System.out.println("service---------------->"+service.getUuid().toString());
+                System.out.println("service---------------->" + service.getUuid().toString());
 
                 myApplication.setCharacteristics(service.getCharacteristics());
 
@@ -84,11 +84,10 @@ public class ServicesActivity extends MyBaseActivity {
 
                     //这里为了方便暂时直接用Application serviceType 来标记当前的服务，应该是和上面的代码合并
                     MyApplication.serviceType = MyApplication.SERVICE_TYPE.TYPE_USR_DEBUG;
-                }
-                else if(service.getUuid().toString().equals(GattAttributes.BATTERY_SERVICE) ||
-                        service.getUuid().toString().equals(GattAttributes.RGB_LED_SERVICE_CUSTOM)){
+                } else if (service.getUuid().toString().equals(GattAttributes.BATTERY_SERVICE) ||
+                        service.getUuid().toString().equals(GattAttributes.RGB_LED_SERVICE_CUSTOM)) {
                     MyApplication.serviceType = MyApplication.SERVICE_TYPE.TYPE_NUMBER;
-                }else {
+                } else {
                     MyApplication.serviceType = MyApplication.SERVICE_TYPE.TYPE_OTHER;
                 }
 
@@ -114,8 +113,8 @@ public class ServicesActivity extends MyBaseActivity {
     private void startAnimation() {
         rlTop.setAlpha(0.0f);
         rlTop.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-        ObjectAnimator animator1 = ObjectAnimator.ofInt(rlTop,"backgroundColor",
-                Color.parseColor("#0277bd"),Color.parseColor("#009688"));
+        ObjectAnimator animator1 = ObjectAnimator.ofInt(rlTop, "backgroundColor",
+                Color.parseColor("#0277bd"), Color.parseColor("#009688"));
         animator1.setDuration(700);
         animator1.setStartDelay(100);
         animator1.setEvaluator(new ArgbEvaluator());
@@ -127,11 +126,11 @@ public class ServicesActivity extends MyBaseActivity {
             }
         });
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             toolbar.setAlpha(0.0f);
             toolbar.setLayerType(View.LAYER_TYPE_HARDWARE, null);
-            ObjectAnimator animator0 = ObjectAnimator.ofInt(toolbar,"backgroundColor",
-                    Color.parseColor("#0277bd"),Color.parseColor("#009688"));
+            ObjectAnimator animator0 = ObjectAnimator.ofInt(toolbar, "backgroundColor",
+                    Color.parseColor("#0277bd"), Color.parseColor("#009688"));
             animator0.setDuration(700);
             animator0.setStartDelay(100);
             animator0.setEvaluator(new ArgbEvaluator());
@@ -147,11 +146,11 @@ public class ServicesActivity extends MyBaseActivity {
 
 
         animator1.start();
-        AnimateUtils.alpha(rlTop,1.0f,400,0);
+        AnimateUtils.alpha(rlTop, 1.0f, 400, 0);
         startIntroAnimator();
     }
 
-    private void startIntroAnimator(){
+    private void startIntroAnimator() {
         ivBle.setVisibility(View.VISIBLE);
         tvServiceName.setVisibility(View.VISIBLE);
         tvServiceMac.setVisibility(View.VISIBLE);
@@ -169,18 +168,18 @@ public class ServicesActivity extends MyBaseActivity {
         lvServices.setTranslationY(Utils.dpToPx(300));
 
 
-        AnimateUtils.translationX(ivBle,0,400,400);
-        AnimateUtils.rotation(ivBle,0f,400,400,null);
-        AnimateUtils.alpha(ivBle,1.0f,400,400);
-        AnimateUtils.translationX(tvServiceName,0,400,400);
-        AnimateUtils.alpha(tvServiceName,1.0f,400,400);
-        AnimateUtils.translationX(tvServiceMac,0,400,500);
-        AnimateUtils.alpha(tvServiceMac,1.0f,400,500);
-        AnimateUtils.translationX(tvServiceCount,0,400,600);
-        AnimateUtils.alpha(tvServiceCount,1.0f,400,600);
+        AnimateUtils.translationX(ivBle, 0, 400, 400);
+        AnimateUtils.rotation(ivBle, 0f, 400, 400, null);
+        AnimateUtils.alpha(ivBle, 1.0f, 400, 400);
+        AnimateUtils.translationX(tvServiceName, 0, 400, 400);
+        AnimateUtils.alpha(tvServiceName, 1.0f, 400, 400);
+        AnimateUtils.translationX(tvServiceMac, 0, 400, 500);
+        AnimateUtils.alpha(tvServiceMac, 1.0f, 400, 500);
+        AnimateUtils.translationX(tvServiceCount, 0, 400, 600);
+        AnimateUtils.alpha(tvServiceCount, 1.0f, 400, 600);
 
-        AnimateUtils.alpha(lvServices,1.0f,200,400);
-        AnimateUtils.translationY(lvServices,0,400,400);
+        AnimateUtils.alpha(lvServices, 1.0f, 200, 400);
+        AnimateUtils.translationY(lvServices, 0, 400, 400);
     }
 
 

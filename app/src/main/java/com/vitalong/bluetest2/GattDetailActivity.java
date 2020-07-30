@@ -744,7 +744,6 @@ public class GattDetailActivity extends MyBaseActivity {
         }
 
         if (isHexSend) {
-            Log.d("chenliang", "updateWrite  isHexSend true");
             text = text.replace(" ", "");
             if (!Utils.isRightHexStr(text)) {
                 AnimateUtils.shake(etWrite);
@@ -753,7 +752,6 @@ public class GattDetailActivity extends MyBaseActivity {
             byte[] array = Utils.hexStringToByteArray(text);
             writeCharacteristic(writeCharacteristic, array);
         } else {
-            Log.d("chenliang", "updateWrite  isHexSend false");
             if (Utils.isAtCmd(text))
                 text = text + "\r\n";
             try {

@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class MyApplication extends Application {
 
-    private  boolean clearflag;
+    private boolean clearflag;
 
     public boolean isClearflag() {
         return clearflag;
@@ -23,8 +23,8 @@ public class MyApplication extends Application {
         this.clearflag = clearflag;
     }
 
-    public enum SERVICE_TYPE{
-        TYPE_USR_DEBUG,TYPE_NUMBER,TYPE_STR,TYPE_OTHER;
+    public enum SERVICE_TYPE {
+        TYPE_USR_DEBUG, TYPE_NUMBER, TYPE_STR, TYPE_OTHER;
     }
 
     private final List<MService> services = new ArrayList<>();
@@ -36,7 +36,7 @@ public class MyApplication extends Application {
         return services;
     }
 
-    public static SERVICE_TYPE serviceType ;
+    public static SERVICE_TYPE serviceType;
 
     public void setServices(List<MService> services) {
         this.services.clear();

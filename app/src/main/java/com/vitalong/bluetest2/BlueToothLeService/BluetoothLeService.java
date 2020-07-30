@@ -1,6 +1,6 @@
 /*
  * Copyright Cypress Semiconductor Corporation, 2014-2014-2015 All rights reserved.
- * 
+ *
  * This software, associated documentation and materials ("Software") is
  * owned by Cypress Semiconductor Corporation ("Cypress") and is
  * protected by and subject to worldwide patent protection (UnitedStates and foreign), United States copyright laws and international
@@ -9,7 +9,7 @@
  * modification, translation, compilation, or representation of this
  * Software in any other form (e.g., paper, magnetic, optical, silicon)
  * is prohibited without Cypress's express written permission.
- * 
+ *
  * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY
  * KIND, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
  * NONINFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
@@ -23,11 +23,11 @@
  * Cypress's product in a High Risk Product, the manufacturer of such
  * system or application assumes all risk of such use and in doing so
  * indemnifies Cypress against all liability.
- * 
+ *
  * Use of this Software may be limited by and subject to the applicable
  * Cypress software license agreement.
- * 
- * 
+ *
+ *
  */
 
 package com.vitalong.bluetest2.BlueToothLeService;
@@ -49,6 +49,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.vitalong.bluetest2.BLEProfileDataParserClasses.BloodPressureParser;
 import com.vitalong.bluetest2.BLEProfileDataParserClasses.CSCParser;
@@ -185,7 +186,7 @@ public class BluetoothLeService extends Service {
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 System.out.println("onDescriptorWrite GATT_SUCCESS------------------->SUCCESS");
-            } else if (status == BluetoothGatt.GATT_FAILURE){
+            } else if (status == BluetoothGatt.GATT_FAILURE) {
                 System.out.println("onDescriptorWrite GATT_FAIL------------------->FAIL");
                 Intent intent = new Intent(ACTION_GATT_DESCRIPTORWRITE_RESULT);
                 intent.putExtra(Constants.EXTRA_DESCRIPTOR_WRITE_RESULT, status);
@@ -208,7 +209,6 @@ public class BluetoothLeService extends Service {
                 // Putting the byte value read for GATT Db
                 mBundle.putByteArray(Constants.EXTRA_DESCRIPTOR_BYTE_VALUE,
                         descriptor.getValue());
-
 
                 mBundle.putString(Constants.EXTRA_DESCRIPTOR_BYTE_VALUE_UUID,
                         descriptor.getUuid().toString());
@@ -533,8 +533,8 @@ public class BluetoothLeService extends Service {
         @Override
         public void onMtuChanged(BluetoothGatt gatt, int mtu, int status) {
 //            super.onMtuChanged(gatt, mtu, status);
-            System.out.println("onMtuChanged-------------------->size:"+mtu);
-            if (status == BluetoothGatt.GATT_SUCCESS){
+            System.out.println("onMtuChanged-------------------->size:" + mtu);
+            if (status == BluetoothGatt.GATT_SUCCESS) {
                 System.out.println("onMtuChanged-------------------->设置成功");
             }
         }
@@ -563,6 +563,7 @@ public class BluetoothLeService extends Service {
     }
 
     private static void broadcastNotifyUpdate(final BluetoothGattCharacteristic characteristic) {
+        //接收蓝牙返回来的数据
         final Intent intent = new Intent(BluetoothLeService.ACTION_DATA_AVAILABLE);
         Bundle mBundle = new Bundle();
         mBundle.putByteArray(Constants.EXTRA_BYTE_VALUE,
@@ -712,10 +713,7 @@ public class BluetoothLeService extends Service {
                     mBundle.putString(Constants.EXTRA_DESCRIPTOR_REPORT_REFERENCE_TYPE,
                             reportReferenceValues.get(1));
                 }
-
-
             }
-
         }
         //case for OTA characteristic received
         if (UUIDDatabase.UUID_OTA_UPDATE_CHARACTERISTIC
@@ -732,7 +730,6 @@ public class BluetoothLeService extends Service {
 
         mContext.sendBroadcast(intent);
     }
-
 
 
     /**
@@ -790,7 +787,7 @@ public class BluetoothLeService extends Service {
             return;
         }
 
-        if (mConnectionState == STATE_CONNECTED){
+        if (mConnectionState == STATE_CONNECTED) {
             //  Logger.datalog(mContext.getResources().getString(R.string.dl_device_connecting));
             mBluetoothGatt.disconnect();
             mBluetoothGatt.close();
@@ -815,7 +812,7 @@ public class BluetoothLeService extends Service {
      *
      * @param characteristic The characteristic to read from.
      */
-    public static void readCharacteristic( BluetoothGattCharacteristic characteristic) {
+    public static void readCharacteristic(BluetoothGattCharacteristic characteristic) {
 
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             return;
@@ -837,7 +834,6 @@ public class BluetoothLeService extends Service {
         mBluetoothGatt.readDescriptor(descriptor);
 
     }
-
 
 
     private static String getHexValue(byte[] array) {
@@ -868,7 +864,6 @@ public class BluetoothLeService extends Service {
     }
 
 
-
     /**
      * Enables or disables notification on a give characteristic.
      *
@@ -895,7 +890,6 @@ public class BluetoothLeService extends Service {
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
     }
-
 
 
     /**
@@ -930,17 +924,17 @@ public class BluetoothLeService extends Service {
 
     /**
      * 改变BLE默认的单次发包、收包的最大长度,用于android 5.0及以上版本
+     *
      * @param mtu
      * @return
      */
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public static boolean requestMtu(int mtu){
+    public static boolean requestMtu(int mtu) {
         if (mBluetoothGatt != null) {
             return mBluetoothGatt.requestMtu(mtu);
         }
         return false;
     }
-
 
 
     /**
@@ -973,6 +967,7 @@ public class BluetoothLeService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         mBound = true;
+        Log.d("chenliang", "BluetoothLeService IBinder");
         return mBinder;
     }
 
@@ -1020,6 +1015,7 @@ public class BluetoothLeService extends Service {
     @Override
     public void onCreate() {
         // Initializing the service
+        Log.d("chenliang", "BluetoothLeService onCreate");
         if (!initialize()) {
             System.out.println("Service not initialized");
         }

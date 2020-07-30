@@ -18,12 +18,14 @@
             android:dividerHeight="0dp"
             android:background="@android:color/white"
             android:divider="@android:color/transparent"
+            tools:visibility="visible"
             android:visibility="gone"/>
         <View
             android:id="@+id/view_shadow"
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@drawable/shape_shade_bottom"
+            tools:visibility="visible"
             android:visibility="gone"/>
         <View
             android:id="@+id/view_filter"
