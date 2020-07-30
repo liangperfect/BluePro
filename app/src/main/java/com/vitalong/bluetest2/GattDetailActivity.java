@@ -447,7 +447,6 @@ public class GattDetailActivity extends MyBaseActivity {
         }
 
         if (isHexSend) {
-            Log.d("chenliang", "writeOption  isHexSend true");
             text = text.replace(" ", "");
             if (!Utils.isRightHexStr(text)) {
                 AnimateUtils.shake(etWrite);

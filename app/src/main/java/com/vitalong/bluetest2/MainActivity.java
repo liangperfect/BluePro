@@ -3,6 +3,7 @@ package com.vitalong.bluetest2;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import android.bluetooth.BluetoothManager;
 import android.content.BroadcastReceiver;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -35,6 +38,7 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.vitalong.bluetest2.BlueToothLeService.BluetoothLeService;
 import com.vitalong.bluetest2.Utils.AnimateUtils;
+import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.GattAttributes;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.adapter.DevicesAdapter;
@@ -45,8 +49,10 @@ import com.vitalong.bluetest2.fragments.SppFragment;
 import com.vitalong.bluetest2.views.RevealBackgroundView;
 import com.vitalong.bluetest2.views.RevealSearchView;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import butterknife.Bind;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -54,14 +60,21 @@ import me.drakeet.materialdialog.MaterialDialog;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class MainActivity extends MyBaseActivity implements BleFragment.OnRunningAppRefreshListener, View.OnClickListener {
+
+    private BluetoothGattCharacteristic notifyCharacteristic;
+    private BluetoothGattCharacteristic readCharacteristic;
+    private BluetoothGattCharacteristic writeCharacteristic;
+    private BluetoothGattCharacteristic indicateCharacteristic;
     @Bind(R.id.coll_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
     private static BluetoothAdapter mBluetoothAdapter;
+    private MessageHandler msgHandler;
     private Handler hander;
     boolean isShowingDialog = false;
     private ViewPager vpContainer;
     private RadioGroup rgTabButtons;
     private int mCurrentFragment;
+    private MyApplication myApplication;
     //    private String[] fragmetns = new String[]{
 //            BleFragment.class.getName(),
 //            SppFragment.class.getName()};
@@ -84,7 +97,6 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private RecyclerView recyclerView;
     private String currentDevAddress;
     private String currentDevName;
-
     private MaterialDialog alarmDialog;
 
 
@@ -141,6 +153,8 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         //必须调用，其在setContentView后面调用
         bindToolBar();
         //标题栏
+        myApplication = (MyApplication) getApplication();
+        msgHandler = new MessageHandler();
         toolbar.setNavigationIcon(R.mipmap.ic_more_vertical_white_18dp);
         collapsingToolbarLayout.setTitle(getString(R.string.devices));
         //设置一个监听，否则会报错，support library design的bug
@@ -400,7 +414,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
             runOnUiThread(new Runnable() {
                 public void run() {
                     MDevice mDev = new MDevice(device, rssi);
-                    if (list.contains(mDev))
+                    if (list.contains(mDev) || mDev.getDevice().getName() == null || !mDev.getDevice().getName().contains("BL2"))
                         return;
                     list.add(mDev);
                     tvSearchDeviceCount.setText(getString(R.string.search_device_count, list.size()));
@@ -637,6 +651,54 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
                 showDialog(getString(R.string.conn_disconnected_home));
             }
 
+            //接收返回的数据
+            Bundle extras = intent.getExtras();
+            if (BluetoothLeService.ACTION_DATA_AVAILABLE.equals(action)) {
+                // Data Received
+                System.out.println("GattDetailActivity-------------->onReceive");
+                if (extras.containsKey(Constants.EXTRA_BYTE_VALUE)) {
+                    if (extras.containsKey(Constants.EXTRA_BYTE_UUID_VALUE)) {
+                        if (myApplication != null) {
+                            BluetoothGattCharacteristic requiredCharacteristic = myApplication.getCharacteristic();
+                            String uuidRequired = requiredCharacteristic.getUuid().toString();
+                            String receivedUUID = intent.getStringExtra(Constants.EXTRA_BYTE_UUID_VALUE);
+                            byte[] array = intent.getByteArrayExtra(Constants.EXTRA_BYTE_VALUE);
+                            com.vitalong.bluetest2.bean.Message msg1 = new com.vitalong.bluetest2.bean.Message(com.vitalong.bluetest2.bean.Message.MESSAGE_TYPE.RECEIVE, formatMsgContent(array));
+                            System.out.println("返回的数据是:" + msg1.getContent());
+                            //                            if (isDebugMode) {
+//                                byte[] array = intent.getByteArrayExtra(Constants.EXTRA_BYTE_VALUE);
+//                                com.vitalong.bluetest2.bean.Message msg = new com.vitalong.bluetest2.bean.Message(com.vitalong.bluetest2.bean.Message.MESSAGE_TYPE.RECEIVE, formatMsgContent(array));
+//                                notifyAdapter(msg);
+//                            } else if (uuidRequired.equalsIgnoreCase(receivedUUID)) {
+//                                byte[] array = intent.getByteArrayExtra(Constants.EXTRA_BYTE_VALUE);
+//                                com.vitalong.bluetest2.bean.Message msg = new com.vitalong.bluetest2.bean.Message(com.vitalong.bluetest2.bean.Message.MESSAGE_TYPE.RECEIVE, formatMsgContent(array, MyApplication.serviceType));
+//                                notifyAdapter(msg);
+//                            }
+                        }
+                    }
+                }
+                if (extras.containsKey(Constants.EXTRA_DESCRIPTOR_BYTE_VALUE)) {
+                    if (extras.containsKey(Constants.EXTRA_DESCRIPTOR_BYTE_VALUE_CHARACTERISTIC_UUID)) {
+                        BluetoothGattCharacteristic requiredCharacteristic = myApplication.
+                                getCharacteristic();
+                        String uuidRequired = requiredCharacteristic.getUuid().toString();
+                        String receivedUUID = intent.getStringExtra(
+                                Constants.EXTRA_DESCRIPTOR_BYTE_VALUE_CHARACTERISTIC_UUID);
+
+                        byte[] array = intent
+                                .getByteArrayExtra(Constants.EXTRA_DESCRIPTOR_BYTE_VALUE);
+
+//                        System.out.println("GattDetailActivity---------------------->descriptor:" + Utils.ByteArraytoHex(array));
+//                        if (isDebugMode) {
+//                            updateButtonStatus(array);
+//                        } else if (uuidRequired.equalsIgnoreCase(receivedUUID)) {
+//                            updateButtonStatus(array);
+//                        }
+
+                    }
+                }
+            }
+
         }
     };
 
@@ -667,15 +729,17 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private void prepareGattServices(List<BluetoothGattService> gattServices) {
         prepareData(gattServices);
 
-        Intent intent = new Intent(this, ServicesActivity.class);
-        intent.putExtra("dev_name", currentDevName);
-        intent.putExtra("dev_mac", currentDevAddress);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
+//        Intent intent = new Intent(this, ServicesActivity.class);
+//        intent.putExtra("dev_name", currentDevName);
+//        intent.putExtra("dev_mac", currentDevAddress);
+//        startActivity(intent);
+//        overridePendingTransition(0, 0);
+        goCharacteristicsActivity();
     }
 
     /**
      * Prepare GATTServices data.
+     * 将Gateservices加上名字并保存的Application当中去
      *
      * @param gattServices
      */
@@ -698,9 +762,158 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         ((MyApplication) getApplication()).setServices(list);
     }
 
+
+    private void goCharacteristicsActivity() {
+
+        MService mService = ((MyApplication) getApplication()).getServices().get(0);
+        BluetoothGattService service = mService.getService();
+
+        System.out.println("service---------------->" + service.getUuid().toString());
+
+        ((MyApplication) getApplication()).setCharacteristics(service.getCharacteristics());
+
+        Intent intent = new Intent(MainActivity.this, CharacteristicsActivity.class);
+        if (service.getUuid().toString().equals(GattAttributes.USR_SERVICE)) {
+            intent.putExtra("is_usr_service", true);
+            //这里为了方便暂时直接用Application serviceType 来标记当前的服务，应该是和上面的代码合并
+            MyApplication.serviceType = MyApplication.SERVICE_TYPE.TYPE_USR_DEBUG;
+        } else if (service.getUuid().toString().equals(GattAttributes.BATTERY_SERVICE) ||
+                service.getUuid().toString().equals(GattAttributes.RGB_LED_SERVICE_CUSTOM)) {
+            MyApplication.serviceType = MyApplication.SERVICE_TYPE.TYPE_NUMBER;
+        } else {
+            MyApplication.serviceType = MyApplication.SERVICE_TYPE.TYPE_OTHER;
+        }
+
+
+//        startActivity(intent);
+//        overridePendingTransition(0, 0);
+        setCurrActivityCharacteristics();
+    }
+
+    private void setCurrActivityCharacteristics() {
+        BluetoothGattCharacteristic usrVirtualCharacteristic =
+                new BluetoothGattCharacteristic(UUID.fromString(GattAttributes.USR_SERVICE), -1, -1);
+        ((MyApplication) getApplication()).setCharacteristic(usrVirtualCharacteristic);
+        initCharacteristics();
+        Intent intent = new Intent(MainActivity.this, GattDetailActivity.class);
+        setMaxMut();
+        //发送数据
+        msgHandler.sendEmptyMessageDelayed(0, 50);
+//        startActivity(intent);
+//        overridePendingTransition(0, 0);
+    }
+
+    /**
+     * 设置发包和收包的长度
+     */
+    private void setMaxMut() {
+        int sdkInt = Build.VERSION.SDK_INT;
+        System.out.println("sdkInt------------>" + sdkInt);
+        if (sdkInt >= 21) {
+            //设置最大发包、收包的长度为512个字节
+            if (BluetoothLeService.requestMtu(512)) {
+                Toast.makeText(this, getString(R.string.transmittal_length, "512"), Toast.LENGTH_LONG).show();
+            } else
+                Toast.makeText(this, getString(R.string.transmittal_length, "20"), Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, getString(R.string.transmittal_length, "20"), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void initCharacteristics() {
+        BluetoothGattCharacteristic characteristic = ((MyApplication) getApplication()).getCharacteristic();
+        if (characteristic.getUuid().toString().equals(GattAttributes.USR_SERVICE)) {
+            List<BluetoothGattCharacteristic> characteristics = ((MyApplication) getApplication()).getCharacteristics();
+            for (BluetoothGattCharacteristic c : characteristics) {
+                if (Utils.getPorperties(this, c).equals("Notify")) {
+                    notifyCharacteristic = c;
+                    continue;
+                }
+
+                if (Utils.getPorperties(this, c).equals("Write")) {
+                    writeCharacteristic = c;
+                    continue;
+                }
+            }
+        }
+    }
+
+    /**
+     * 向蓝牙发送数据
+     */
+    private void sendLinkCode(String codeStr, boolean isHex) {
+
+        if (!isHex) {
+            try {
+                byte[] array = codeStr.getBytes("US-ASCII");
+//            byte[] array = Utils.hexStringToByteArray(codeStr.replace(" ", ""));
+                System.out.println("发送数据");
+                writeCharacteristic(writeCharacteristic, array);
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            byte[] array = Utils.hexStringToByteArray(codeStr);
+            writeCharacteristic(writeCharacteristic, array);
+        }
+    }
+
+    /**
+     * 向蓝牙发送数据
+     *
+     * @param characteristic
+     * @param bytes
+     */
+    private void writeCharacteristic(BluetoothGattCharacteristic characteristic, byte[] bytes) {
+        // Writing the hexValue to the characteristics
+        try {
+            BluetoothLeService.writeCharacteristicGattDb(characteristic,
+                    bytes);
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Preparing Broadcast receiver to broadcast notify characteristics
+     *
+     * @param characteristic
+     */
+    void prepareBroadcastDataNotify(
+            BluetoothGattCharacteristic characteristic) {
+        final int charaProp = characteristic.getProperties();
+        if ((charaProp | BluetoothGattCharacteristic.PROPERTY_NOTIFY) > 0) {
+            BluetoothLeService.setCharacteristicNotification(characteristic, true);
+        }
+    }
+
+    private String formatMsgContent(byte[] data) {
+        return "HEX:" + Utils.ByteArraytoHex(data) + "  (ASSCII:" + Utils.byteToASCII(data) + ")";
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
         unregisterReceiver(mGattUpdateReceiver);
+    }
+
+    class MessageHandler extends Handler {
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+            if (msg.what == 0) {
+                sendLinkCode("123456", false);
+                msgHandler.sendEmptyMessageDelayed(2, 200);
+            } else if (msg.what == 1) {
+                sendLinkCode("010300000002C40B", true);
+            } else if (msg.what == 2) {
+                prepareBroadcastDataNotify(notifyCharacteristic);
+                msgHandler.sendEmptyMessageDelayed(1, 200);
+            } else if (msg.what == 3) {
+
+            }
+        }
     }
 }
