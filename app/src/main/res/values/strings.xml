@@ -144,7 +144,7 @@
     <string name="record_stop">STOP</string>
     <string name="convert">CONVERT</string>
     <string name="change_api">CHANGE API KEY</string>
-     <string name="apikey_requirement_text">Please enter your developer API Key
+    <string name="apikey_requirement_text">Please enter your developer API Key
         for voice to text conversion</string>
     <string name="volume_up">Volume Up</string>
     <string name="volume_down">Volume Down</string>
@@ -159,14 +159,8 @@
     <string name="transmittal_length">Max transmittal data is %s</string>
 
 
-
-    <item type="id" name="onTiming"></item>
-    <item type="id" name="outTiming"></item>
-
-
-
-
-
+    <item name="onTiming" type="id"></item>
+    <item name="outTiming" type="id"></item>
 
 
 </resources>

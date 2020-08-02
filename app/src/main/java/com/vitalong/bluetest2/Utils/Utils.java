@@ -1,6 +1,6 @@
 /*
  * Copyright Cypress Semiconductor Corporation, 2014-2015 All rights reserved.
- * 
+ *
  * This software, associated documentation and materials ("Software") is
  * owned by Cypress Semiconductor Corporation ("Cypress") and is
  * protected by and subject to worldwide patent protection (UnitedStates and foreign), United States copyright laws and international
@@ -9,7 +9,7 @@
  * modification, translation, compilation, or representation of this
  * Software in any other form (e.g., paper, magnetic, optical, silicon)
  * is prohibited without Cypress's express written permission.
- * 
+ *
  * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY
  * KIND, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
  * NONINFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
@@ -23,11 +23,11 @@
  * Cypress's product in a High Risk Product, the manufacturer of such
  * system or application assumes all risk of such use and in doing so
  * indemnifies Cypress against all liability.
- * 
+ *
  * Use of this Software may be limited by and subject to the applicable
  * Cypress software license agreement.
- * 
- * 
+ *
+ *
  */
 
 package com.vitalong.bluetest2.Utils;
@@ -66,12 +66,10 @@ import static android.content.Context.MODE_PRIVATE;
 /**
  * Class for commonly used methods in the project
  */
-public class Utils{
+public class Utils {
     SharedPreferences sFlowalert;
     // Shared preference constant
     private static String SHARED_PREF_NAME = "CySmart Shared Preference";
-
-
 
 
     /**
@@ -225,7 +223,7 @@ public class Utils{
      *
      * @param
      * @return
-*/
+     */
 
     public static String ByteArraytoHex(byte[] bytes) {
         StringBuilder sb = new StringBuilder();
@@ -752,9 +750,36 @@ public class Utils{
         return s;
     }
 
-
-
-
-
+    public static String getVerifyDatas(String Angle) {
+        try {
+            if (Angle.length() == 14) {
+                String bit = Angle.substring(0, 2);//1
+                String value = "";
+                if (bit.equals("01")) value = "-";
+                bit = Angle.substring(2, 4);//2
+                value += Integer.parseInt(bit) + ".";
+                bit = Angle.substring(4, 10);//3
+                value += bit;
+                /*bit = Angle.substring(6, 8);//4
+                if (!bit.equals("00"))
+                    value += bit;
+                bit = Angle.substring(8, 10);//5
+                if (!bit.equals("00"))
+                    value += bit;*/
+                value = Double.valueOf(value).toString();
+                bit = Angle.substring(10, 12);
+                if (bit.equals("00")) {
+                    value += "E";
+                } else if (bit.equals("01")) {
+                    value += "E-";
+                }
+                value += Integer.parseInt(Angle.substring(12));
+                return value;
+            }
+        } catch (Exception er) {
+            return "0";
+        }
+        return "0";
+    }
 
 }

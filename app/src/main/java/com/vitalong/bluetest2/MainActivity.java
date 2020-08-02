@@ -98,7 +98,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private String currentDevAddress;
     private String currentDevName;
     private MaterialDialog alarmDialog;
-
+    private String KEEP_CMD_CODE = "123456"; //与板子保持连接的命令
 
     //停止扫描
     private Runnable stopScanRunnable = new Runnable() {
@@ -449,8 +449,6 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         if (!mBluetoothAdapter.isEnabled()) {
             mBluetoothAdapter.enable();
         }
-
-
     }
 
     /**
@@ -623,8 +621,6 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
             mCurrentFragment = checkedItem;
         }
     };
-
-
     /**
      * BroadcastReceiver for receiving the GATT communication status
      */
@@ -797,7 +793,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         initCharacteristics();
         Intent intent = new Intent(MainActivity.this, GattDetailActivity.class);
         setMaxMut();
-        //发送数据
+        //必须要延迟50ms才能发送数据
         msgHandler.sendEmptyMessageDelayed(0, 50);
 //        startActivity(intent);
 //        overridePendingTransition(0, 0);
@@ -846,8 +842,6 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         if (!isHex) {
             try {
                 byte[] array = codeStr.getBytes("US-ASCII");
-//            byte[] array = Utils.hexStringToByteArray(codeStr.replace(" ", ""));
-                System.out.println("发送数据");
                 writeCharacteristic(writeCharacteristic, array);
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
@@ -904,10 +898,14 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
             super.handleMessage(msg);
 
             if (msg.what == 0) {
-                sendLinkCode("123456", false);
+                sendLinkCode(KEEP_CMD_CODE, false);
                 msgHandler.sendEmptyMessageDelayed(2, 200);
             } else if (msg.what == 1) {
-                sendLinkCode("010300000002C40B", true);
+//                sendLinkCode("010300000002C40B", true);
+                //进行界面的跳转
+                Intent intent = new Intent(MainActivity.this, OperationPanelActivity.class);
+                startActivity(intent);
+
             } else if (msg.what == 2) {
                 prepareBroadcastDataNotify(notifyCharacteristic);
                 msgHandler.sendEmptyMessageDelayed(1, 200);

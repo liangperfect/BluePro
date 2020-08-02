@@ -243,4 +243,13 @@ public class Constants {
     public static String DATA_LOGGER_FILE_NAAME = "file name";
     public static String DATA_LOGGER_FLAG = "Data Logger Flag";
 
+    //发送矫正参数的每次数据
+    public static String DATA_VERIFY_NO1 = "01 03 01 00 00 02 c5 f7";
+    public static String DATA_VERIFY_NO2 = "01 03 01 01 00 02 94 37";
+    public static String DATA_VERIFY_NO3 = "01 03 01 02 00 02 64 37";
+    public static String DATA_VERIFY_NO4 = "01 03 01 03 00 02 35 f7";
+    public static String DATA_VERIFY_NO5 = "01 03 01 04 00 02 84 36";
+    public static String DATA_VERIFY_NO6 = "01 03 01 05 00 02 d5 f6";
+    public static String DATA_VERIFY_NO7 = "01 03 01 06 00 02 25 f6";
+    public static String DATA_VERIFY_NO8 = "01 03 01 07 00 02 74 36";
 }
