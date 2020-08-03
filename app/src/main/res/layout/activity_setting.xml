@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bluepro.SettingActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:contentInsetStart="0dp"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/nav_arrow_left">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:text="Setting"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="20dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SN:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSNValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSN"
+            app:layout_constraintStart_toEndOf="@id/tvSN"
+            app:layout_constraintTop_toTopOf="@id/tvSN"
+            tools:text="SNValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Range:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSN" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRangeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvRange"
+            app:layout_constraintStart_toEndOf="@id/tvRange"
+            app:layout_constraintTop_toTopOf="@id/tvRange"
+            tools:text="RangeValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSensorType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Sensor Type:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvRange" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSensorTypeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSensorType"
+            app:layout_constraintStart_toEndOf="@id/tvSensorType"
+            app:layout_constraintTop_toTopOf="@id/tvSensorType"
+            tools:text="RangeValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSensorMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Sensor Mode:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSensorType" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/SpSensorModeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSensorMode"
+            app:layout_constraintStart_toEndOf="@id/tvSensorMode"
+            app:layout_constraintTop_toTopOf="@id/tvSensorMode"
+            tools:text="RangeValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSoftwareVersion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Software Version:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSensorMode" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSoftwareVersionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
+            app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
+            app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
+            tools:text="1.46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSaveTo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Save To:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSoftwareVersion" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtSaveToValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSaveTo"
+            app:layout_constraintStart_toEndOf="@id/tvSaveTo"
+            app:layout_constraintTop_toTopOf="@id/tvSaveTo"
+            tools:text="/asfa/asfas/fas" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvConnection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Connection:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSaveTo" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spConnectionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvConnection"
+            app:layout_constraintStart_toEndOf="@id/tvConnection"
+            app:layout_constraintTop_toTopOf="@id/tvConnection"
+            tools:text="1.46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSensitivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Sensitivity:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvConnection" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spSensitivityValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSensitivity"
+            app:layout_constraintStart_toEndOf="@id/tvSensitivity"
+            app:layout_constraintTop_toTopOf="@id/tvSensitivity"
+            tools:text="1.46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBeep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Beep:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSensitivity" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spBeepValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvBeep"
+            app:layout_constraintStart_toEndOf="@id/tvBeep"
+            app:layout_constraintTop_toTopOf="@id/tvBeep"
+            tools:text="1.46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Unit:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBeep" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spUnitValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvUnit"
+            app:layout_constraintStart_toEndOf="@id/tvUnit"
+            app:layout_constraintTop_toTopOf="@id/tvUnit"
+            tools:text="1.46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Beep:"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/spUnitValue"
+            app:layout_constraintStart_toEndOf="@id/spUnitValue"
+            app:layout_constraintTop_toTopOf="@id/spUnitValue" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spDecimalValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvDecimal"
+            app:layout_constraintStart_toEndOf="@id/tvDecimal"
+            app:layout_constraintTop_toTopOf="@id/tvDecimal"
+            tools:text="1.46" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCoefficients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Coefficients:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUnit" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnCoefficients"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Show"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvCoefficients"
+            app:layout_constraintStart_toEndOf="@id/tvCoefficients"
+            app:layout_constraintTop_toTopOf="@id/tvCoefficients" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#35549B"
+            android:text="UPDATE"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

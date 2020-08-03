@@ -49,16 +49,16 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
     /**
      * 注册发送和接收的广播
      */
-    abstract void registerBc();
+    protected abstract void registerBc();
 
-    abstract void receiveDataFromBlue(byte[] array);
+    protected abstract void receiveDataFromBlue(byte[] array);
 
-    abstract void disconnectBlue();
+    protected abstract void disconnectBlue();
 
     protected void bindToolBar() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.mipmap.ic_search_white_36dp);
+//        toolbar.setNavigationIcon(R.mipmap.ic_search_white_36dp);
         if (Build.VERSION.SDK_INT >= 23) {
             toolbar.setTitleTextColor(getColor(android.R.color.white));
         } else {

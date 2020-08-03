@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bluepro.CoefficientsActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:contentInsetStart="0dp"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/nav_arrow_left">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:text="Coefficients"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/fff"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="MissingConstraints">
+
+        <LinearLayout
+            android:id="@+id/LinearLayout0"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:gravity="right"
+            android:orientation="horizontal"
+            tools:ignore="MissingConstraints">
+
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="55dp"
+                android:layout_height="55dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:foreground="@mipmap/back"
+                android:theme="@android:style/Theme.NoTitleBar"
+                android:visibility="gone"
+                tools:ignore="MissingConstraints" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout1"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout0"
+            android:background="#C87D43"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="A axis A:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/AaxisA"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="1.09314E-03" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout1"
+            android:background="#C87D43"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="A axis B:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/AaxisB"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="-8.91574E-11" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout2"
+            android:background="#C87D43"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="A axis C:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/AaxisC"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="8.19623E-14" />
+            </GridLayout>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/LinearLayout4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout3"
+            android:layout_marginTop="-1dp"
+            android:background="#C87D43"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="A axis D:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/AaxisD"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="2.41167E-04" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout4"
+            android:background="#5C95B3"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="B axis A:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/BaxisA"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="1.09314E-03" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout6"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout5"
+            android:background="#5C95B3"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="B axis B:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/BaxisB"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="-8.91574E-11"
+                    android:textSize="18dp" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout7"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout6"
+            android:background="#5C95B3"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="B axis C:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/BaxisC"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="8.19623E-14" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout7"
+            android:background="#5C95B3"
+            android:gravity="left"
+            android:orientation="horizontal"
+            android:paddingLeft="40dp"
+            tools:ignore="MissingConstraints">
+
+            <GridLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:text="B axis D:   "
+                    android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/BaxisD"
+                    android:layout_width="200dp"
+                    android:layout_height="40dp"
+                    android:layout_weight="1"
+                    android:paddingTop="10dp"
+                    android:textSize="18dp"
+                    tools:text="2.41167E-04" />
+            </GridLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout9"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout8"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnSet"
+                android:layout_width="199dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/blue"
+                android:text="SET"
+                android:textColor="#fff" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

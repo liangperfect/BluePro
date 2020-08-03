@@ -23,7 +23,13 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".OperationPanelActivity"></activity>
+        <activity android:name=".bluepro.CoefficientsActivity"></activity>
+        <activity
+            android:name=".bluepro.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OperationPanelActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

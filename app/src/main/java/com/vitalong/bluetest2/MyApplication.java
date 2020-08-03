@@ -4,6 +4,7 @@ import android.app.Application;
 import android.bluetooth.BluetoothGattCharacteristic;
 
 import com.vitalong.bluetest2.bean.MService;
+import com.vitalong.bluetest2.bean.VerifyDataBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +33,20 @@ public class MyApplication extends Application {
 
     private BluetoothGattCharacteristic characteristic;
 
+    //板子的校验数据
+    private VerifyDataBean verifyDataBean;
+
     public List<MService> getServices() {
         return services;
     }
 
     public static SERVICE_TYPE serviceType;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        verifyDataBean = new VerifyDataBean();
+    }
 
     public void setServices(List<MService> services) {
         this.services.clear();
@@ -60,5 +70,13 @@ public class MyApplication extends Application {
 
     public BluetoothGattCharacteristic getCharacteristic() {
         return characteristic;
+    }
+
+    public VerifyDataBean getVerifyDataBean() {
+        return verifyDataBean;
+    }
+
+    public void setVerifyDataBean(VerifyDataBean verifyDataBean) {
+        this.verifyDataBean = verifyDataBean;
     }
 }
