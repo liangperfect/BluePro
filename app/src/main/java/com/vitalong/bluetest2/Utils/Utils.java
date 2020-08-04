@@ -46,6 +46,7 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -751,6 +752,7 @@ public class Utils {
     }
 
     public static String getVerifyDatas(String Angle) {
+        Log.d("chenliang", "获取到的数据是:" + Angle);
         try {
             if (Angle.length() == 14) {
                 String bit = Angle.substring(0, 2);//1
@@ -777,6 +779,7 @@ public class Utils {
                 return value;
             }
         } catch (Exception er) {
+            System.out.println("解析数据出错了");
             return "0";
         }
         return "0";

@@ -57,10 +57,14 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
     @Override
     protected void receiveDataFromBlue(byte[] array) {
-
         //进行数据解析
         System.out.println("OperationPanelActivity接收到的数据:" + formatMsgContent(array));
-        parseVerifyData(formatMsgContent(array).substring(6, 20));
+        String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
+        if (hexStr.length() == 24){
+            //加判断是为了避免其它命令接收数据造成这里解析出错
+            System.out.println("OperationPanelActivity substring接收到的数据:" + hexStr.substring(6, 20));
+            parseVerifyData(hexStr.substring(6, 20));
+        }
     }
 
     @Override
