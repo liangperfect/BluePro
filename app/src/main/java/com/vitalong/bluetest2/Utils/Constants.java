@@ -1,6 +1,6 @@
 /*
  * Copyright Cypress Semiconductor Corporation, 2014-2015 All rights reserved.
- * 
+ *
  * This software, associated documentation and materials ("Software") is
  * owned by Cypress Semiconductor Corporation ("Cypress") and is
  * protected by and subject to worldwide patent protection (UnitedStates and foreign), United States copyright laws and international
@@ -9,7 +9,7 @@
  * modification, translation, compilation, or representation of this
  * Software in any other form (e.g., paper, magnetic, optical, silicon)
  * is prohibited without Cypress's express written permission.
- * 
+ *
  * Disclaimer: THIS SOFTWARE IS PROVIDED AS-IS, WITH NO WARRANTY OF ANY
  * KIND, EXPRESS OR IMPLIED, INCLUDING, BUT NOT LIMITED TO,
  * NONINFRINGEMENT, IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
@@ -23,11 +23,11 @@
  * Cypress's product in a High Risk Product, the manufacturer of such
  * system or application assumes all risk of such use and in doing so
  * indemnifies Cypress against all liability.
- * 
+ *
  * Use of this Software may be limited by and subject to the applicable
  * Cypress software license agreement.
- * 
- * 
+ *
+ *
  */
 
 package com.vitalong.bluetest2.Utils;
@@ -252,4 +252,9 @@ public class Constants {
     public static String DATA_VERIFY_NO6 = "01 03 01 05 00 02 d5 f6";
     public static String DATA_VERIFY_NO7 = "01 03 01 06 00 02 25 f6";
     public static String DATA_VERIFY_NO8 = "01 03 01 07 00 02 74 36";
+    //Setting需要保存的参数的Key
+    public static String SENSORMODE_KEY = "sensorMode";
+    public static String SENSITIVITY_KEY = "sensitivity";
+    public static String BEEP_KEY = "beep";
+    public static String UNIT_KEY = "unit";
 }

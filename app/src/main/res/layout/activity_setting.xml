@@ -79,12 +79,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="+/-30"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvRange"
             app:layout_constraintStart_toEndOf="@id/tvRange"
             app:layout_constraintTop_toTopOf="@id/tvRange"
-            tools:text="RangeValue" />
+            tools:text="+/-30" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSensorType"
@@ -101,12 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="2 Axis"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSensorType"
             app:layout_constraintStart_toEndOf="@id/tvSensorType"
             app:layout_constraintTop_toTopOf="@id/tvSensorType"
-            tools:text="RangeValue" />
+            tools:text="2 Axis" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSensorMode"
@@ -145,6 +147,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="1.46"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
@@ -167,6 +170,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="/geostar/tiltmeter/"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSaveTo"
@@ -184,17 +188,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvSaveTo" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/spConnectionValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="Bluetooth"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvConnection"
             app:layout_constraintStart_toEndOf="@id/tvConnection"
             app:layout_constraintTop_toTopOf="@id/tvConnection"
-            tools:text="1.46" />
+            tools:text="Bluetooth" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSensitivity"
@@ -266,17 +271,19 @@
             android:id="@+id/tvDecimal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Beep:"
+            android:layout_marginStart="20dp"
+            android:text="Decimal:"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/spUnitValue"
             app:layout_constraintStart_toEndOf="@id/spUnitValue"
             app:layout_constraintTop_toTopOf="@id/spUnitValue" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/spDecimalValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:text="0"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvDecimal"
@@ -299,9 +306,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:background="@drawable/radius_btn_48dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
             android:text="Show"
-            android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@id/tvCoefficients"
             app:layout_constraintStart_toEndOf="@id/tvCoefficients"
             app:layout_constraintTop_toTopOf="@id/tvCoefficients" />

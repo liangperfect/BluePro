@@ -3,6 +3,7 @@ package com.vitalong.bluetest2;
 import android.app.Application;
 import android.bluetooth.BluetoothGattCharacteristic;
 
+import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.bean.MService;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 
@@ -45,6 +46,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        SharedPreferencesUtil.getInstance(getApplicationContext(), "blue");
         verifyDataBean = new VerifyDataBean();
     }
 

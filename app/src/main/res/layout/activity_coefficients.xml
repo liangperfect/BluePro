@@ -97,6 +97,16 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="1.09314E-03" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgAxisA"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
+
             </GridLayout>
         </LinearLayout>
 
@@ -131,6 +141,16 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="-8.91574E-11" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgAxisB"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
+
             </GridLayout>
         </LinearLayout>
 
@@ -165,6 +185,15 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="8.19623E-14" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgAxisC"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
             </GridLayout>
         </LinearLayout>
 
@@ -201,6 +230,15 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="2.41167E-04" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgAxisD"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
             </GridLayout>
         </LinearLayout>
 
@@ -235,6 +273,15 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="1.09314E-03" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBxisA"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
             </GridLayout>
         </LinearLayout>
 
@@ -269,6 +316,15 @@
                     android:paddingTop="10dp"
                     android:text="-8.91574E-11"
                     android:textSize="18dp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBxisB"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
             </GridLayout>
         </LinearLayout>
 
@@ -303,6 +359,15 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="8.19623E-14" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBxisC"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
             </GridLayout>
         </LinearLayout>
 
@@ -337,6 +402,16 @@
                     android:paddingTop="10dp"
                     android:textSize="18dp"
                     tools:text="2.41167E-04" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgBxisD"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleType="fitXY"
+                    android:visibility="gone"
+                    app:srcCompat="@drawable/tick"
+                    tools:visibility="visible" />
+
             </GridLayout>
         </LinearLayout>
 

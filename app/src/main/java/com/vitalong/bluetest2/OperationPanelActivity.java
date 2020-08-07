@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 
@@ -15,6 +16,7 @@ import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
 
 import butterknife.Bind;
+import me.drakeet.materialdialog.MaterialDialog;
 
 public class OperationPanelActivity extends MyBaseActivity2 implements View.OnClickListener {
 
@@ -29,6 +31,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     int count = 0;
 
     private VerifyDataBean verifyDataBean;
+    private MaterialDialog verifyLoadDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         initListener();
         myApplication = (MyApplication) getApplication();
         verifyDataBean = new VerifyDataBean();
+        //显示获取verifydata的加载框
+        showLoadVeriftDataDialog();
     }
 
     private void initListener() {
@@ -58,11 +63,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     @Override
     protected void receiveDataFromBlue(byte[] array) {
         //进行数据解析
-        System.out.println("OperationPanelActivity接收到的数据:" + formatMsgContent(array));
         String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
-        if (hexStr.length() == 24){
+        if (hexStr.length() == 24) {
             //加判断是为了避免其它命令接收数据造成这里解析出错
-            System.out.println("OperationPanelActivity substring接收到的数据:" + hexStr.substring(6, 20));
             parseVerifyData(hexStr.substring(6, 20));
         }
     }
@@ -95,7 +98,11 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            sendCmdGetVerifyCode(msg.what);
+            if (msg.what == 9) {
+                verifyLoadDialog.dismiss();
+            } else {
+                sendCmdGetVerifyCode(msg.what);
+            }
         }
     }
 
@@ -175,6 +182,14 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
                 break;
         }
+    }
 
+    private void showLoadVeriftDataDialog() {
+        ProgressBar progressBar = new ProgressBar(OperationPanelActivity.this);
+        verifyLoadDialog = new MaterialDialog(OperationPanelActivity.this);
+        verifyLoadDialog.setTitle("Load verify data,Please wait for 3s")
+                .setContentView(progressBar);
+        verifyLoadDialog.show();
+        operationPanelHandler.sendEmptyMessageDelayed(9, 3000);
     }
 }

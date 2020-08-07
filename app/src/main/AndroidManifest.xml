@@ -23,7 +23,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bluepro.CoefficientsActivity"></activity>
+        <activity android:name=".bluepro.SurveyActivity"></activity>
+        <activity android:name=".bluepro.CoefficientsActivity" />
         <activity
             android:name=".bluepro.SettingActivity"
             android:screenOrientation="portrait" />
