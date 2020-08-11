@@ -40,14 +40,252 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/white"
-        android:padding="20dp"
+        android:padding="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-<!--        <androidx.appcompat.widget.AppCompatTextView-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"/>-->
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUnit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Unit:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvUnitValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvUnit"
+            app:layout_constraintStart_toEndOf="@id/tvUnit"
+            app:layout_constraintTop_toTopOf="@id/tvUnit"
+            tools:text="Deg" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDecimal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:text="Decimal:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvUnitValue"
+            app:layout_constraintStart_toEndOf="@id/tvUnitValue"
+            app:layout_constraintTop_toTopOf="@id/tvUnitValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDecimalVaule"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvDecimal"
+            app:layout_constraintStart_toEndOf="@id/tvDecimal"
+            app:layout_constraintTop_toTopOf="@id/tvDecimal"
+            tools:text="2" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="SN:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvUnit" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSNValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSN"
+            app:layout_constraintStart_toEndOf="@id/tvSN"
+            app:layout_constraintTop_toTopOf="@id/tvSN"
+            tools:text="Deg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSensorType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Sensor Type:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSN" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSensorTypeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="2 Axis"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSensorType"
+            app:layout_constraintStart_toEndOf="@id/tvSensorType"
+            app:layout_constraintTop_toTopOf="@id/tvSensorType"
+            tools:text="Deg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSurveyMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Survey Mode:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSensorType" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSurveyModeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSurveyMode"
+            app:layout_constraintStart_toEndOf="@id/tvSurveyMode"
+            app:layout_constraintTop_toTopOf="@id/tvSurveyMode"
+            tools:text="Deg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvConnectionMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Connection Mode:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSurveyMode" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="Bluetooth"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvConnectionMode"
+            app:layout_constraintStart_toEndOf="@id/tvConnectionMode"
+            app:layout_constraintTop_toTopOf="@id/tvConnectionMode"
+            tools:text="Bluetooth" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvConnectionState"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@color/green"
+            android:gravity="center"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:text="Connected"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvConnectionMode" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraPanel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_black"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvConnectionState">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAxis1Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="+0.0000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_black"
+                android:padding="12dp"
+                android:text="1"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAxis2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNo2"
+                tools:text="+0.0000" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_black"
+                android:padding="12dp"
+                android:text="2"
+                android:textSize="28sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNo1" />
+
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/constraGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="tvAxis2Value,tvNo2" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img1"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_marginTop="12dp"
+            app:layout_constraintEnd_toStartOf="@id/img2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraPanel"
+            app:srcCompat="@mipmap/l1" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/img2"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/img1"
+            app:layout_constraintTop_toTopOf="@id/img1"
+            app:srcCompat="@mipmap/b1" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#EE7600"
+            android:text="LADING..."
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -291,6 +291,31 @@
             app:layout_constraintTop_toTopOf="@id/tvDecimal"
             tools:text="1.46" />
 
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/tvDecimal"
+            app:layout_constraintStart_toEndOf="@id/tvDecimal"
+            app:layout_constraintTop_toTopOf="@id/tvDecimal">
+
+            <RadioButton
+                android:id="@+id/radio1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3" />
+
+            <RadioButton
+                android:id="@+id/radio2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:text="4" />
+
+        </RadioGroup>
+
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCoefficients"
             android:layout_width="wrap_content"

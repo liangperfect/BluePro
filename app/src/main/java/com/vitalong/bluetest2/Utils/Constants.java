@@ -257,4 +257,23 @@ public class Constants {
     public static String SENSITIVITY_KEY = "sensitivity";
     public static String BEEP_KEY = "beep";
     public static String UNIT_KEY = "unit";
+    public static String DECIMAL = "decimal"; //只用于记录Deg的类型，Raw默认就是0
+
+    //各模式参数
+    public static int SFMODE_1AXIS = 0; //"1 Axis"
+    public static int SFMODE_2AXIS = 1; //"2 Axis"
+
+    public static int SENSITVITY_1_FASTER = 0; //1(Faster)
+    public static int SENSITVITY_2_DEFAULT = 1; //2(Default)
+    public static int SENSITVITY_3_SLOWER = 2; //3(Slower)
+    //"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"
+    public static int BEEP_MUTE = 0; //"Mute"
+    public static int BEEP_TYPEA = 1; //"TypeA"
+    public static int BEEP_TYPEB = 2; //"TypeB"
+    public static int BEEP_TYPEC = 3; //"TypeC"
+    public static int BEEP_TYPED = 4; //"TypeD"
+    public static int BEEP_TYPEE = 5; //"TypeE"
+    //    String[] ctype3 = new String[]{"Deg", "Raw"};
+    public static int UNIT_DEG = 0;//RAW
+    public static int UNIT_RAW = 1;//DEG
 }

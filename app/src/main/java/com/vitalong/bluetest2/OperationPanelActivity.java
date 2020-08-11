@@ -14,6 +14,7 @@ import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
+import com.vitalong.bluetest2.bluepro.SurveyActivity;
 
 import butterknife.Bind;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -22,7 +23,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
     @Bind(R.id.imageButton)
     ImageButton backBtn;
-
+    @Bind(R.id.imageButton1)
+    ImageButton imageButton1;
     @Bind(R.id.imageButton3)
     ImageButton imageButton3;
 
@@ -52,6 +54,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     private void initListener() {
 
         backBtn.setOnClickListener(this);
+        imageButton1.setOnClickListener(this);
         imageButton3.setOnClickListener(this);
     }
 
@@ -83,6 +86,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         switch (v.getId()) {
             case R.id.imageButton:
                 OperationPanelActivity.this.finish();
+                break;
+            case R.id.imageButton1:
+                startActivity(new Intent(OperationPanelActivity.this, SurveyActivity.class));
                 break;
             case R.id.imageButton3:
                 startActivity(new Intent(OperationPanelActivity.this, SettingActivity.class));

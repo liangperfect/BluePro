@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,10 +43,19 @@ public class SettingActivity extends MyBaseActivity2 {
     public Spinner spUnitValue;
     @Bind(R.id.btnUpdate)
     public Button btnUpdate;
+    @Bind(R.id.radioGroup)
+    public RadioGroup radioGroup;
+    @Bind(R.id.spDecimalValue)
+    public TextView spDecimalValue;
+    @Bind(R.id.radio1)
+    public RadioButton radio1Button;
+    @Bind(R.id.radio2)
+    public RadioButton radio2Button;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
     private int beepValue = 0;
     private int unitValue = 0;
+    private int decimalValue = 0;
 
     private SettingHandler settingHandler;
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
@@ -51,6 +63,8 @@ public class SettingActivity extends MyBaseActivity2 {
     String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
     String[] ctype2 = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
+    //    String[] ctype4ByDeg = new String[]{"3", "4"};
+//    String[] ctype4ByRaw = new String[]{"0"};
     boolean isPause = false;
 
     @Override
@@ -74,6 +88,7 @@ public class SettingActivity extends MyBaseActivity2 {
         sensitivityValue = (int) SharedPreferencesUtil.getData(Constants.SENSITIVITY_KEY, 0);
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
+        decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
         SpSensorModeValue.setSelection(sensorModeValue);
         spSensitivityValue.setSelection(sensitivityValue);
         spBeepValue.setSelection(beepValue);
@@ -86,6 +101,7 @@ public class SettingActivity extends MyBaseActivity2 {
                 SharedPreferencesUtil.putData(Constants.SENSITIVITY_KEY, sensitivityValue);
                 SharedPreferencesUtil.putData(Constants.BEEP_KEY, beepValue);
                 SharedPreferencesUtil.putData(Constants.UNIT_KEY, unitValue);
+                SharedPreferencesUtil.putData(Constants.DECIMAL, decimalValue);
                 SettingActivity.this.finish();
                 Toast.makeText(SettingActivity.this, "Setting success", Toast.LENGTH_SHORT).show();
             }
@@ -128,6 +144,13 @@ public class SettingActivity extends MyBaseActivity2 {
             case R.id.spUnitValue:
 
                 unitValue = mode;
+                if (unitValue == 0) {
+                    radioGroup.setVisibility(View.VISIBLE);
+                    spDecimalValue.setVisibility(View.GONE);
+                } else {
+                    radioGroup.setVisibility(View.GONE);
+                    spDecimalValue.setVisibility(View.VISIBLE);
+                }
                 break;
             default:
                 //nothing to do
@@ -144,6 +167,34 @@ public class SettingActivity extends MyBaseActivity2 {
                 startActivity(new Intent(SettingActivity.this, CoefficientsActivity.class));
             }
         });
+        if (decimalValue == 3) {
+
+            radio1Button.setChecked(true);
+        }
+
+        if (decimalValue == 4) {
+            radio2Button.setChecked(true);
+        }
+
+        radio1Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    decimalValue = 3;
+                }
+            }
+        });
+
+        radio2Button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    decimalValue = 4;
+                }
+            }
+        });
     }
 
     @Override
@@ -157,8 +208,9 @@ public class SettingActivity extends MyBaseActivity2 {
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
             //进行数据解析
             System.out.println("SettingActivity接收到的数据:" + formatMsgContent(array));
-            //System.out.println("SN数据->" + Integer.parseInt(hexStr.substring(6, 14), 16));
-            tvSNValue.setText(String.valueOf(Integer.parseInt(hexStr.substring(6, 14), 16)));
+            String snValueStr = String.valueOf(Integer.parseInt(hexStr.substring(6, 14), 16));
+            tvSNValue.setText(snValueStr);
+            SharedPreferencesUtil.putData("SNVaule", snValueStr);
         }
     }
 
