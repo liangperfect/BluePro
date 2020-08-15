@@ -1,5 +1,6 @@
 package com.vitalong.bluetest2;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -27,6 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -61,6 +64,11 @@ import me.drakeet.materialdialog.MaterialDialog;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 public class MainActivity extends MyBaseActivity implements BleFragment.OnRunningAppRefreshListener, View.OnClickListener {
 
+    //权限申请数组
+    private String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS};
+    private static final int OPEN_SET_REQUEST_CODE = 100;
     private BluetoothGattCharacteristic notifyCharacteristic;
     private BluetoothGattCharacteristic readCharacteristic;
     private BluetoothGattCharacteristic writeCharacteristic;
@@ -167,6 +175,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         //检查蓝牙
         checkBleSupportAndInitialize();
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+        initPermissions();
         initView(); //初始化视图
         initComponents(); //初始化view pager; 默认选中的为0
         initCartoon();//初始化动画
@@ -883,6 +892,46 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
 
     private String formatMsgContent(byte[] data) {
         return "HEX:" + Utils.ByteArraytoHex(data) + "  (ASSCII:" + Utils.byteToASCII(data) + ")";
+    }
+
+    private void initPermissions() {
+        if (lacksPermission(permissions)) {//判断是否拥有权限
+            //请求权限，第二参数权限String数据，第三个参数是请求码便于在onRequestPermissionsResult 方法中根据code进行判断
+            ActivityCompat.requestPermissions(this, permissions, OPEN_SET_REQUEST_CODE);
+        } else {
+            //拥有权限执行操作
+        }
+    }
+
+    //如果返回true表示缺少权限
+    public boolean lacksPermission(String[] permissions) {
+        for (String permission : permissions) {
+            //判断是否缺少权限，true=缺少权限
+            if (ContextCompat.checkSelfPermission(MainActivity.this, permission) != PackageManager.PERMISSION_GRANTED) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        //响应Code
+        if (requestCode == OPEN_SET_REQUEST_CODE) {
+            if (grantResults.length > 0) {
+                for (int i = 0; i < grantResults.length; i++) {
+                    if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(MainActivity.this, "為擁有定位權限，請到手機設置内申請該權限", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+                //拥有权限执行操作
+            } else {
+                Toast.makeText(MainActivity.this, "為擁有定位權限，請到手機設置内申請該權限", Toast.LENGTH_LONG).show();
+            }
+        }
     }
 
     @Override

@@ -252,6 +252,8 @@ public class Constants {
     public static String DATA_VERIFY_NO6 = "01 03 01 05 00 02 d5 f6";
     public static String DATA_VERIFY_NO7 = "01 03 01 06 00 02 25 f6";
     public static String DATA_VERIFY_NO8 = "01 03 01 07 00 02 74 36";
+    //Survey界面获取实时数据发送的命令
+    public static String REAL_DATA_CMD = "01 03 00 00 00 08 44 0C";
     //Setting需要保存的参数的Key
     public static String SENSORMODE_KEY = "sensorMode";
     public static String SENSITIVITY_KEY = "sensitivity";
@@ -274,6 +276,6 @@ public class Constants {
     public static int BEEP_TYPED = 4; //"TypeD"
     public static int BEEP_TYPEE = 5; //"TypeE"
     //    String[] ctype3 = new String[]{"Deg", "Raw"};
-    public static int UNIT_DEG = 0;//RAW
-    public static int UNIT_RAW = 1;//DEG
+    public static int UNIT_DEG = 0;//DEG
+    public static int UNIT_RAW = 1;//RAW
 }

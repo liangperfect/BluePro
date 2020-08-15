@@ -21,13 +21,14 @@ public class CRC16CheckUtil {
             0x4100, 0x81C1, 0x8081, 0x4040,};
 
     /*   参考使用：https://blog.csdn.net/u010326875/article/details/82591636   **/
-    public static byte[] intToBytes2(int n){
+    public static byte[] intToBytes2(int n) {
         byte[] b = new byte[4];
-        for(int i = 0;i < 4;i++){
-            b[i] = (byte)(n >> (24 - i * 8));
+        for (int i = 0; i < 4; i++) {
+            b[i] = (byte) (n >> (24 - i * 8));
         }
         return b;
     }
+
     public static int getCRC16(byte[] data, int length) {
         int crc_reg = 0xffff;
         for (int i = 0; i < length; i++) {
@@ -35,20 +36,20 @@ public class CRC16CheckUtil {
         }
         return crc_reg;
     }
+
     //CRC校验CRC-16/USB
-    public static byte[] setParaCRC(byte[] buf){
+    public static byte[] setParaCRC(byte[] buf) {
         //int MASK = 0x0001,CRCSEED = 0xa001;
-        int MASK = 0x0001,CRCSEED = 0xa001;
-        int remain =0xFFFF;
-        byte val ;
-        for(int i = 0;i< buf.length;i++){
+        int MASK = 0x0001, CRCSEED = 0xa001;
+        int remain = 0xFFFF;
+        byte val;
+        for (int i = 0; i < buf.length; i++) {
             val = buf[i];
-            for(int j=0;j<8;j++){
-                if( ((val ^ remain)& MASK)!= 0){
+            for (int j = 0; j < 8; j++) {
+                if (((val ^ remain) & MASK) != 0) {
                     remain >>= 1;
                     remain ^= CRCSEED;
-                }
-                else {
+                } else {
                     remain >>= 1;
                 }
                 val >>= 1;
@@ -59,29 +60,28 @@ public class CRC16CheckUtil {
         crcByte[1] = (byte) ((remain & 0xFF) ^ 0xFF);
         return crcByte;
     }
-    public static int CRC16_Check(byte Pushdata[],int length)
-    {
-        int Reg_CRC=0xffff;
+
+    public static int CRC16_Check(byte Pushdata[], int length) {
+        int Reg_CRC = 0xffff;
         int temp;
-        int i,j;
+        int i, j;
 
-        for( i = 0; i<length; i ++)
-        {
+        for (i = 0; i < length; i++) {
             temp = Pushdata[i];
-            if(temp < 0) temp += 256;
+            if (temp < 0) temp += 256;
             temp &= 0xff;
-            Reg_CRC^= temp;
+            Reg_CRC ^= temp;
 
-            for (j = 0; j<8; j++)
-            {
+            for (j = 0; j < 8; j++) {
                 if ((Reg_CRC & 0x0001) == 0x0001)
-                    Reg_CRC=(Reg_CRC>>1)^0xA001;
+                    Reg_CRC = (Reg_CRC >> 1) ^ 0xA001;
                 else
-                    Reg_CRC >>=1;
+                    Reg_CRC >>= 1;
             }
         }
-        return (Reg_CRC&0xffff);
+        return (Reg_CRC & 0xffff);
     }
+
     /* *
      * Convert byte[] to hex string.这里我们可以将byte转换成int，然后利用Integer.toHexString(int)
      *来转换成16进制字符串。
@@ -137,4 +137,21 @@ public class CRC16CheckUtil {
         }
         return sb.toString().toUpperCase().trim();
     }
+
+    /**
+     * 命令加上crc码
+     *
+     * @param cmd
+     * @return
+     */
+    public static String getCrcString(String cmd) {
+        int length = cmd.length();
+        byte[] data = ByteTransformUtil.hexToByteArray(cmd);
+        int crc = CRC16CheckUtil.CRC16_Check(data, data.length);
+        String md = CRC16CheckUtil.bytesToHexString(CRC16CheckUtil.intToBytes2(crc));
+        if (md.length() > 4) md = md.substring(md.length() - 4);
+        cmd += md.substring(2) + md.substring(0, 2);
+        return cmd;
+    }
+
 }

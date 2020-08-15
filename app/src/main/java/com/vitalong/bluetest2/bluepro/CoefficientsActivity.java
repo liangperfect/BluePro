@@ -99,7 +99,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
 //              sendCmdCodeByHex("010300000002C40B");
                 if (verify()) {
                     clearUIState();
-                    coefficientsHandler.sendEmptyMessage(1);
+                    coefficientsHandler.sendEmptyMessage(200);
                 }
             }
         });
@@ -123,6 +123,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
      * @param No 发送次数
      */
     private void sendConvertCmd(int No) {
+        btnSet.setEnabled(false);
         String cmd = "";
         switch (No) {
             case 1:
@@ -226,83 +227,123 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         System.out.println("parseVerifyData codeStr:" + codeStr);
         switch (count) {
             case 1:
-                System.out.println("第一次解析是:" + codeStr.substring(8, 10));
+                try {
+                    if (codeStr.substring(8, 10).equals("00")) {
+                        verifyDataBean.setAaxisA(edtAxiasA.getText().toString());
+                    } else {
+                        imgAxisA.setImageResource(R.drawable.error);
+                    }
 
-                if (codeStr.substring(8, 10).equals("00")) {
-                    verifyDataBean.setAaxisA(edtAxiasA.getText().toString());
-                } else {
+                    coefficientsHandler.sendEmptyMessageDelayed(2, 50);
+                } catch (Exception e) {
                     imgAxisA.setImageResource(R.drawable.error);
                 }
                 imgAxisA.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(2, 50);
                 break;
             case 2:
-                if (codeStr.substring(8, 10).equals("01")) {
+                try {
+                    if (codeStr.substring(8, 10).equals("01")) {
 
-                    verifyDataBean.setAaxisB(edtAxiasB.getText().toString());
-                } else {
+                        verifyDataBean.setAaxisB(edtAxiasB.getText().toString());
+                    } else {
+                        imgAxisB.setImageResource(R.drawable.error);
+                    }
+                    coefficientsHandler.sendEmptyMessageDelayed(3, 50);
+                } catch (Exception e) {
                     imgAxisB.setImageResource(R.drawable.error);
                 }
                 imgAxisB.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(3, 50);
                 break;
             case 3:
-                if (codeStr.substring(8, 10).equals("02")) {
+                try {
+                    if (codeStr.substring(8, 10).equals("02")) {
 
-                    verifyDataBean.setAaxisC(edtAxiasC.getText().toString());
-                } else {
+                        verifyDataBean.setAaxisC(edtAxiasC.getText().toString());
+                    } else {
+                        imgAxisC.setImageResource(R.drawable.error);
+                    }
+                    coefficientsHandler.sendEmptyMessageDelayed(4, 50);
+                } catch (Exception e) {
                     imgAxisC.setImageResource(R.drawable.error);
                 }
                 imgAxisC.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(4, 50);
                 break;
             case 4:
-                if (codeStr.substring(8, 10).equals("03")) {
-                    verifyDataBean.setAaxisD(edtAxiasD.getText().toString());
-                } else {
+
+                try {
+                    if (codeStr.substring(8, 10).equals("03")) {
+                        verifyDataBean.setAaxisD(edtAxiasD.getText().toString());
+                    } else {
+                        imgAxisD.setImageResource(R.drawable.error);
+                    }
+                    coefficientsHandler.sendEmptyMessageDelayed(5, 50);
+                } catch (Exception e) {
                     imgAxisD.setImageResource(R.drawable.error);
                 }
                 imgAxisD.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(5, 50);
+
                 break;
             case 5:
-                if (codeStr.substring(8, 10).equals("04")) {
-                    verifyDataBean.setBaxisA(edtBxiasA.getText().toString());
-                } else {
+
+                try {
+                    if (codeStr.substring(8, 10).equals("04")) {
+                        verifyDataBean.setBaxisA(edtBxiasA.getText().toString());
+                    } else {
+                        imgBxisA.setImageResource(R.drawable.error);
+                    }
+
+                    coefficientsHandler.sendEmptyMessageDelayed(6, 50);
+                } catch (Exception e) {
                     imgBxisA.setImageResource(R.drawable.error);
                 }
                 imgBxisA.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(6, 50);
                 break;
             case 6:
-                if (codeStr.substring(8, 10).equals("05")) {
+                try {
+                    if (codeStr.substring(8, 10).equals("05")) {
 
-                    verifyDataBean.setBaxisB(edtBxiasB.getText().toString());
-                } else {
+                        verifyDataBean.setBaxisB(edtBxiasB.getText().toString());
+                    } else {
+                        imgBxisB.setImageResource(R.drawable.error);
+                    }
+
+                    coefficientsHandler.sendEmptyMessageDelayed(7, 50);
+                } catch (Exception e) {
                     imgBxisB.setImageResource(R.drawable.error);
                 }
                 imgBxisB.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(7, 50);
                 break;
             case 7:
-                if (codeStr.substring(8, 10).equals("06")) {
-                    verifyDataBean.setBaxisC(edtBxiasC.getText().toString());
-                } else {
+
+                try {
+                    if (codeStr.substring(8, 10).equals("06")) {
+                        verifyDataBean.setBaxisC(edtBxiasC.getText().toString());
+                    } else {
+                        imgBxisC.setImageResource(R.drawable.error);
+                    }
+
+                    coefficientsHandler.sendEmptyMessageDelayed(8, 50);
+                } catch (Exception e) {
                     imgBxisC.setImageResource(R.drawable.error);
                 }
                 imgBxisC.setVisibility(View.VISIBLE);
-                coefficientsHandler.sendEmptyMessageDelayed(8, 50);
                 break;
             case 8:
-                if (codeStr.substring(8, 10).equals("07")) {
 
-                    verifyDataBean.setBaxisD(edtBxiasD.getText().toString());
-                } else {
+                try {
+                    if (codeStr.substring(8, 10).equals("07")) {
+
+                        verifyDataBean.setBaxisD(edtBxiasD.getText().toString());
+                    } else {
+                        imgBxisD.setImageResource(R.drawable.error);
+                    }
+                    myApplication.setVerifyDataBean(verifyDataBean);
+                } catch (Exception e) {
                     imgBxisD.setImageResource(R.drawable.error);
                 }
                 imgBxisD.setVisibility(View.VISIBLE);
-                myApplication.setVerifyDataBean(verifyDataBean);
                 count = 0;
+                btnSet.setEnabled(true);
                 Toast.makeText(CoefficientsActivity.this, "参数设置完毕", Toast.LENGTH_SHORT).show();
                 break;
             default:
