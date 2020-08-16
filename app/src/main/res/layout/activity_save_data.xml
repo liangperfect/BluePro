@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".bluepro.SaveDataActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:contentInsetStart="0dp"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/nav_arrow_left">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:text="SaveData"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="24dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Site:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSite"
+            app:layout_constraintStart_toEndOf="@id/tvSite"
+            app:layout_constraintTop_toTopOf="@id/tvSite"
+            tools:text="Deg" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTiltmeter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="Tiltmeter#:"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSite" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spTiltmeter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvTiltmeter"
+            app:layout_constraintStart_toEndOf="@id/tvTiltmeter"
+            app:layout_constraintTop_toTopOf="@id/tvTiltmeter"
+            tools:text="Deg" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constra1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:background="@drawable/rectangle_black"
+            app:layout_constraintTop_toBottomOf="@id/spTiltmeter">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_black"
+                android:padding="16dp"
+                android:text="1"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo1Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo1"
+                app:layout_constraintEnd_toStartOf="@id/tvNo1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNo1"
+                tools:text="35.58" />
+
+            <ImageView
+                android:id="@+id/imgAxis1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription=""
+                android:src="@mipmap/df"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo1"
+                app:layout_constraintEnd_toStartOf="@id/tvNo1"
+                app:layout_constraintTop_toTopOf="@id/tvNo1" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constra2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_black"
+            app:layout_constraintTop_toBottomOf="@id/constra1">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_black"
+                android:padding="16dp"
+                android:text="2"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo2Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo2"
+                app:layout_constraintEnd_toStartOf="@id/tvNo2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNo2"
+                tools:text="35.58" />
+
+            <ImageView
+                android:id="@+id/imgAxis2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription=""
+                android:src="@mipmap/df"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo2"
+                app:layout_constraintEnd_toStartOf="@id/tvNo2"
+                app:layout_constraintTop_toTopOf="@id/tvNo2" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constra3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_black"
+            app:layout_constraintTop_toBottomOf="@id/constra2">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_black"
+                android:padding="16dp"
+                android:text="3"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo3Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo3"
+                app:layout_constraintEnd_toStartOf="@id/tvNo3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNo3"
+                tools:text="35.58" />
+
+            <ImageView
+                android:id="@+id/imgAxis3"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription=""
+                android:src="@mipmap/df"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo3"
+                app:layout_constraintEnd_toStartOf="@id/tvNo3"
+                app:layout_constraintTop_toTopOf="@id/tvNo3" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constra4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_black"
+            app:layout_constraintTop_toBottomOf="@id/constra3">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_black"
+                android:padding="16dp"
+                android:text="4"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNo4Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo4"
+                app:layout_constraintEnd_toStartOf="@id/tvNo4"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvNo4"
+                tools:text="35.58" />
+
+            <ImageView
+                android:id="@+id/imgAxis4"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="12dp"
+                android:contentDescription=""
+                android:src="@mipmap/df"
+                app:layout_constraintBottom_toBottomOf="@id/tvNo4"
+                app:layout_constraintEnd_toStartOf="@id/tvNo4"
+                app:layout_constraintTop_toTopOf="@id/tvNo4" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#35549B"
+            android:text="SAVE"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -208,6 +208,7 @@
                 android:layout_marginTop="12dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:text="+0.0000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
@@ -243,6 +244,7 @@
                 android:layout_marginTop="12dp"
                 android:textColor="@color/black"
                 android:textSize="20sp"
+                android:text="+0.0000"
                 app:layout_constraintBottom_toBottomOf="@id/tvNo2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.4"
@@ -262,7 +264,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvNo1" />
 
             <ImageView
-                android:id="@+id/imgAxis2"
+                android:id="@+id/imgAxis12"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="12dp"
@@ -276,7 +278,7 @@
                 android:id="@+id/constraGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="tvAxis2Value,tvNo2" />
+                app:constraint_referenced_ids="tvAxis2Value,tvNo2,imgAxis12" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

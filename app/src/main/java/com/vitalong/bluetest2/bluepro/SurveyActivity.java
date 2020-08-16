@@ -1,5 +1,10 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -23,8 +28,10 @@ import com.vitalong.bluetest2.Utils.CRC16CheckUtil;
 import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.Utils.Utils;
+import com.vitalong.bluetest2.bean.SaveSuerveyBean;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 
 import butterknife.Bind;
@@ -47,26 +54,33 @@ public class SurveyActivity extends MyBaseActivity2 {
     public TextView tvAxis2Value;
     @Bind(R.id.imgAxis1)
     public ImageView imgAxis1;
-    @Bind(R.id.imgAxis2)
+    @Bind(R.id.imgAxis12)
     public ImageView imgAxis2;
     @Bind(R.id.btnSave)
     public Button btnSave;
+    @Bind(R.id.img1)
+    public ImageView image1;
+    @Bind(R.id.img2)
+    public ImageView image2;
+    @Bind(R.id.tvNo1)
+    public TextView tvNo1;
+    @Bind(R.id.tvNo2)
+    public TextView tvNo2;
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
     String filePath = "/geostar/tiltmeter/";
     String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
-    String[] ctype2 = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
+    String[] beeps = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
     String[] ctype4ByDeg = new String[]{"3", "4"};
     String[] ctype4ByRaw = new String[]{"1"};
 
-    private int sensorModeValue = 0;
-    private int sensitivityValue = 0;
-    private int beepValue = 0;
-    private int unitValue = 0;
+    private int sensorModeValue = 0;//单轴还是双轴
+    private int sensitivityValue = 0;//1 fASTER
+    private int beepValue = 0;//声音
+    private int unitValue = 0;//单位
     private int decimalValue = 0;
     private String currSnValue = "";
     private SurveyHandler surveyHandler;
-    private VerifyDataBean verifyDataBean;
     private double dAxisA = 0;
     private double dAxisB = 0;
     private double dAxisC = 0;
@@ -80,8 +94,13 @@ public class SurveyActivity extends MyBaseActivity2 {
     private DecimalFormat deg4Format = new DecimalFormat("0.0000");
     private AxisLink oneAxisLink;//用于判断第一个角度是否有连续值的
     private AxisLink twoAxisLink;//用于判断第二行角度是否有连续值的
-    private double THRESHOLD = 0.002;
+    private double THRESHOLD = 0.002;//阈值
     boolean isSave = false;
+    int clNumb = 0;//用于计算点击次数
+    private SaveSuerveyBean saveSuerveyBean;//传递给保存界面保存的数据
+    private boolean isBack = false; //是否双轴点击保存后的返回
+    MediaPlayer mMediaPlayer = new MediaPlayer();
+    private boolean isFirstPlay = true;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -90,7 +109,9 @@ public class SurveyActivity extends MyBaseActivity2 {
         bindToolBar();
         makeStatusBar(R.color.white);
         surveyHandler = new SurveyHandler();
+        saveSuerveyBean = new SaveSuerveyBean();
         initSp();
+        initPlay(beeps[beepValue]);
         initView();
         if (initVerifyData()) {
             startCmdRepeat();
@@ -100,7 +121,7 @@ public class SurveyActivity extends MyBaseActivity2 {
     private Boolean initVerifyData() {
 
         try {
-            verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
+            VerifyDataBean verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
             dAxisA = Double.parseDouble(verifyDataBean.getAaxisA());
             dAxisB = Double.parseDouble(verifyDataBean.getAaxisB());
             dAxisC = Double.parseDouble(verifyDataBean.getAaxisC());
@@ -167,12 +188,12 @@ public class SurveyActivity extends MyBaseActivity2 {
             if (unitValue == Constants.UNIT_DEG) {
                 isSave = showAxisValue(tvAxis1Value, imgAxis1, getDeg(oneChannelAngle, Constants.SFMODE_1AXIS), oneChannelAngle, oneAxisLink);
                 if (sensorModeValue == Constants.SFMODE_2AXIS) {
-                    isSave = isSave && showAxisValue(tvAxis2Value, imgAxis2, getDeg(twoChannelAngle, Constants.SFMODE_2AXIS), twoChannelAngle, twoAxisLink);
+                    isSave = showAxisValue(tvAxis2Value, imgAxis2, getDeg(twoChannelAngle, Constants.SFMODE_2AXIS), twoChannelAngle, twoAxisLink) && isSave;
                 }
             } else if (unitValue == Constants.UNIT_RAW) {
                 isSave = showAxisValue(tvAxis1Value, imgAxis1, getRaw(getDeg(oneChannelAngle, Constants.SFMODE_1AXIS)), oneChannelAngle, oneAxisLink);
                 if (sensorModeValue == Constants.SFMODE_2AXIS) {
-                    isSave = isSave && showAxisValue(tvAxis2Value, imgAxis2, getRaw(getDeg(twoChannelAngle, Constants.SFMODE_2AXIS)), twoChannelAngle, twoAxisLink);
+                    isSave = showAxisValue(tvAxis2Value, imgAxis2, getRaw(getDeg(twoChannelAngle, Constants.SFMODE_2AXIS)), twoChannelAngle, twoAxisLink) && isSave;
                 }
             }
 
@@ -180,10 +201,12 @@ public class SurveyActivity extends MyBaseActivity2 {
                 btnSave.setText("SAVE");
                 btnSave.setBackgroundColor(0xFF35548B);
                 btnSave.setTextColor(0xFFffffFF);
+                toPlay();
             } else {
                 btnSave.setText("LADING...");
                 btnSave.setBackgroundColor(0xFFEE7600);
                 btnSave.setTextColor(0xFFffffFF);
+                isFirstPlay = true;
             }
         } catch (Exception e) {
 //            e.printStackTrace();
@@ -202,7 +225,6 @@ public class SurveyActivity extends MyBaseActivity2 {
      *                  true :显示菱形   false:不显示菱形且数据实时变动
      */
     private boolean showAxisValue(TextView tv, ImageView imgDimond, double textValue, double axisValue, AxisLink axisLink) {
-
         if (!axisLink.verifyData((float) axisValue)) {
             if (unitValue == Constants.UNIT_DEG) {
                 String v = "";
@@ -216,7 +238,6 @@ public class SurveyActivity extends MyBaseActivity2 {
                 int v1 = (int) textValue;
                 tv.setText(String.valueOf(v1));
             }
-
             imgDimond.setVisibility(View.GONE);
             return false;
         } else {
@@ -266,13 +287,59 @@ public class SurveyActivity extends MyBaseActivity2 {
             constraGroup.setVisibility(View.GONE);
         }
 
+        mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mp) {
+
+//                mMediaPlayer.stop();
+//                isFirstPlay = true;
+            }
+        });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //点击提交数据
-
-
-
+                if (sensorModeValue == Constants.SFMODE_1AXIS) {
+                    //单轴模式
+                    clNumb++;
+                    if (clNumb == 1) {
+                        saveSuerveyBean.setValue(tvAxis1Value.getText().toString());
+                        image1.setImageResource(R.mipmap.l2);
+                        image2.setImageResource(R.mipmap.b2);
+                    } else if (clNumb == 2) {
+                        saveSuerveyBean.setValue2(tvAxis1Value.getText().toString());
+                        image1.setImageResource(R.mipmap.l3);
+                        image2.setImageResource(R.mipmap.b3);
+                    } else if (clNumb == 3) {
+                        saveSuerveyBean.setValue3(tvAxis1Value.getText().toString());
+                        image1.setImageResource(R.mipmap.l4);
+                        image2.setImageResource(R.mipmap.b4);
+                    } else {
+                        saveSuerveyBean.setValue4(tvAxis1Value.getText().toString());
+                        Intent i = new Intent(SurveyActivity.this, SaveDataActivity.class);
+                        i.putExtra("saveData", saveSuerveyBean);
+                        startActivity(i);
+                        SurveyActivity.this.finish();
+                        Toast.makeText(SurveyActivity.this, "进行数据保存", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    //双轴模式
+                    Intent i = new Intent(SurveyActivity.this, SaveDataActivity.class);
+                    if (!isBack) {
+                        saveSuerveyBean.setValue(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setValue2(tvAxis2Value.getText().toString());
+                        i.putExtra("saveData", saveSuerveyBean);
+                        startActivityForResult(i, 1);
+                    } else {
+                        saveSuerveyBean.setValue3(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setValue4(tvAxis2Value.getText().toString());
+                        i.putExtra("saveData", saveSuerveyBean);
+                        startActivity(i);
+                        SurveyActivity.this.finish();
+                    }
+                    Toast.makeText(SurveyActivity.this, "进行数据保存", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -288,10 +355,22 @@ public class SurveyActivity extends MyBaseActivity2 {
         return super.onOptionsItemSelected(item);
     }
 
+    private void toPlay() {
+        if (!mMediaPlayer.isPlaying() && isFirstPlay) {
+            isFirstPlay = false;
+            mMediaPlayer.start();
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        deInit();
+    }
+
+    private void deInit() {
         surveyHandler.removeCallbacksAndMessages(null);
+        unregisterReceiver(mGattUpdateReceiver);
     }
 
     /**
@@ -325,6 +404,16 @@ public class SurveyActivity extends MyBaseActivity2 {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK) {
+            tvNo1.setText("3");
+            tvNo2.setText("4");
+            isBack = true;
+        }
+    }
+
     class SurveyHandler extends Handler {
 
         @Override
@@ -336,6 +425,32 @@ public class SurveyActivity extends MyBaseActivity2 {
         }
     }
 
+    void initPlay(String beep) {
+        try {
+            if (beep.equals("TypeA"))
+                playRd("TypeA.mp3");
+            else if (beep.equals("TypeB"))
+                playRd("TypeB.mp3");
+            else if (beep.equals("TypeC"))
+                playRd("TypeC.mp3");
+            else if (beep.equals("TypeD"))
+                playRd("TypeD.mp3");
+            else if (beep.equals("TypeE"))
+                playRd("TypeE.mp3");
+        } catch (IOException err) {
+            Toast.makeText(SurveyActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    void playRd(String fileName) throws IOException {
+        AssetManager assetManager = getAssets();
+        AssetFileDescriptor fileDescriptor = assetManager.openFd(fileName);
+        mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(), fileDescriptor.getStartOffset(), fileDescriptor.getLength());
+        mMediaPlayer.prepare();
+        //mMediaPlayer.setVolume(1,1);
+        //mMediaPlayer.setLooping(false);
+    }
+
     /**
      * 用于判断数据是否相等
      */
@@ -345,9 +460,9 @@ public class SurveyActivity extends MyBaseActivity2 {
             this.sersitivityMode = sersitivity;
         }
 
-        private int sersitivityMode;
+        private int sersitivityMode; //精度
 
-        private int count;//
+        private int count;//计算连续第几次
 
         private float preValue = 0;
 

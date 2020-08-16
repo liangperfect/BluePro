@@ -3,6 +3,7 @@ package com.vitalong.bluetest2.bluepro;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,43 +21,41 @@ import com.vitalong.bluetest2.Utils.cmdAnalyze;
 import com.vitalong.bluetest2.Utils.cmdClass;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 
-import butterknife.Bind;
-
 public class CoefficientsActivity extends MyBaseActivity2 {
 
-    @Bind(R.id.AaxisA)
+    //    @Bind(R.id.AaxisA)
     public EditText edtAxiasA;
-    @Bind(R.id.AaxisB)
+    //    @Bind(R.id.AaxisB)
     public EditText edtAxiasB;
-    @Bind(R.id.AaxisC)
+    //    @Bind(R.id.AaxisC)
     public EditText edtAxiasC;
-    @Bind(R.id.AaxisD)
+    //    @Bind(R.id.AaxisD)
     public EditText edtAxiasD;
-    @Bind(R.id.BaxisA)
+    //    @Bind(R.id.BaxisA)
     public EditText edtBxiasA;
-    @Bind(R.id.BaxisB)
+    //    @Bind(R.id.BaxisB)
     public EditText edtBxiasB;
-    @Bind(R.id.BaxisC)
+    //    @Bind(R.id.BaxisC)
     public EditText edtBxiasC;
-    @Bind(R.id.BaxisD)
+    //    @Bind(R.id.BaxisD)
     public EditText edtBxiasD;
-    @Bind(R.id.btnSet)
+    //    @Bind(R.id.btnSet)
     public Button btnSet;
-    @Bind(R.id.imgAxisA)
+    //    @Bind(R.id.imgAxisA)
     public ImageView imgAxisA;
-    @Bind(R.id.imgAxisB)
+    //    @Bind(R.id.imgAxisB)
     public ImageView imgAxisB;
-    @Bind(R.id.imgAxisC)
+    //    @Bind(R.id.imgAxisC)
     public ImageView imgAxisC;
-    @Bind(R.id.imgAxisD)
+    //    @Bind(R.id.imgAxisD)
     public ImageView imgAxisD;
-    @Bind(R.id.imgBxisA)
+    //    @Bind(R.id.imgBxisA)
     public ImageView imgBxisA;
-    @Bind(R.id.imgBxisB)
+    //    @Bind(R.id.imgBxisB)
     public ImageView imgBxisB;
-    @Bind(R.id.imgBxisC)
+    //    @Bind(R.id.imgBxisC)
     public ImageView imgBxisC;
-    @Bind(R.id.imgBxisD)
+    //    @Bind(R.id.imgBxisD)
     public ImageView imgBxisD;
     private VerifyDataBean verifyDataBean;
     private CoefficientsHandler coefficientsHandler;
@@ -71,10 +70,31 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         setContentView(R.layout.activity_coefficients);
         bindToolBar();
         makeStatusBar(R.color.white);
+        initView();
         verifyDataBean = myApplication.getVerifyDataBean();
         coefficientsHandler = new CoefficientsHandler(new DelaySendHandler());
         initData();
         initListener();
+    }
+
+    private void initView() {
+        edtAxiasA = findViewById(R.id.AaxisA);
+        edtAxiasB = findViewById(R.id.AaxisB);
+        edtAxiasC = findViewById(R.id.AaxisC);
+        edtAxiasD = findViewById(R.id.AaxisD);
+        edtBxiasA = findViewById(R.id.BaxisA);
+        edtBxiasB = findViewById(R.id.BaxisB);
+        edtBxiasC = findViewById(R.id.BaxisC);
+        edtBxiasD = findViewById(R.id.BaxisD);
+        btnSet = findViewById(R.id.btnSet);
+        imgAxisA = findViewById(R.id.imgAxisA);
+        imgAxisB = findViewById(R.id.imgAxisB);
+        imgAxisC = findViewById(R.id.imgAxisC);
+        imgAxisD = findViewById(R.id.imgAxisD);
+        imgBxisA = findViewById(R.id.imgBxisA);
+        imgBxisB = findViewById(R.id.imgBxisB);
+        imgBxisC = findViewById(R.id.imgBxisC);
+        imgBxisD = findViewById(R.id.imgBxisD);
     }
 
     private void initData() {
@@ -99,7 +119,8 @@ public class CoefficientsActivity extends MyBaseActivity2 {
 //              sendCmdCodeByHex("010300000002C40B");
                 if (verify()) {
                     clearUIState();
-                    coefficientsHandler.sendEmptyMessage(200);
+                    //这个1不是时间
+                    coefficientsHandler.sendEmptyMessage(1);
                 }
             }
         });
