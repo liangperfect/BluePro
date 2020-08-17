@@ -54,7 +54,7 @@ public class SurveyActivity extends MyBaseActivity2 {
     public TextView tvAxis2Value;
     @Bind(R.id.imgAxis1)
     public ImageView imgAxis1;
-    @Bind(R.id.imgAxis12)
+    @Bind(R.id.imgAxisTest2)
     public ImageView imgAxis2;
     @Bind(R.id.btnSave)
     public Button btnSave;
@@ -66,6 +66,8 @@ public class SurveyActivity extends MyBaseActivity2 {
     public TextView tvNo1;
     @Bind(R.id.tvNo2)
     public TextView tvNo2;
+    public TextView tvTestData;
+    public TextView tvTestData2;
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
     String filePath = "/geostar/tiltmeter/";
     String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
@@ -78,7 +80,7 @@ public class SurveyActivity extends MyBaseActivity2 {
     private int sensitivityValue = 0;//1 fASTER
     private int beepValue = 0;//声音
     private int unitValue = 0;//单位
-    private int decimalValue = 0;
+    private int decimalValue = 3;
     private String currSnValue = "";
     private SurveyHandler surveyHandler;
     private double dAxisA = 0;
@@ -185,6 +187,8 @@ public class SurveyActivity extends MyBaseActivity2 {
                     " : " + oneChannelTemperature +
                     " : " + twoChannelAngle +
                     " : " + twoChannelTemperature);
+            tvTestData.setText(oneChannelAngle + "");
+            tvTestData2.setText(twoChannelAngle + "");
             if (unitValue == Constants.UNIT_DEG) {
                 isSave = showAxisValue(tvAxis1Value, imgAxis1, getDeg(oneChannelAngle, Constants.SFMODE_1AXIS), oneChannelAngle, oneAxisLink);
                 if (sensorModeValue == Constants.SFMODE_2AXIS) {
@@ -228,7 +232,7 @@ public class SurveyActivity extends MyBaseActivity2 {
         if (!axisLink.verifyData((float) axisValue)) {
             if (unitValue == Constants.UNIT_DEG) {
                 String v = "";
-                if (decimalValue == 0) {
+                if (decimalValue == 3) {
                     v = deg3Format.format(textValue);
                 } else {
                     v = deg4Format.format(textValue);
@@ -274,6 +278,8 @@ public class SurveyActivity extends MyBaseActivity2 {
     }
 
     private void initView() {
+        tvTestData = findViewById(R.id.tvTestData1);
+        tvTestData2 = findViewById(R.id.tvTestData2);
         tvUnitValue.setText(ctype3[unitValue]);
         tvSurveyModeValue.setText(sfMode[sensorModeValue]);
         tvSNValue.setText(currSnValue);
@@ -285,6 +291,7 @@ public class SurveyActivity extends MyBaseActivity2 {
 
         if (sensorModeValue == Constants.SFMODE_1AXIS) {
             constraGroup.setVisibility(View.GONE);
+            imgAxis2.setVisibility(View.GONE);
         }
 
         mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -307,14 +314,17 @@ public class SurveyActivity extends MyBaseActivity2 {
                         saveSuerveyBean.setValue(tvAxis1Value.getText().toString());
                         image1.setImageResource(R.mipmap.l2);
                         image2.setImageResource(R.mipmap.b2);
+                        tvNo1.setText(clNumb + 1 + "");
                     } else if (clNumb == 2) {
                         saveSuerveyBean.setValue2(tvAxis1Value.getText().toString());
                         image1.setImageResource(R.mipmap.l3);
                         image2.setImageResource(R.mipmap.b3);
+                        tvNo1.setText(clNumb + 1 + "");
                     } else if (clNumb == 3) {
                         saveSuerveyBean.setValue3(tvAxis1Value.getText().toString());
                         image1.setImageResource(R.mipmap.l4);
                         image2.setImageResource(R.mipmap.b4);
+                        tvNo1.setText(clNumb + 1 + "");
                     } else {
                         saveSuerveyBean.setValue4(tvAxis1Value.getText().toString());
                         Intent i = new Intent(SurveyActivity.this, SaveDataActivity.class);

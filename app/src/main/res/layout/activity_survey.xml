@@ -206,9 +206,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:text="+0.0000"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:text="+0.0000"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.4"
                 app:layout_constraintStart_toStartOf="parent"
@@ -242,9 +242,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
+                android:text="+0.0000"
                 android:textColor="@color/black"
                 android:textSize="20sp"
-                android:text="+0.0000"
                 app:layout_constraintBottom_toBottomOf="@id/tvNo2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.4"
@@ -264,7 +264,7 @@
                 app:layout_constraintTop_toBottomOf="@id/tvNo1" />
 
             <ImageView
-                android:id="@+id/imgAxis12"
+                android:id="@+id/imgAxisTest2"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="12dp"
@@ -278,7 +278,7 @@
                 android:id="@+id/constraGroup"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:constraint_referenced_ids="tvAxis2Value,tvNo2,imgAxis12" />
+                app:constraint_referenced_ids="tvAxis2Value,tvNo2" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -292,6 +292,17 @@
             app:layout_constraintTop_toBottomOf="@id/constraPanel"
             app:srcCompat="@mipmap/l1" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTestData1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/img1"
+            app:layout_constraintStart_toStartOf="@id/img1"
+            app:layout_constraintTop_toBottomOf="@id/img1"
+            tools:text="测试text" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img2"
             android:layout_width="130dp"
@@ -300,6 +311,17 @@
             app:layout_constraintStart_toEndOf="@id/img1"
             app:layout_constraintTop_toTopOf="@id/img1"
             app:srcCompat="@mipmap/b1" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTestData2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/img2"
+            app:layout_constraintStart_toStartOf="@id/img2"
+            app:layout_constraintTop_toBottomOf="@id/img2"
+            tools:text="测试text" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSave"
