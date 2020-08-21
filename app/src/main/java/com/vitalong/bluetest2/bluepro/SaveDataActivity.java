@@ -3,7 +3,6 @@ package com.vitalong.bluetest2.bluepro;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -19,7 +18,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.vitalong.bluetest2.R;
+import com.vitalong.bluetest2.Utils.Utils;
+import com.vitalong.bluetest2.Utils.fastcsv.writer.CsvWriter;
 import com.vitalong.bluetest2.bean.SaveSuerveyBean;
+import com.vitalong.bluetest2.bean.TableRowBean;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Objects;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,12 +51,15 @@ public class SaveDataActivity extends AppCompatActivity {
     @Bind(R.id.btnSave)
     Button btnSave;
     private SaveSuerveyBean saveSuerveyBean;
+    private String selectDir = "A001";
+    private String selectFileName = "T01";
+    private boolean isDataComplete = false;//判断传过来的4个数据是否是完整
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_data);
-        saveSuerveyBean = (SaveSuerveyBean) getIntent().getExtras().get("saveData");
+        saveSuerveyBean = (SaveSuerveyBean) Objects.requireNonNull(getIntent().getExtras()).get("saveData");
         bindToolBar();
         makeStatusBar(R.color.white);
         initView();
@@ -60,16 +72,65 @@ public class SaveDataActivity extends AppCompatActivity {
         tv3.setText(saveSuerveyBean.getValue3());
         tv4.setText(saveSuerveyBean.getValue4());
 
-        initSpnr(spSite, sfMode);
-        initSpnr(spTiltmeter, sfLt);
+        initSpnr(spSite, dirs);
+        initSpnr(spTiltmeter, fileNames);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+                saveData();
                 setResult(Activity.RESULT_OK);
                 SaveDataActivity.this.finish();
             }
         });
+    }
+
+    private void saveData() {
+        try {
+            File file = createDirAndFile();
+            Collection<String[]> data = createTableData();
+            CsvWriter csvWriter = new CsvWriter();
+//            Collection<String[]> data = new ArrayList<>();
+//            data.add(new String[]{"head1", "head2"});
+//            data.add(new String[]{"head1", "head2", "head3"});
+//            data.add(new String[]{"head1", "head2", "head41111111111"});
+            csvWriter.write(file, StandardCharsets.UTF_8, data);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Collection<String[]> createTableData() {
+
+        Collection<String[]> collection = new ArrayList<>();
+        collection.add(new TableRowBean("Type:", "Digital Tiltmeter", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Model:", "6600D", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Serial Number:", "1233", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Range:", "30 Deg", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Firmware:", "v1.2", "Software:", "v2.0", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Units:", "Raw / Deg", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Gage Factor(A):", "Raw / Deg", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Gage Factor(B):", "Raw / Deg", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Date/Time", "Site No.", "Instrument No.", "Direction", "Raw", "Raw", "Deg", "Deg", "CheckSum").toStrArray());
+        return collection;
+    }
+
+    /**
+     * 创建目录及文件
+     *
+     * @return
+     */
+    private File createDirAndFile() throws IOException {
+        String dir = "sdcard/tiltmeter/" + selectDir + "/";
+        Utils.createDir(dir);
+        String fp = dir + "/" + selectDir + "_" + selectFileName + ".csv";
+        File dataFile = new File(fp);
+        if (!dataFile.exists()) {
+            dataFile.createNewFile();
+        }
+        return dataFile;
     }
 
     public void initSpnr(Spinner spinner, String[] ctype) {
@@ -94,10 +155,11 @@ public class SaveDataActivity extends AppCompatActivity {
 
             case R.id.spSite:
 
-                Log.d("chenliang", "spSite点击的:" + sfMode[position]);
+                selectDir = dirs[position];
                 break;
             case R.id.spTiltmeter:
-                Log.d("chenliang", "spTiltmeter:" + sfLt[position]);
+
+                selectFileName = fileNames[position];
                 break;
             default:
                 break;
@@ -134,12 +196,12 @@ public class SaveDataActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    String[] sfMode = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
+    String[] dirs = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
             , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
             , "A040", "A041", "A042", "A043", "A044", "A045", "A046", "A047", "A048", "A049", "A050", "A051", "A052", "A053", "A054", "A055", "A056", "A057", "A058", "A059"
             , "A060", "A061", "A062", "A063", "A064", "A065", "A066", "A067", "A068", "A069", "A070", "A071", "A072", "A073", "A074", "A075", "A076", "A077", "A078", "A079"
             , "A080", "A081", "A082", "A083", "A084", "A085", "A086", "A087", "A088", "A089", "A090", "A091", "A092", "A093", "A094", "A095", "A096", "A097", "A098", "A099"};//2 Axis
-    String[] sfLt = new String[]{"T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10", "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T19"
+    String[] fileNames = new String[]{"T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10", "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T19"
             , "T20", "T21", "T22", "T23", "T24", "T25", "T26", "T27", "T28", "T29", "T30", "T31", "T32", "T33", "T34", "T35", "T36", "T37", "T38", "T39"
             , "T40", "T41", "T42", "T43", "T44", "T45", "T46", "T47", "T48", "T49", "T50", "T51", "T52", "T53", "T54", "T55", "T56", "T57", "T58", "T59"
             , "T60", "T61", "T62", "T63", "T64", "T65", "T66", "T67", "T68", "T69", "T70", "T71", "T72", "T73", "T74", "T75", "T76", "T77", "T78", "T79"

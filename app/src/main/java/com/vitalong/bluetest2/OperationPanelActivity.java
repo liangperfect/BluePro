@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
@@ -14,6 +13,7 @@ import androidx.annotation.NonNull;
 import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
+import com.vitalong.bluetest2.bluepro.CompareActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
 import com.vitalong.bluetest2.bluepro.SurveyActivity;
 
@@ -26,6 +26,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     ImageButton backBtn;
     @Bind(R.id.imageButton1)
     ImageButton imageButton1;
+    @Bind(R.id.imageButton2)
+    ImageButton imageButton2;
     @Bind(R.id.imageButton3)
     ImageButton imageButton3;
 
@@ -56,6 +58,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
         backBtn.setOnClickListener(this);
         imageButton1.setOnClickListener(this);
+        imageButton2.setOnClickListener(this);
         imageButton3.setOnClickListener(this);
     }
 
@@ -90,6 +93,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 break;
             case R.id.imageButton1:
                 startActivity(new Intent(OperationPanelActivity.this, SurveyActivity.class));
+                break;
+            case R.id.imageButton2:
+                startActivity(new Intent(OperationPanelActivity.this, CompareActivity.class));
                 break;
             case R.id.imageButton3:
                 startActivity(new Intent(OperationPanelActivity.this, SettingActivity.class));
@@ -197,6 +203,6 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         verifyLoadDialog.setTitle("Load verify data,Please wait for 3s")
                 .setContentView(progressBar);
         verifyLoadDialog.show();
-        operationPanelHandler.sendEmptyMessageDelayed(9, 3000);
+        operationPanelHandler.sendEmptyMessageDelayed(9, 5000);
     }
 }

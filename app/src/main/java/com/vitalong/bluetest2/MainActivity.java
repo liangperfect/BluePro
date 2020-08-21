@@ -67,7 +67,10 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     //权限申请数组
     private String[] permissions = new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS};
+            Manifest.permission.ACCESS_LOCATION_EXTRA_COMMANDS,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };
     private static final int OPEN_SET_REQUEST_CODE = 100;
     private BluetoothGattCharacteristic notifyCharacteristic;
     private BluetoothGattCharacteristic readCharacteristic;

@@ -24,7 +24,8 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bluepro.SaveDataActivity"></activity>
+        <activity android:name=".bluepro.CompareActivity"></activity>
+        <activity android:name=".bluepro.SaveDataActivity" />
         <activity android:name=".bluepro.SurveyActivity" />
         <activity android:name=".bluepro.CoefficientsActivity" />
         <activity

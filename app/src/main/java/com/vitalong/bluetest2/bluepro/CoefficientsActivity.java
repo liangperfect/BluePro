@@ -62,6 +62,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     private long sendTime = 0;
     private long receiveTime = 0;
     private long DELAYTIME = 500; //设置矫正参数超时时间
+    private long SEND_DURATION = 500;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -254,7 +255,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                         imgAxisA.setImageResource(R.drawable.error);
                     }
 
-                    coefficientsHandler.sendEmptyMessageDelayed(2, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(2, SEND_DURATION);
                 } catch (Exception e) {
                     imgAxisA.setImageResource(R.drawable.error);
                 }
@@ -268,7 +269,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                     } else {
                         imgAxisB.setImageResource(R.drawable.error);
                     }
-                    coefficientsHandler.sendEmptyMessageDelayed(3, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(3, SEND_DURATION);
                 } catch (Exception e) {
                     imgAxisB.setImageResource(R.drawable.error);
                 }
@@ -282,7 +283,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                     } else {
                         imgAxisC.setImageResource(R.drawable.error);
                     }
-                    coefficientsHandler.sendEmptyMessageDelayed(4, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(4, SEND_DURATION);
                 } catch (Exception e) {
                     imgAxisC.setImageResource(R.drawable.error);
                 }
@@ -296,7 +297,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                     } else {
                         imgAxisD.setImageResource(R.drawable.error);
                     }
-                    coefficientsHandler.sendEmptyMessageDelayed(5, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(5, SEND_DURATION);
                 } catch (Exception e) {
                     imgAxisD.setImageResource(R.drawable.error);
                 }
@@ -312,7 +313,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                         imgBxisA.setImageResource(R.drawable.error);
                     }
 
-                    coefficientsHandler.sendEmptyMessageDelayed(6, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(6, SEND_DURATION);
                 } catch (Exception e) {
                     imgBxisA.setImageResource(R.drawable.error);
                 }
@@ -327,7 +328,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                         imgBxisB.setImageResource(R.drawable.error);
                     }
 
-                    coefficientsHandler.sendEmptyMessageDelayed(7, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(7, SEND_DURATION);
                 } catch (Exception e) {
                     imgBxisB.setImageResource(R.drawable.error);
                 }
@@ -342,7 +343,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                         imgBxisC.setImageResource(R.drawable.error);
                     }
 
-                    coefficientsHandler.sendEmptyMessageDelayed(8, 50);
+                    coefficientsHandler.sendEmptyMessageDelayed(8, SEND_DURATION);
                 } catch (Exception e) {
                     imgBxisC.setImageResource(R.drawable.error);
                 }
