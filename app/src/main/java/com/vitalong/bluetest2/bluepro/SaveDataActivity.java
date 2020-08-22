@@ -12,23 +12,34 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
+import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.Utils.fastcsv.writer.CsvWriter;
+import com.vitalong.bluetest2.bean.RealDataCached;
 import com.vitalong.bluetest2.bean.SaveSuerveyBean;
 import com.vitalong.bluetest2.bean.TableRowBean;
+import com.vitalong.bluetest2.bean.VerifyDataBean;
+import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
+import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -50,59 +61,134 @@ public class SaveDataActivity extends AppCompatActivity {
     TextView tv4;
     @Bind(R.id.btnSave)
     Button btnSave;
+    private double dAxisA = 0;
+    private double dAxisB = 0;
+    private double dAxisC = 0;
+    private double dAxisD = 0;
+    private double dBxisA = 0;
+    private double dBxisB = 0;
+    private double dBxisC = 0;
+    private double dBxisD = 0;
     private SaveSuerveyBean saveSuerveyBean;
     private String selectDir = "A001";
     private String selectFileName = "T01";
-    private boolean isDataComplete = false;//判断传过来的4个数据是否是完整
+    private VerifyDataBean verifyDataBean;//矫正参数
+    private boolean isSingleAxis = false; //判断数据是单轴还是双轴的 true:单轴   false:双轴
+
+    private String deg1;
+    private String deg2;
+    private String deg3;
+    private String deg4;
+    private String raw1;
+    private String raw2;
+    private String raw3;
+    private String raw4;
+    private double raw1Andraw3 = 0;
+    private double raw2Andraw4 = 0;
+    private boolean canSave = false; //当前传过来的值是否可以保存了
+    private RealDataCachedDao realDataCachedDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_data);
+        verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
         saveSuerveyBean = (SaveSuerveyBean) Objects.requireNonNull(getIntent().getExtras()).get("saveData");
+        isSingleAxis = (boolean) getIntent().getExtras().get("isSingleAxis");
+        canSave = (boolean) getIntent().getExtras().get("canSave");
         bindToolBar();
         makeStatusBar(R.color.white);
         initView();
+        if (savedInstanceState == null) {
+            initVerifyData();
+        }
     }
 
     private void initView() {
 
-        tv1.setText(saveSuerveyBean.getValue());
-        tv2.setText(saveSuerveyBean.getValue2());
-        tv3.setText(saveSuerveyBean.getValue3());
-        tv4.setText(saveSuerveyBean.getValue4());
+        tv1.setText(saveSuerveyBean.getShow1());
+        tv2.setText(saveSuerveyBean.getShow2());
+        tv3.setText(saveSuerveyBean.getShow3());
+        tv4.setText(saveSuerveyBean.getShow4());
 
+        boolean isS = isSingleAxis;
+        if (isS) {
+            //单轴
+            double deg1Double = getDeg(saveSuerveyBean.getOneChannelAngle1(), Constants.SFMODE_1AXIS);
+            double raw1Double = getRaw(deg1Double);
+            deg1 = String.valueOf(deg1Double);
+            raw1 = String.valueOf(raw1Double);
+            double deg2Double = getDeg(saveSuerveyBean.getOneChannelAngle2(), Constants.SFMODE_1AXIS);
+            double raw2Double = getRaw(deg2Double);
+            deg2 = String.valueOf(deg2Double);
+            raw2 = String.valueOf(raw2Double);
+            double deg3Double = getDeg(saveSuerveyBean.getOneChannelAngle3(), Constants.SFMODE_1AXIS);
+            double raw3Double = getRaw(deg3Double);
+            deg3 = String.valueOf(deg3Double);
+            raw3 = String.valueOf(raw3Double);
+            double deg4Double = getDeg(saveSuerveyBean.getOneChannelAngle4(), Constants.SFMODE_1AXIS);
+            double raw4Double = getRaw(deg4Double);
+            deg4 = String.valueOf(deg4Double);
+            raw4 = String.valueOf(raw4Double);
+
+            raw1Andraw3 = raw1Double + raw3Double;
+            raw2Andraw4 = raw2Double + raw4Double;
+        } else {
+            //双轴
+            double deg1Double = getDeg(saveSuerveyBean.getOneChannelAngle1(), Constants.SFMODE_1AXIS);
+            double raw1Double = getRaw(deg1Double);
+            deg1 = String.valueOf(deg1Double);
+            raw1 = String.valueOf(raw1Double);
+            double deg2Double = getDeg(saveSuerveyBean.getTwoChannelAngle1(), Constants.SFMODE_2AXIS);
+            double raw2Double = getRaw(deg2Double);
+            deg2 = String.valueOf(deg2Double);
+            raw2 = String.valueOf(raw2Double);
+            double deg3Double = getDeg(saveSuerveyBean.getOneChannelAngle2(), Constants.SFMODE_1AXIS);
+            double raw3Double = getRaw(deg3Double);
+            deg3 = String.valueOf(deg3Double);
+            raw3 = String.valueOf(raw3Double);
+            double deg4Double = getDeg(saveSuerveyBean.getTwoChannelAngle2(), Constants.SFMODE_2AXIS);
+            double raw4Double = getRaw(deg4Double);
+            deg4 = String.valueOf(deg4Double);
+            raw4 = String.valueOf(raw4Double);
+
+            raw1Andraw3 = raw1Double + raw3Double;
+            raw2Andraw4 = raw2Double + raw4Double;
+        }
         initSpnr(spSite, dirs);
         initSpnr(spTiltmeter, fileNames);
         btnSave.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-
-                saveData();
+                if (canSave) {
+                    saveData();
+                }
                 setResult(Activity.RESULT_OK);
                 SaveDataActivity.this.finish();
             }
         });
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void saveData() {
         try {
             File file = createDirAndFile();
             Collection<String[]> data = createTableData();
             CsvWriter csvWriter = new CsvWriter();
-//            Collection<String[]> data = new ArrayList<>();
-//            data.add(new String[]{"head1", "head2"});
-//            data.add(new String[]{"head1", "head2", "head3"});
-//            data.add(new String[]{"head1", "head2", "head41111111111"});
             csvWriter.write(file, StandardCharsets.UTF_8, data);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private Collection<String[]> createTableData() {
 
-        Collection<String[]> collection = new ArrayList<>();
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currTime = sdf.format(d);
+        final Collection<String[]> collection = new ArrayList<>();
         collection.add(new TableRowBean("Type:", "Digital Tiltmeter", "", "", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Model:", "6600D", "", "", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Serial Number:", "1233", "", "", "", "", "", "", "").toStrArray());
@@ -110,10 +196,46 @@ public class SaveDataActivity extends AppCompatActivity {
         collection.add(new TableRowBean("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Firmware:", "v1.2", "Software:", "v2.0", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Units:", "Raw / Deg", "", "", "", "", "", "", "").toStrArray());
-        collection.add(new TableRowBean("Gage Factor(A):", "Raw / Deg", "", "", "", "", "", "", "").toStrArray());
-        collection.add(new TableRowBean("Gage Factor(B):", "Raw / Deg", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Gage Factor(A):", "A1=" + verifyDataBean.getAaxisA(), "A2=" + verifyDataBean.getAaxisB(), "A3=" + verifyDataBean.getAaxisC(), "A4=" + verifyDataBean.getAaxisD(), "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Gage Factor(B):", "B1=" + verifyDataBean.getBaxisA(), "B2=" + verifyDataBean.getBaxisB(), "B3=" + verifyDataBean.getBaxisC(), "B4=" + verifyDataBean.getBaxisD(), "", "", "", "").toStrArray());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Date/Time", "Site No.", "Instrument No.", "Direction", "Raw", "Raw", "Deg", "Deg", "CheckSum").toStrArray());
+        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(1 - 3)", raw1, raw3, deg1, deg3, String.valueOf(raw1Andraw3)).toStrArray());
+        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2 - 4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toStrArray());
+        collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Include()", "", "", "", "").toStrArray());
+        //获取数据库中的数据并添加到列表数据容器中
+        List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
+        double d1Temp = Double.valueOf(deg1);
+        double d2Temp = Double.valueOf(deg2);
+        double d3Temp = Double.valueOf(deg3);
+        double d4Temp = Double.valueOf(deg4);
+        double include1 = (d1Temp - d3Temp) / 2 * 3600;
+        double include2 = (d2Temp - d4Temp) / 2 * 3600;
+        if (listDatas.isEmpty()) {
+
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1), "", "", "", "").toStrArray());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2), "", "", "", "").toStrArray());
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(include1)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(include2)));
+        } else {
+
+            double firstInclude = Double.valueOf(listDatas.get(0).getInclude());
+            double secondInclude = Double.valueOf(listDatas.get(1).getInclude());
+            listDatas.forEach(new Consumer<RealDataCached>() {
+                @Override
+                public void accept(RealDataCached realDataCached) {
+
+                    collection.add(realDataCached.toStrArray());
+                }
+            });
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude), "", "", "", "").toStrArray());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude), "", "", "", "").toStrArray());
+            //插入到数据库中去
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude)));
+        }
         return collection;
     }
 
@@ -123,9 +245,18 @@ public class SaveDataActivity extends AppCompatActivity {
      * @return
      */
     private File createDirAndFile() throws IOException {
+
         String dir = "sdcard/tiltmeter/" + selectDir + "/";
         Utils.createDir(dir);
-        String fp = dir + "/" + selectDir + "_" + selectFileName + ".csv";
+        File dirFile = new File(dir);
+        //删除之前的文件
+        for (String s : dirFile.list()) {
+            new File(dir + s).delete();
+        }
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String de = sdf.format(date);
+        String fp = dir + "/" + selectDir + "_" + selectFileName + "_" + de + ".csv";
         File dataFile = new File(fp);
         if (!dataFile.exists()) {
             dataFile.createNewFile();
@@ -206,4 +337,51 @@ public class SaveDataActivity extends AppCompatActivity {
             , "T40", "T41", "T42", "T43", "T44", "T45", "T46", "T47", "T48", "T49", "T50", "T51", "T52", "T53", "T54", "T55", "T56", "T57", "T58", "T59"
             , "T60", "T61", "T62", "T63", "T64", "T65", "T66", "T67", "T68", "T69", "T70", "T71", "T72", "T73", "T74", "T75", "T76", "T77", "T78", "T79"
             , "T80", "T81", "T82", "T83", "T84", "T85", "T86", "T87", "T88", "T89", "T90", "T91", "T92", "T93", "T94", "T95", "T96", "T97", "T98", "T99"};
+
+    private Boolean initVerifyData() {
+
+        realDataCachedDao = ((MyApplication) getApplication()).realDataCachedDao;
+
+        try {
+            VerifyDataBean verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
+            dAxisA = Double.parseDouble(verifyDataBean.getAaxisA());
+            dAxisB = Double.parseDouble(verifyDataBean.getAaxisB());
+            dAxisC = Double.parseDouble(verifyDataBean.getAaxisC());
+            dAxisD = Double.parseDouble(verifyDataBean.getAaxisD());
+            dBxisA = Double.parseDouble(verifyDataBean.getBaxisA());
+            dBxisB = Double.parseDouble(verifyDataBean.getBaxisB());
+            dBxisC = Double.parseDouble(verifyDataBean.getBaxisC());
+            dBxisD = Double.parseDouble(verifyDataBean.getBaxisD());
+        } catch (Exception e) {
+            Toast.makeText(SaveDataActivity.this, "verify data is error,please update verify data", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private double getDeg(double angle, int axisMode) {
+        double f = angle * 7.2;
+        if (axisMode == Constants.SFMODE_1AXIS) {
+            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC + f) + dAxisD;
+        }
+
+        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC + f) + dBxisD;
+    }
+
+    /**
+     * 根据raw获取Raw
+     *
+     * @param deg
+     * @return
+     */
+    private double getRaw(double deg) {
+
+        try {
+            double raw = Math.sin(deg * Math.PI / 180) * 25000;
+            return raw;
+        } catch (Exception err) {
+            return 100000.0;
+        }
+    }
+
 }

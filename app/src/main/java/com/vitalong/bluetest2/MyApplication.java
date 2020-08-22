@@ -2,10 +2,14 @@ package com.vitalong.bluetest2;
 
 import android.app.Application;
 import android.bluetooth.BluetoothGattCharacteristic;
+import android.database.sqlite.SQLiteDatabase;
 
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.bean.MService;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
+import com.vitalong.bluetest2.greendaodb.DaoMaster;
+import com.vitalong.bluetest2.greendaodb.DaoSession;
+import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,11 +47,22 @@ public class MyApplication extends Application {
 
     public static SERVICE_TYPE serviceType;
 
+    public RealDataCachedDao realDataCachedDao;
+
     @Override
     public void onCreate() {
         super.onCreate();
         SharedPreferencesUtil.getInstance(getApplicationContext(), "blue");
         verifyDataBean = new VerifyDataBean();
+        initDB();
+    }
+
+    private void initDB() {
+        DaoMaster.DevOpenHelper devOpenHelper = new DaoMaster.DevOpenHelper(this, "user,db");
+        SQLiteDatabase sqLiteDatabase = devOpenHelper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
+        DaoSession daoSession = daoMaster.newSession();
+        realDataCachedDao = daoSession.getRealDataCachedDao();
     }
 
     public void setServices(List<MService> services) {

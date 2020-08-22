@@ -20,7 +20,8 @@ public class TableRowBean {
         this.column5 = c5;
         this.column6 = c6;
         this.column7 = c7;
-        this.column8 = c9;
+        this.column8 = c8;
+        this.column9 = c9;
     }
 
     public String[] toStrArray() {

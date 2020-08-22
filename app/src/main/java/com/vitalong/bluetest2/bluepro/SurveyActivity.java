@@ -104,6 +104,9 @@ public class SurveyActivity extends MyBaseActivity2 {
     MediaPlayer mMediaPlayer = new MediaPlayer();
     private boolean isFirstPlay = true;
 
+    private float currOneChannelAngle;//记录轴1的原始角度值
+    private float currtwoChannelAngle;//记录轴2的原始角度值
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -187,6 +190,8 @@ public class SurveyActivity extends MyBaseActivity2 {
                     " : " + oneChannelTemperature +
                     " : " + twoChannelAngle +
                     " : " + twoChannelTemperature);
+            currOneChannelAngle = oneChannelAngle; //记录当前原始角度值，用于保存到表格当中去
+            currtwoChannelAngle = twoChannelAngle;
             tvTestData.setText(oneChannelAngle + "");
             tvTestData2.setText(twoChannelAngle + "");
             if (unitValue == Constants.UNIT_DEG) {
@@ -311,24 +316,34 @@ public class SurveyActivity extends MyBaseActivity2 {
                     //单轴模式
                     clNumb++;
                     if (clNumb == 1) {
-                        saveSuerveyBean.setValue(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setOneChannelAngle1(currOneChannelAngle);
+                        saveSuerveyBean.setTwoChannelAngle1(currtwoChannelAngle);
+                        saveSuerveyBean.setShow1(tvAxis1Value.getText().toString());
                         image1.setImageResource(R.mipmap.l2);
                         image2.setImageResource(R.mipmap.b2);
                         tvNo1.setText(clNumb + 1 + "");
                     } else if (clNumb == 2) {
-                        saveSuerveyBean.setValue2(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setOneChannelAngle2(currOneChannelAngle);
+                        saveSuerveyBean.setTwoChannelAngle2(currtwoChannelAngle);
+                        saveSuerveyBean.setShow2(tvAxis1Value.getText().toString());
                         image1.setImageResource(R.mipmap.l3);
                         image2.setImageResource(R.mipmap.b3);
                         tvNo1.setText(clNumb + 1 + "");
                     } else if (clNumb == 3) {
-                        saveSuerveyBean.setValue3(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setOneChannelAngle3(currOneChannelAngle);
+                        saveSuerveyBean.setTwoChannelAngle3(currtwoChannelAngle);
+                        saveSuerveyBean.setShow3(tvAxis1Value.getText().toString());
                         image1.setImageResource(R.mipmap.l4);
                         image2.setImageResource(R.mipmap.b4);
                         tvNo1.setText(clNumb + 1 + "");
                     } else {
-                        saveSuerveyBean.setValue4(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setOneChannelAngle4(currOneChannelAngle);
+                        saveSuerveyBean.setTwoChannelAngle4(currtwoChannelAngle);
+                        saveSuerveyBean.setShow4(tvAxis1Value.getText().toString());
                         Intent i = new Intent(SurveyActivity.this, SaveDataActivity.class);
                         i.putExtra("saveData", saveSuerveyBean);
+                        i.putExtra("isSingleAxis", true);
+                        i.putExtra("canSave", true);
                         startActivity(i);
                         SurveyActivity.this.finish();
                         Toast.makeText(SurveyActivity.this, "进行数据保存", Toast.LENGTH_SHORT).show();
@@ -337,14 +352,22 @@ public class SurveyActivity extends MyBaseActivity2 {
                     //双轴模式
                     Intent i = new Intent(SurveyActivity.this, SaveDataActivity.class);
                     if (!isBack) {
-                        saveSuerveyBean.setValue(tvAxis1Value.getText().toString());
-                        saveSuerveyBean.setValue2(tvAxis2Value.getText().toString());
+                        saveSuerveyBean.setOneChannelAngle1(currOneChannelAngle);
+                        saveSuerveyBean.setTwoChannelAngle1(currtwoChannelAngle);
+                        saveSuerveyBean.setShow1(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setShow2(tvAxis2Value.getText().toString());
+                        i.putExtra("isSingleAxis", false);
                         i.putExtra("saveData", saveSuerveyBean);
+                        i.putExtra("canSave", false);
                         startActivityForResult(i, 1);
                     } else {
-                        saveSuerveyBean.setValue3(tvAxis1Value.getText().toString());
-                        saveSuerveyBean.setValue4(tvAxis2Value.getText().toString());
+                        saveSuerveyBean.setOneChannelAngle2(currOneChannelAngle);
+                        saveSuerveyBean.setTwoChannelAngle2(currtwoChannelAngle);
+                        saveSuerveyBean.setShow3(tvAxis1Value.getText().toString());
+                        saveSuerveyBean.setShow4(tvAxis2Value.getText().toString());
+                        i.putExtra("isSingleAxis", false);
                         i.putExtra("saveData", saveSuerveyBean);
+                        i.putExtra("canSave", true);
                         startActivity(i);
                         SurveyActivity.this.finish();
                     }
@@ -431,7 +454,7 @@ public class SurveyActivity extends MyBaseActivity2 {
             super.handleMessage(msg);
             //一直重复发送
             sendCmdCodeByHex(Constants.REAL_DATA_CMD);
-            surveyHandler.sendEmptyMessageDelayed(0, 200);
+            surveyHandler.sendEmptyMessageDelayed(0, 300);
         }
     }
 
