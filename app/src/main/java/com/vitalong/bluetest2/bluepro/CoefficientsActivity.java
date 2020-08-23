@@ -62,7 +62,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     private long sendTime = 0;
     private long receiveTime = 0;
     private long DELAYTIME = 500; //设置矫正参数超时时间
-    private long SEND_DURATION = 500;
+    private long SEND_DURATION = 500;//发送设置命令的时间间隔为500ms
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

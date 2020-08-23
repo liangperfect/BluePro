@@ -31,7 +31,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     @Bind(R.id.imageButton3)
     ImageButton imageButton3;
 
-    int delayTime = 300;
+    int delayTime = 400;
     private OperationPanelHandler operationPanelHandler;
     int count = 0;
 
@@ -203,6 +203,6 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         verifyLoadDialog.setTitle("Load verify data,Please wait for 3s")
                 .setContentView(progressBar);
         verifyLoadDialog.show();
-        operationPanelHandler.sendEmptyMessageDelayed(9, 5000);
+        operationPanelHandler.sendEmptyMessageDelayed(9, 4000);
     }
 }

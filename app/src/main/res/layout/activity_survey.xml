@@ -290,7 +290,7 @@
             app:layout_constraintEnd_toStartOf="@id/img2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraPanel"
-            app:srcCompat="@mipmap/l1" />
+            tools:srcCompat="@mipmap/l1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTestData1"
@@ -310,7 +310,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img1"
             app:layout_constraintTop_toTopOf="@id/img1"
-            app:srcCompat="@mipmap/b1" />
+            tools:srcCompat="@mipmap/b1" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTestData2"

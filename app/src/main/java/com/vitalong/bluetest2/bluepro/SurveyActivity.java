@@ -270,6 +270,15 @@ public class SurveyActivity extends MyBaseActivity2 {
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
         currSnValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
+        if (unitValue == Constants.UNIT_DEG) {
+
+            image1.setImageResource(R.mipmap.b5);
+            image2.setImageResource(R.mipmap.b6);
+        } else {
+            image1.setImageResource(R.mipmap.l1);
+            image2.setImageResource(R.mipmap.b1);
+        }
+
         int sensitivityMode = 3;
         if (sensitivityValue == Constants.SENSITVITY_1_FASTER) {
             sensitivityMode = 3;
@@ -319,22 +328,28 @@ public class SurveyActivity extends MyBaseActivity2 {
                         saveSuerveyBean.setOneChannelAngle1(currOneChannelAngle);
                         saveSuerveyBean.setTwoChannelAngle1(currtwoChannelAngle);
                         saveSuerveyBean.setShow1(tvAxis1Value.getText().toString());
-                        image1.setImageResource(R.mipmap.l2);
-                        image2.setImageResource(R.mipmap.b2);
+                        if (unitValue == Constants.UNIT_RAW) {
+                            image1.setImageResource(R.mipmap.l2);
+                            image2.setImageResource(R.mipmap.b2);
+                        }
                         tvNo1.setText(clNumb + 1 + "");
                     } else if (clNumb == 2) {
                         saveSuerveyBean.setOneChannelAngle2(currOneChannelAngle);
                         saveSuerveyBean.setTwoChannelAngle2(currtwoChannelAngle);
                         saveSuerveyBean.setShow2(tvAxis1Value.getText().toString());
-                        image1.setImageResource(R.mipmap.l3);
-                        image2.setImageResource(R.mipmap.b3);
+                        if (unitValue == Constants.UNIT_RAW) {
+                            image1.setImageResource(R.mipmap.l3);
+                            image2.setImageResource(R.mipmap.b3);
+                        }
                         tvNo1.setText(clNumb + 1 + "");
                     } else if (clNumb == 3) {
                         saveSuerveyBean.setOneChannelAngle3(currOneChannelAngle);
                         saveSuerveyBean.setTwoChannelAngle3(currtwoChannelAngle);
                         saveSuerveyBean.setShow3(tvAxis1Value.getText().toString());
-                        image1.setImageResource(R.mipmap.l4);
-                        image2.setImageResource(R.mipmap.b4);
+                        if (unitValue == Constants.UNIT_RAW) {
+                            image1.setImageResource(R.mipmap.l4);
+                            image2.setImageResource(R.mipmap.b4);
+                        }
                         tvNo1.setText(clNumb + 1 + "");
                     } else {
                         saveSuerveyBean.setOneChannelAngle4(currOneChannelAngle);
@@ -356,6 +371,10 @@ public class SurveyActivity extends MyBaseActivity2 {
                         saveSuerveyBean.setTwoChannelAngle1(currtwoChannelAngle);
                         saveSuerveyBean.setShow1(tvAxis1Value.getText().toString());
                         saveSuerveyBean.setShow2(tvAxis2Value.getText().toString());
+                        if (unitValue == Constants.UNIT_RAW) {
+                            image1.setImageResource(R.mipmap.l3);
+                            image2.setImageResource(R.mipmap.b3);
+                        }
                         i.putExtra("isSingleAxis", false);
                         i.putExtra("saveData", saveSuerveyBean);
                         i.putExtra("canSave", false);

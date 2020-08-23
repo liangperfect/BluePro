@@ -76,7 +76,7 @@ public class SettingActivity extends MyBaseActivity2 {
         settingHandler = new SettingHandler();
         initViewAndDatas();
         initListener();
-        settingHandler.sendEmptyMessageDelayed(0, 200);
+        settingHandler.sendEmptyMessageDelayed(0, 400);
     }
 
     private void initViewAndDatas() {
@@ -209,7 +209,6 @@ public class SettingActivity extends MyBaseActivity2 {
             //进行数据解析
             //todo 回来的数据可能会有问题解析会出错
             System.out.println("SettingActivity接收到的数据:" + formatMsgContent(array));
-
             String snValueStr = String.valueOf(Integer.parseInt(hexStr.substring(6, 14), 16));
             tvSNValue.setText(snValueStr);
             SharedPreferencesUtil.putData("SNVaule", snValueStr);

@@ -806,7 +806,8 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         Intent intent = new Intent(MainActivity.this, GattDetailActivity.class);
         setMaxMut();
         //必须要延迟50ms才能发送数据
-        msgHandler.sendEmptyMessageDelayed(0, 50);
+//        msgHandler.sendEmptyMessageDelayed(0, 50);
+        msgHandler.sendEmptyMessageDelayed(0, 200); //发送连接命令时间提高的200ms
 //        startActivity(intent);
 //        overridePendingTransition(0, 0);
     }
