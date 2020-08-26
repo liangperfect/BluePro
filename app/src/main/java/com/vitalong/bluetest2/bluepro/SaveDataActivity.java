@@ -1,6 +1,7 @@
 package com.vitalong.bluetest2.bluepro;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -166,6 +167,10 @@ public class SaveDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (canSave) {
                     saveData();
+                    //保存了数据就前往列表展示页面
+                    Intent i = new Intent(SaveDataActivity.this, SurveyListActivity.class);
+                    i.putExtra("tableName",selectDir+"_"+selectFileName);
+                    startActivity(i);
                 }
                 setResult(Activity.RESULT_OK);
                 SaveDataActivity.this.finish();

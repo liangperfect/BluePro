@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rectangle_black">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvTimeValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/tvDirectionValue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020-23255" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvDirectionValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/tvRaw1Value"
+        app:layout_constraintStart_toEndOf="@id/tvTimeValue"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020-23255" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRaw1Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/tvRaw2Value"
+        app:layout_constraintStart_toEndOf="@id/tvDirectionValue"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020-23255" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvRaw2Value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/tvIncludeValue"
+        app:layout_constraintStart_toEndOf="@id/tvRaw1Value"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020-23255" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tvIncludeValue"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tvRaw2Value"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="2020-23255" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

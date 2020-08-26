@@ -284,10 +284,11 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/img1"
-            android:layout_width="130dp"
+            android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginTop="12dp"
-            app:layout_constraintEnd_toStartOf="@id/img2"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraPanel"
             tools:srcCompat="@mipmap/l1" />
@@ -298,7 +299,6 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/img1"
             app:layout_constraintStart_toStartOf="@id/img1"
             app:layout_constraintTop_toBottomOf="@id/img1"
             tools:text="测试text" />
@@ -307,6 +307,7 @@
             android:id="@+id/img2"
             android:layout_width="130dp"
             android:layout_height="130dp"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/img1"
             app:layout_constraintTop_toTopOf="@id/img1"
@@ -318,9 +319,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/img2"
-            app:layout_constraintStart_toStartOf="@id/img2"
-            app:layout_constraintTop_toBottomOf="@id/img2"
+            app:layout_constraintEnd_toEndOf="@id/img1"
+            app:layout_constraintTop_toBottomOf="@id/img1"
             tools:text="测试text" />
 
         <androidx.appcompat.widget.AppCompatButton
