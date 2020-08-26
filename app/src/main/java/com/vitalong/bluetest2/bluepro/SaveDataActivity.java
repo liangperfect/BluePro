@@ -3,6 +3,7 @@ package com.vitalong.bluetest2.bluepro;
 import android.app.Activity;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -23,16 +24,17 @@ import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
 import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.Utils;
-import com.vitalong.bluetest2.Utils.fastcsv.writer.CsvWriter;
 import com.vitalong.bluetest2.bean.RealDataCached;
 import com.vitalong.bluetest2.bean.SaveSuerveyBean;
 import com.vitalong.bluetest2.bean.TableRowBean;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 
+import net.ozaydin.serkan.easy_csv.EasyCsv;
+import net.ozaydin.serkan.easy_csv.FileCallback;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -87,6 +89,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private double raw2Andraw4 = 0;
     private boolean canSave = false; //当前传过来的值是否可以保存了
     private RealDataCachedDao realDataCachedDao;
+    private EasyCsv easyCsv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +102,7 @@ public class SaveDataActivity extends AppCompatActivity {
         bindToolBar();
         makeStatusBar(R.color.white);
         initView();
+        easyCsv = new EasyCsv(SaveDataActivity.this);
         if (savedInstanceState == null) {
             initVerifyData();
         }
@@ -174,9 +178,27 @@ public class SaveDataActivity extends AppCompatActivity {
     private void saveData() {
         try {
             File file = createDirAndFile();
-            Collection<String[]> data = createTableData();
-            CsvWriter csvWriter = new CsvWriter();
-            csvWriter.write(file, StandardCharsets.UTF_8, data);
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            String de = sdf.format(date);
+            String saveFileStr = "tiltmeter/" + selectDir + "/" + selectDir + "_" + selectFileName + "_" + de;
+            easyCsv.setSeparatorColumn(",");//列分隔符
+            easyCsv.setSeperatorLine("/n");//行分隔符
+            List<String> headerList = new ArrayList<>();
+            List<String> dataList = createTableData2();
+            easyCsv.createCsvFile(saveFileStr, headerList, dataList, 1, new FileCallback() {
+
+                @Override
+                public void onSuccess(File file) {
+
+                    Log.d("chenliang", "file:" + file.getPath());
+                }
+
+                @Override
+                public void onFail(String s) {
+
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -223,16 +245,73 @@ public class SaveDataActivity extends AppCompatActivity {
 
             double firstInclude = Double.valueOf(listDatas.get(0).getInclude());
             double secondInclude = Double.valueOf(listDatas.get(1).getInclude());
-            listDatas.forEach(new Consumer<RealDataCached>() {
-                @Override
-                public void accept(RealDataCached realDataCached) {
-
-                    collection.add(realDataCached.toStrArray());
-                }
-            });
+//            listDatas.forEach(new Consumer<RealDataCached>() {
+//                @Override
+//                public void accept(RealDataCached realDataCached) {
+//
+//                    collection.add(realDataCached.toStrArray());
+//                }
+//            });
             collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude), "", "", "", "").toStrArray());
             collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude), "", "", "", "").toStrArray());
             //插入到数据库中去
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude)));
+        }
+        return collection;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<String> createTableData2() {
+
+        Date d = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String currTime = sdf.format(d);
+        final List<String> collection = new ArrayList<>();
+        collection.add(new TableRowBean("Type:", "Digital Tiltmeter", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Model:", "6600D", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Serial Number:", "1233", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Range:", "30 Deg", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Firmware:", "v1.2", "Software:", "v2.0", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Units:", "Raw / Deg", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Gage Factor(A):", "A1=" + verifyDataBean.getAaxisA(), "A2=" + verifyDataBean.getAaxisB(), "A3=" + verifyDataBean.getAaxisC(), "A4=" + verifyDataBean.getAaxisD(), "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Gage Factor(B):", "B1=" + verifyDataBean.getBaxisA(), "B2=" + verifyDataBean.getBaxisB(), "B3=" + verifyDataBean.getBaxisC(), "B4=" + verifyDataBean.getBaxisD(), "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Date/Time", "Site No.", "Instrument No.", "Direction", "Raw", "Raw", "Deg", "Deg", "CheckSum").toSaveString());
+        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(1 - 3)", raw1, raw3, deg1, deg3, String.valueOf(raw1Andraw3)).toSaveString());
+        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2 - 4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toSaveString());
+        collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Include()", "", "", "", "").toSaveString());
+        //获取数据库中的数据并添加到列表数据容器中
+        List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
+        double d1Temp = Double.valueOf(deg1);
+        double d2Temp = Double.valueOf(deg2);
+        double d3Temp = Double.valueOf(deg3);
+        double d4Temp = Double.valueOf(deg4);
+        double include1 = (d1Temp - d3Temp) / 2 * 3600;
+        double include2 = (d2Temp - d4Temp) / 2 * 3600;
+        if (listDatas.isEmpty()) {
+
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1), "", "", "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2), "", "", "", "").toSaveString());
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(include1)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(include2)));
+        } else {
+
+            double firstInclude = Double.valueOf(listDatas.get(0).getInclude());
+            double secondInclude = Double.valueOf(listDatas.get(1).getInclude());
+            listDatas.forEach(new Consumer<RealDataCached>() {
+                @Override
+                public void accept(RealDataCached realDataCached) {
+                    collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
+                            realDataCached.getRawSecond(), realDataCached.getInclude(), "", "", "", "").toSaveString());
+                }
+            });
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude), "", "", "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude), "", "", "", "").toSaveString());
+//            //插入到数据库中去
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude)));
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude)));
         }

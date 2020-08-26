@@ -127,12 +127,12 @@ public final class CsvWriter {
      * @throws NullPointerException if writer or data is null
      */
     public void write(final Writer writer, final Collection<String[]> data) throws IOException {
-        Objects.requireNonNull(data, "data must not be null");
-        final CsvAppender appender = append(writer);
-        for (final String[] values : data) {
-            appender.appendLine(values);
-        }
-        appender.flush();
+            Objects.requireNonNull(data, "data must not be null");
+            final CsvAppender appender = append(writer);
+            for (final String[] values : data) {
+                appender.appendLine(values);
+            }
+            appender.flush();
     }
 
     /**

@@ -16,8 +16,10 @@ android {
                 includeCompileClasspath true
             }
         }
-
-
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -26,7 +28,7 @@ android {
         }
     }
 
-    greendao{
+    greendao {
         //指定数据库schema版本号，迁移等操作会用到;
         schemaVersion 1
         //dao的包名，包名默认是entity所在的包；
@@ -49,4 +51,5 @@ dependencies {
     implementation project(':MaterialDesignDialoglibrary')
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'org.greenrobot:greendao:3.3.0' // add library
+    implementation 'com.github.hsmnzaydn:easy-csv:1.0.0'
 }

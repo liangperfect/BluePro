@@ -207,11 +207,13 @@ public class SettingActivity extends MyBaseActivity2 {
         if (!isPause) {
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
             //进行数据解析
-            //todo 回来的数据可能会有问题解析会出错
-            System.out.println("SettingActivity接收到的数据:" + formatMsgContent(array));
-            String snValueStr = String.valueOf(Integer.parseInt(hexStr.substring(6, 14), 16));
-            tvSNValue.setText(snValueStr);
-            SharedPreferencesUtil.putData("SNVaule", snValueStr);
+            try {
+                String snValueStr = String.valueOf(Integer.parseInt(hexStr.substring(6, 14), 16));
+                tvSNValue.setText(snValueStr);
+                SharedPreferencesUtil.putData("SNVaule", snValueStr);
+            } catch (Exception ex) {
+                tvSNValue.setText("error");
+            }
         }
     }
 
