@@ -47,7 +47,7 @@
             android:id="@+id/tvSite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Site:"
+            android:text="Site#:"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"

@@ -10,6 +10,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -51,6 +52,8 @@ public class SettingActivity extends MyBaseActivity2 {
     public RadioButton radio1Button;
     @Bind(R.id.radio2)
     public RadioButton radio2Button;
+    @Bind(R.id.edtSurveyDuration)
+    public EditText edtSurveyDuration;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
     private int beepValue = 0;
@@ -60,7 +63,7 @@ public class SettingActivity extends MyBaseActivity2 {
     private SettingHandler settingHandler;
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
     String filePath = "/geostar/tiltmeter/";
-    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
+    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)", "4(Degree)", "5(Degree)", "6(Degree)", "7(Degree)", "8(Degree)", "9(Degree)"};
     String[] ctype2 = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
     //    String[] ctype4ByDeg = new String[]{"3", "4"};
@@ -89,6 +92,8 @@ public class SettingActivity extends MyBaseActivity2 {
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
+        int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 300);
+        edtSurveyDuration.setText(String.valueOf(duration));
         SpSensorModeValue.setSelection(sensorModeValue);
         spSensitivityValue.setSelection(sensitivityValue);
         spBeepValue.setSelection(beepValue);
@@ -97,11 +102,14 @@ public class SettingActivity extends MyBaseActivity2 {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //获取Survey界面发送命令的时间间隔
+                String duration = edtSurveyDuration.getText().toString();
                 SharedPreferencesUtil.putData(Constants.SENSORMODE_KEY, sensorModeValue);
                 SharedPreferencesUtil.putData(Constants.SENSITIVITY_KEY, sensitivityValue);
                 SharedPreferencesUtil.putData(Constants.BEEP_KEY, beepValue);
                 SharedPreferencesUtil.putData(Constants.UNIT_KEY, unitValue);
                 SharedPreferencesUtil.putData(Constants.DECIMAL, decimalValue);
+                SharedPreferencesUtil.putData(Constants.SURVEY_DURATION, Integer.valueOf(duration));
                 SettingActivity.this.finish();
                 Toast.makeText(SettingActivity.this, "Setting success", Toast.LENGTH_SHORT).show();
             }

@@ -317,6 +317,30 @@
         </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSurveyTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="Survey Duration(ms):"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/tvUnit"
+            app:layout_constraintTop_toBottomOf="@id/tvUnit" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/edtSurveyDuration"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@null"
+            android:maxLength="3"
+            android:maxLines="1"
+            android:text="300"
+            app:layout_constraintBottom_toBottomOf="@id/tvSurveyTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvSurveyTitle"
+            app:layout_constraintTop_toTopOf="@id/tvSurveyTitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvCoefficients"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -324,7 +348,7 @@
             android:text="Coefficients:"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvUnit" />
+            app:layout_constraintTop_toBottomOf="@id/tvSurveyTitle" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnCoefficients"

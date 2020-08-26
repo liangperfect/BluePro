@@ -328,7 +328,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#EE7600"
-            android:text="LADING..."
+            android:text="LOADING..."
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

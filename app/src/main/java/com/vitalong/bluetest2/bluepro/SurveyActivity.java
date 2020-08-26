@@ -70,7 +70,7 @@ public class SurveyActivity extends MyBaseActivity2 {
     public TextView tvTestData2;
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
     String filePath = "/geostar/tiltmeter/";
-    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
+    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)", "4(Degree)", "5(Degree)", "6(Degree)", "7(Degree)", "8(Degree)", "9(Degree)"};
     String[] beeps = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
     String[] ctype4ByDeg = new String[]{"3", "4"};
@@ -106,6 +106,7 @@ public class SurveyActivity extends MyBaseActivity2 {
 
     private float currOneChannelAngle;//记录轴1的原始角度值
     private float currtwoChannelAngle;//记录轴2的原始角度值
+    private int sendDuration = 300;//循环发送命令的时间间隔
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -212,7 +213,7 @@ public class SurveyActivity extends MyBaseActivity2 {
                 btnSave.setTextColor(0xFFffffFF);
                 toPlay();
             } else {
-                btnSave.setText("LADING...");
+                btnSave.setText("LOADING...");
                 btnSave.setBackgroundColor(0xFFEE7600);
                 btnSave.setTextColor(0xFFffffFF);
                 isFirstPlay = true;
@@ -269,6 +270,7 @@ public class SurveyActivity extends MyBaseActivity2 {
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
+        sendDuration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 300);
         currSnValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
         if (unitValue == Constants.UNIT_DEG) {
 
@@ -278,7 +280,6 @@ public class SurveyActivity extends MyBaseActivity2 {
             image1.setImageResource(R.mipmap.l1);
             image2.setImageResource(R.mipmap.b1);
         }
-
         int sensitivityMode = 3;
         if (sensitivityValue == Constants.SENSITVITY_1_FASTER) {
             sensitivityMode = 3;
@@ -286,6 +287,18 @@ public class SurveyActivity extends MyBaseActivity2 {
             sensitivityMode = 4;
         } else if (sensitivityValue == Constants.SENSITVITY_3_SLOWER) {
             sensitivityMode = 5;
+        } else if (sensitivityValue == Constants.SENSITVITY_4_DEGREE) {
+            sensitivityMode = 6;
+        } else if (sensitivityValue == Constants.SENSITVITY_5_DEGREE) {
+            sensitivityMode = 7;
+        } else if (sensitivityValue == Constants.SENSITVITY_6_DEGREE) {
+            sensitivityMode = 8;
+        } else if (sensitivityValue == Constants.SENSITVITY_7_DEGREE) {
+            sensitivityMode = 9;
+        } else if (sensitivityValue == Constants.SENSITVITY_8_DEGREE) {
+            sensitivityMode = 10;
+        } else if (sensitivityValue == Constants.SENSITVITY_9_DEGREE) {
+            sensitivityMode = 11;
         }
         oneAxisLink = new AxisLink(sensitivityMode);
         twoAxisLink = new AxisLink(sensitivityMode);
@@ -473,7 +486,7 @@ public class SurveyActivity extends MyBaseActivity2 {
             super.handleMessage(msg);
             //一直重复发送
             sendCmdCodeByHex(Constants.REAL_DATA_CMD);
-            surveyHandler.sendEmptyMessageDelayed(0, 300);
+            surveyHandler.sendEmptyMessageDelayed(0, sendDuration);
         }
     }
 

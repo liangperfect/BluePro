@@ -260,7 +260,7 @@ public class Constants {
     public static String BEEP_KEY = "beep";
     public static String UNIT_KEY = "unit";
     public static String DECIMAL = "decimal"; //只用于记录Deg的类型，Raw默认就是0
-
+    public static String SURVEY_DURATION = "survey_duration";
     //各模式参数
     public static int SFMODE_1AXIS = 0; //"1 Axis"
     public static int SFMODE_2AXIS = 1; //"2 Axis"
@@ -268,6 +268,12 @@ public class Constants {
     public static int SENSITVITY_1_FASTER = 0; //1(Faster)
     public static int SENSITVITY_2_DEFAULT = 1; //2(Default)
     public static int SENSITVITY_3_SLOWER = 2; //3(Slower)
+    public static int SENSITVITY_4_DEGREE = 3; //4
+    public static int SENSITVITY_5_DEGREE = 4; //5
+    public static int SENSITVITY_6_DEGREE = 5; //6
+    public static int SENSITVITY_7_DEGREE = 6; //7
+    public static int SENSITVITY_8_DEGREE = 7; //8
+    public static int SENSITVITY_9_DEGREE = 8; //9
     //"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"
     public static int BEEP_MUTE = 0; //"Mute"
     public static int BEEP_TYPEA = 1; //"TypeA"

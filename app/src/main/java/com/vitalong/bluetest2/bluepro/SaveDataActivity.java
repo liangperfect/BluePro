@@ -41,7 +41,6 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -302,13 +301,19 @@ public class SaveDataActivity extends AppCompatActivity {
 
             double firstInclude = Double.valueOf(listDatas.get(0).getInclude());
             double secondInclude = Double.valueOf(listDatas.get(1).getInclude());
-            listDatas.forEach(new Consumer<RealDataCached>() {
-                @Override
-                public void accept(RealDataCached realDataCached) {
-                    collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
-                            realDataCached.getRawSecond(), realDataCached.getInclude(), "", "", "", "").toSaveString());
-                }
-            });
+//            listDatas.forEach(new Consumer<RealDataCached>() {
+//                @Override
+//                public void accept(RealDataCached realDataCached) {
+//                    collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
+//                            realDataCached.getRawSecond(), realDataCached.getInclude(), "", "", "", "").toSaveString());
+//                }
+//            });
+            for (int i = 0; i < listDatas.size(); i++) {
+                RealDataCached realDataCached = listDatas.get(i);
+                collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
+                        realDataCached.getRawSecond(), realDataCached.getInclude(), "", "", "", "").toSaveString());
+            }
+
             collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1 - firstInclude), "", "", "", "").toSaveString());
             collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2 - secondInclude), "", "", "", "").toSaveString());
 //            //插入到数据库中去
