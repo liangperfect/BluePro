@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 
 import com.vitalong.bluetest2.MyBaseActivity2;
 import com.vitalong.bluetest2.R;
+import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.Utils.cmdAnalyze;
 import com.vitalong.bluetest2.Utils.cmdClass;
@@ -56,13 +57,18 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     public ImageView imgBxisC;
     //    @Bind(R.id.imgBxisD)
     public ImageView imgBxisD;
+    public Button btnRefresh;
     private VerifyDataBean verifyDataBean;
     private CoefficientsHandler coefficientsHandler;
     private int count = 0;
+    private int refreshCount = 0;
     private long sendTime = 0;
     private long receiveTime = 0;
     private long DELAYTIME = 500; //设置矫正参数超时时间
     private long SEND_DURATION = 500;//发送设置命令的时间间隔为500ms
+    int delayTime = 400;
+    private RefreshHandler refreshHandler;
+    private boolean isRefresh = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,6 +79,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         initView();
         verifyDataBean = myApplication.getVerifyDataBean();
         coefficientsHandler = new CoefficientsHandler(new DelaySendHandler());
+        refreshHandler = new RefreshHandler();
         initData();
         initListener();
     }
@@ -87,6 +94,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         edtBxiasC = findViewById(R.id.BaxisC);
         edtBxiasD = findViewById(R.id.BaxisD);
         btnSet = findViewById(R.id.btnSet);
+        btnRefresh = findViewById(R.id.btnRefresh);
         imgAxisA = findViewById(R.id.imgAxisA);
         imgAxisB = findViewById(R.id.imgAxisB);
         imgAxisC = findViewById(R.id.imgAxisC);
@@ -120,8 +128,19 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 if (verify()) {
                     clearUIState();
                     //这个1不是时间
+                    isRefresh = true;
                     coefficientsHandler.sendEmptyMessage(1);
                 }
+            }
+        });
+
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                isRefresh = false;
+                clearEdtData();
+                refreshHandler.sendEmptyMessageDelayed(1, delayTime);
             }
         });
     }
@@ -136,6 +155,17 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         imgBxisB.setVisibility(View.GONE);
         imgBxisC.setVisibility(View.GONE);
         imgBxisD.setVisibility(View.GONE);
+    }
+
+    private void clearEdtData() {
+        edtAxiasA.setText("");
+        edtAxiasB.setText("");
+        edtAxiasC.setText("");
+        edtAxiasD.setText("");
+        edtBxiasA.setText("");
+        edtBxiasB.setText("");
+        edtBxiasC.setText("");
+        edtBxiasD.setText("");
     }
 
     /**
@@ -238,9 +268,19 @@ public class CoefficientsActivity extends MyBaseActivity2 {
 
         System.out.println("CoefficientsActivity接收到的数据:" + formatMsgContent(array));
         //返回的数据就删除延迟handle里面的消息
-        coefficientsHandler.getDelaySendHandler().removeCallbacksAndMessages(null);
-        String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
-        parseVerifyData(hexStr);
+        if (isRefresh) {
+            //设置
+            coefficientsHandler.getDelaySendHandler().removeCallbacksAndMessages(null);
+            String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
+            parseVerifyData(hexStr);
+        } else {
+            //刷新数据
+            String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
+            if (hexStr.length() == 24) {
+                //加判断是为了避免其它命令接收数据造成这里解析出错
+                refreshVerifyData(hexStr.substring(6, 20));
+            }
+        }
     }
 
     private void parseVerifyData(String codeStr) {
@@ -425,6 +465,108 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             sendConvertCmd(msg.what);
             count++; //超时也算完成了一次数据
             //todo 要进行操作错误的判断
+        }
+    }
+
+    class RefreshHandler extends Handler {
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+            if (msg.what == 9) {
+//                verifyLoadDialog.dismiss();
+                Toast.makeText(CoefficientsActivity.this, "Refresh Success", Toast.LENGTH_SHORT).show();
+            } else {
+                sendCmdGetVerifyCode(msg.what);
+            }
+        }
+    }
+
+    private void refreshVerifyData(String codeStr) {
+        String d = Utils.getVerifyDatas(codeStr);
+        refreshCount++;
+        switch (refreshCount) {
+            case 1:
+                verifyDataBean.setAaxisA(d);
+                edtAxiasA.setText(d);
+                break;
+            case 2:
+                verifyDataBean.setAaxisB(d);
+                edtAxiasB.setText(d);
+                break;
+            case 3:
+                verifyDataBean.setAaxisC(d);
+                edtAxiasC.setText(d);
+                break;
+            case 4:
+                verifyDataBean.setAaxisD(d);
+                edtAxiasD.setText(d);
+                break;
+            case 5:
+                verifyDataBean.setBaxisA(d);
+                edtBxiasA.setText(d);
+                break;
+            case 6:
+                verifyDataBean.setBaxisB(d);
+                edtBxiasB.setText(d);
+                break;
+            case 7:
+                verifyDataBean.setBaxisC(d);
+                edtBxiasC.setText(d);
+                break;
+            case 8:
+                verifyDataBean.setBaxisD(d);
+                edtBxiasD.setText(d);
+                myApplication.setVerifyDataBean(verifyDataBean);
+                refreshCount = 0;
+                Toast.makeText(CoefficientsActivity.this, "刷新成功！", Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                refreshCount = 0;
+                refreshHandler.removeCallbacksAndMessages(null);
+                Toast.makeText(CoefficientsActivity.this, "刷新出錯，請重新點擊刷新！", Toast.LENGTH_SHORT).show();
+                break;
+        }
+    }
+
+    //需要连续发送8次获取数据
+    private void sendCmdGetVerifyCode(int No) {
+
+        switch (No) {
+            case 1:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO1);
+                refreshHandler.sendEmptyMessageDelayed(2, delayTime);
+                break;
+            case 2:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO2);
+                refreshHandler.sendEmptyMessageDelayed(3, delayTime);
+                break;
+            case 3:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO3);
+                refreshHandler.sendEmptyMessageDelayed(4, delayTime);
+                break;
+            case 4:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO4);
+                refreshHandler.sendEmptyMessageDelayed(5, delayTime);
+                break;
+            case 5:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO5);
+                refreshHandler.sendEmptyMessageDelayed(6, delayTime);
+                break;
+            case 6:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO6);
+                refreshHandler.sendEmptyMessageDelayed(7, delayTime);
+                break;
+            case 7:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO7);
+                refreshHandler.sendEmptyMessageDelayed(8, delayTime);
+                break;
+            case 8:
+                sendCmdCodeByHex(Constants.DATA_VERIFY_NO8);
+                break;
+            default:
+                System.out.println("获取矫正参数命令发送完成");
+                break;
         }
     }
 }

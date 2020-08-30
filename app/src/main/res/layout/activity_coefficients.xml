@@ -433,5 +433,24 @@
                 android:text="SET"
                 android:textColor="#fff" />
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/LinearLayout10"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/LinearLayout9"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnRefresh"
+                android:layout_width="199dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@drawable/blue"
+                android:text="Refresh"
+                android:textColor="#fff" />
+        </LinearLayout>
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

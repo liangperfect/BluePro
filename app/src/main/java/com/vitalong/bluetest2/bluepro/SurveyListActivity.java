@@ -36,12 +36,18 @@ public class SurveyListActivity extends AppCompatActivity {
     TextView tvTableName;
     MyApplication application;
     private String tableName = "A001_T01"; //默认表单是A001-T01
+    private String nums = "10";
+    private String direction = "All";
+    private boolean fromWhich = true; //true SaveActivity到这里   false是从Compare到这里的
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey_list);
         tableName = getIntent().getStringExtra("tableName");
+        fromWhich = getIntent().getBooleanExtra("fromWhich", true);
+        nums = getIntent().getStringExtra("nums");
+        direction = getIntent().getStringExtra("direction");
         bindToolBar();
         makeStatusBar(R.color.white);
         application = (MyApplication) getApplication();
@@ -51,11 +57,30 @@ public class SurveyListActivity extends AppCompatActivity {
         }
     }
 
-
     private void initView() {
         tvTableName.setText(tableName);
         //获取数据库里面的数据
-        List<RealDataCached> listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName)).build().list();
+        List<RealDataCached> listDatas;
+        if (fromWhich) {
+            listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName)).build().list();
+        } else {
+            if (nums.equals("All")) {
+
+                if (direction.equals("All")) {
+                    listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName)).build().list();
+                } else {
+                    listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName),
+                            RealDataCachedDao.Properties.Direction.eq(direction)).build().list();
+                }
+            } else {
+                if (direction.equals("All")) {
+                    listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName)).build().list().subList(0, Integer.valueOf(nums));
+                } else {
+                    listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName),
+                            RealDataCachedDao.Properties.Direction.eq(direction)).build().list().subList(0, Integer.valueOf(nums));
+                }
+            }
+        }
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAnimation(null);

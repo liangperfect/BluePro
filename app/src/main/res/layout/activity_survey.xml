@@ -233,9 +233,11 @@
                 android:layout_marginEnd="12dp"
                 android:contentDescription=""
                 android:src="@mipmap/df"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tvNo1"
                 app:layout_constraintEnd_toStartOf="@id/tvNo1"
-                app:layout_constraintTop_toTopOf="@id/tvNo1" />
+                app:layout_constraintTop_toTopOf="@id/tvNo1"
+                tools:visibility="visible" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvAxis2Value"
@@ -270,9 +272,11 @@
                 android:layout_marginEnd="12dp"
                 android:contentDescription=""
                 android:src="@mipmap/df"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tvNo2"
                 app:layout_constraintEnd_toStartOf="@id/tvNo2"
-                app:layout_constraintTop_toTopOf="@id/tvNo2" />
+                app:layout_constraintTop_toTopOf="@id/tvNo2"
+                tools:visibility="visible" />
 
             <androidx.constraintlayout.widget.Group
                 android:id="@+id/constraGroup"
@@ -287,7 +291,7 @@
             android:layout_width="match_parent"
             android:layout_height="130dp"
             android:layout_marginTop="12dp"
-            android:scaleType="fitXY"
+            android:scaleType="fitCenter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/constraPanel"

@@ -1,5 +1,6 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,6 +9,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -32,6 +34,8 @@ public class CompareActivity extends AppCompatActivity {
     Spinner spinner4;
     @Bind(R.id.spinner5)
     Spinner spinner5;
+    @Bind(R.id.button)
+    Button button;
     String[] ctype1 = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
             , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
             , "A040", "A041", "A042", "A043", "A044", "A045", "A046", "A047", "A048", "A049", "A050", "A051", "A052", "A053", "A054", "A055", "A056", "A057", "A058", "A059"
@@ -47,6 +51,12 @@ public class CompareActivity extends AppCompatActivity {
     String[] ctype3 = new String[]{"10", "20", "All"};
     String[] ctype4 = new String[]{"All", "(1-3)", "(2-4)"};
     String[] ctype5 = new String[]{"Disable", "Enable"};
+    //选择的内容
+    String selectDirName = "A001";
+    String selectFileName = "T01";
+    String selectNums = "10";
+    String selectDirection = "All";
+    String selectShowMode = "Disable";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,19 +90,40 @@ public class CompareActivity extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+
+        button.setOnClickListener(v -> {
+            String tableName = selectDirName + "_" + selectFileName;
+            String nums = selectNums;
+            String direction = selectDirection;
+            if (selectShowMode.equals("Disable")) {
+                Intent i = new Intent(CompareActivity.this, SurveyListActivity.class);
+                i.putExtra("tableName", tableName);
+                i.putExtra("nums", nums);
+                i.putExtra("direction", direction);
+                i.putExtra("fromWhich", false);
+                startActivity(i);
+            } else {
+
+            }
+        });
     }
 
     private void itemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
             case R.id.spinner1:
+                selectDirName = ctype1[position];
                 break;
             case R.id.spinner2:
+                selectFileName = ctype2[position];
                 break;
             case R.id.spinner3:
+                selectNums = ctype3[position];
                 break;
             case R.id.spinner4:
+                selectDirection = ctype4[position];
                 break;
             case R.id.spinner5:
+                selectShowMode = ctype5[position];
                 break;
             default:
                 //nothing todo

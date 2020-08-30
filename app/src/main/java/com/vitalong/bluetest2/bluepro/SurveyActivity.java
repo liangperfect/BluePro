@@ -37,6 +37,7 @@ import java.text.DecimalFormat;
 import butterknife.Bind;
 
 public class SurveyActivity extends MyBaseActivity2 {
+    final String TAG = "SurveyActivity";
 
     @Bind(R.id.tvUnitValue)
     public TextView tvUnitValue;
@@ -540,13 +541,19 @@ public class SurveyActivity extends MyBaseActivity2 {
                 }
                 return count == sersitivityMode;
             }
-
-            if (Math.abs(changeValue - preValue) > THRESHOLD) {
-                preValue = changeValue;
-                count = 1;
-                return false;
+            Log.d(TAG, "Math.abs(changeValue - preValue):" + Math.abs(changeValue - preValue));
+            if (count == sersitivityMode) {
+                if (Math.abs(changeValue - preValue) > THRESHOLD) {
+                    count = 0;
+                    preValue = changeValue;
+                    return false;
+                }
+                return true;
             }
-            return true;
+
+            preValue = changeValue;
+            count = 0; //当在sersitivityMode次数内没有连续，则重新计算
+            return false;
         }
     }
 }

@@ -105,7 +105,6 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         }
     }
 
-
     class OperationPanelHandler extends Handler {
 
         @Override

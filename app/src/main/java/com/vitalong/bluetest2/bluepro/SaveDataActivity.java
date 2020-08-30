@@ -169,7 +169,8 @@ public class SaveDataActivity extends AppCompatActivity {
                     saveData();
                     //保存了数据就前往列表展示页面
                     Intent i = new Intent(SaveDataActivity.this, SurveyListActivity.class);
-                    i.putExtra("tableName",selectDir+"_"+selectFileName);
+                    i.putExtra("tableName", selectDir + "_" + selectFileName);
+                    i.putExtra("fromWhich", true);
                     startActivity(i);
                 }
                 setResult(Activity.RESULT_OK);
