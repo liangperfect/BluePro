@@ -15,6 +15,7 @@ import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.CompareActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
+import com.vitalong.bluetest2.bluepro.ShareFileActivity;
 import com.vitalong.bluetest2.bluepro.SurveyActivity;
 
 import butterknife.Bind;
@@ -30,6 +31,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     ImageButton imageButton2;
     @Bind(R.id.imageButton3)
     ImageButton imageButton3;
+    @Bind(R.id.imageButton4)
+    ImageButton imageButton4;
 
     int delayTime = 400;
     private OperationPanelHandler operationPanelHandler;
@@ -60,6 +63,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         imageButton1.setOnClickListener(this);
         imageButton2.setOnClickListener(this);
         imageButton3.setOnClickListener(this);
+        imageButton4.setOnClickListener(this);
     }
 
     @Override
@@ -99,6 +103,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 break;
             case R.id.imageButton3:
                 startActivity(new Intent(OperationPanelActivity.this, SettingActivity.class));
+                break;
+            case R.id.imageButton4:
+                startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
                 break;
             default:
                 break;

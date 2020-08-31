@@ -74,10 +74,10 @@ public class SurveyListActivity extends AppCompatActivity {
                 }
             } else {
                 if (direction.equals("All")) {
-                    listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName)).build().list().subList(0, Integer.valueOf(nums));
+                    listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName)).limit(Integer.valueOf(nums)).build().list();
                 } else {
                     listDatas = application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(tableName),
-                            RealDataCachedDao.Properties.Direction.eq(direction)).build().list().subList(0, Integer.valueOf(nums));
+                            RealDataCachedDao.Properties.Direction.eq(direction)).limit(Integer.valueOf(nums)).build().list();
                 }
             }
         }

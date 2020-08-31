@@ -1,8 +1,11 @@
 package com.vitalong.bluetest2.bluepro;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -17,6 +20,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.vitalong.bluetest2.R;
+
+import java.io.File;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -36,6 +41,8 @@ public class CompareActivity extends AppCompatActivity {
     Spinner spinner5;
     @Bind(R.id.button)
     Button button;
+    @Bind(R.id.btnClearData)
+    Button btnCleanData;
     String[] ctype1 = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
             , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
             , "A040", "A041", "A042", "A043", "A044", "A045", "A046", "A047", "A048", "A049", "A050", "A051", "A052", "A053", "A054", "A055", "A056", "A057", "A058", "A059"
@@ -62,6 +69,9 @@ public class CompareActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
         bindToolBar();
         makeStatusBar(R.color.white);
         initView();
@@ -106,7 +116,16 @@ public class CompareActivity extends AppCompatActivity {
 
             }
         });
+
+        btnCleanData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
+
+
 
     private void itemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {

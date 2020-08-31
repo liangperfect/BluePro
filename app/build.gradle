@@ -52,4 +52,5 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.2'
     implementation 'org.greenrobot:greendao:3.3.0' // add library
     implementation 'com.github.hsmnzaydn:easy-csv:1.0.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

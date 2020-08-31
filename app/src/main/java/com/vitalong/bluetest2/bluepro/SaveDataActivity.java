@@ -340,8 +340,10 @@ public class SaveDataActivity extends AppCompatActivity {
         Utils.createDir(dir);
         File dirFile = new File(dir);
         //删除之前的文件
-        for (String s : dirFile.list()) {
-            new File(dir + s).delete();
+        if (dirFile != null && dirFile.list() != null && dirFile.list().length > 0) {
+            for (String s : dirFile.list()) {
+                new File(dir + s).delete();
+            }
         }
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
