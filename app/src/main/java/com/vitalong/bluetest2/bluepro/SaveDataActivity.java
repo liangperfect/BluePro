@@ -119,19 +119,19 @@ public class SaveDataActivity extends AppCompatActivity {
         if (isS) {
             //单轴
             double deg1Double = getDeg(saveSuerveyBean.getOneChannelAngle1(), Constants.SFMODE_1AXIS);
-            double raw1Double = getRaw(deg1Double);
+            int raw1Double = (int) getRaw(deg1Double);
             deg1 = String.valueOf(deg1Double);
             raw1 = String.valueOf(raw1Double);
             double deg2Double = getDeg(saveSuerveyBean.getOneChannelAngle2(), Constants.SFMODE_1AXIS);
-            double raw2Double = getRaw(deg2Double);
+            int raw2Double = (int) getRaw(deg2Double);
             deg2 = String.valueOf(deg2Double);
             raw2 = String.valueOf(raw2Double);
             double deg3Double = getDeg(saveSuerveyBean.getOneChannelAngle3(), Constants.SFMODE_1AXIS);
-            double raw3Double = getRaw(deg3Double);
+            int raw3Double = (int) getRaw(deg3Double);
             deg3 = String.valueOf(deg3Double);
             raw3 = String.valueOf(raw3Double);
             double deg4Double = getDeg(saveSuerveyBean.getOneChannelAngle4(), Constants.SFMODE_1AXIS);
-            double raw4Double = getRaw(deg4Double);
+            int raw4Double = (int) getRaw(deg4Double);
             deg4 = String.valueOf(deg4Double);
             raw4 = String.valueOf(raw4Double);
 
@@ -140,19 +140,19 @@ public class SaveDataActivity extends AppCompatActivity {
         } else {
             //双轴
             double deg1Double = getDeg(saveSuerveyBean.getOneChannelAngle1(), Constants.SFMODE_1AXIS);
-            double raw1Double = getRaw(deg1Double);
+            double raw1Double = (int) getRaw(deg1Double);
             deg1 = String.valueOf(deg1Double);
             raw1 = String.valueOf(raw1Double);
             double deg2Double = getDeg(saveSuerveyBean.getTwoChannelAngle1(), Constants.SFMODE_2AXIS);
-            double raw2Double = getRaw(deg2Double);
+            double raw2Double = (int) getRaw(deg2Double);
             deg2 = String.valueOf(deg2Double);
             raw2 = String.valueOf(raw2Double);
             double deg3Double = getDeg(saveSuerveyBean.getOneChannelAngle2(), Constants.SFMODE_1AXIS);
-            double raw3Double = getRaw(deg3Double);
+            double raw3Double = (int) getRaw(deg3Double);
             deg3 = String.valueOf(deg3Double);
             raw3 = String.valueOf(raw3Double);
             double deg4Double = getDeg(saveSuerveyBean.getTwoChannelAngle2(), Constants.SFMODE_2AXIS);
-            double raw4Double = getRaw(deg4Double);
+            double raw4Double = (int) getRaw(deg4Double);
             deg4 = String.valueOf(deg4Double);
             raw4 = String.valueOf(raw4Double);
 
@@ -184,7 +184,7 @@ public class SaveDataActivity extends AppCompatActivity {
         try {
             File file = createDirAndFile();
             Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
             String de = sdf.format(date);
             String saveFileStr = "tiltmeter/" + selectDir + "/" + selectDir + "_" + selectFileName + "_" + de;
             easyCsv.setSeparatorColumn(",");//列分隔符
@@ -227,11 +227,11 @@ public class SaveDataActivity extends AppCompatActivity {
         collection.add(new TableRowBean("Gage Factor(B):", "B1=" + verifyDataBean.getBaxisA(), "B2=" + verifyDataBean.getBaxisB(), "B3=" + verifyDataBean.getBaxisC(), "B4=" + verifyDataBean.getBaxisD(), "", "", "", "").toStrArray());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Date/Time", "Site No.", "Instrument No.", "Direction", "Raw", "Raw", "Deg", "Deg", "CheckSum").toStrArray());
-        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(1 - 3)", raw1, raw3, deg1, deg3, String.valueOf(raw1Andraw3)).toStrArray());
-        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2 - 4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toStrArray());
+        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(1-3)", raw1, raw3, deg1, deg3, String.valueOf(raw1Andraw3)).toStrArray());
+        collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toStrArray());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toStrArray());
         collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toStrArray());
-        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Include()", "", "", "", "").toStrArray());
+        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Incline('')", "", "", "", "").toStrArray());
         //获取数据库中的数据并添加到列表数据容器中
         List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
         double d1Temp = Double.valueOf(deg1);
@@ -288,7 +288,7 @@ public class SaveDataActivity extends AppCompatActivity {
         collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2 - 4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toSaveString());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Include()", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Incline('')", "", "", "", "").toSaveString());
         //获取数据库中的数据并添加到列表数据容器中
         List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
         double d1Temp = Double.valueOf(deg1);
@@ -299,10 +299,12 @@ public class SaveDataActivity extends AppCompatActivity {
         double include2 = (d2Temp - d4Temp) / 2 * 3600;
         if (listDatas.isEmpty()) {
 
-            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1), "", "", "", "").toSaveString());
-            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2), "", "", "", "").toSaveString());
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(include1)));
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(include2)));
+//            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1), "", "", "", "").toSaveString());
+//            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2), "", "", "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, "0", "", "", "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, "0", "", "", "", "").toSaveString());
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, "0"));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, "0"));
         } else {
 
             double firstInclude = Double.valueOf(listDatas.get(0).getInclude());
@@ -346,7 +348,7 @@ public class SaveDataActivity extends AppCompatActivity {
             }
         }
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
         String de = sdf.format(date);
         String fp = dir + "/" + selectDir + "_" + selectFileName + "_" + de + ".csv";
         File dataFile = new File(fp);

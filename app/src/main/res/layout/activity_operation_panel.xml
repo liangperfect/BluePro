@@ -54,8 +54,8 @@
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/imageButton"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginTop="10dp"
                     android:layout_marginRight="10dp"
@@ -84,7 +84,7 @@
                     android:text="Digital Tiltmeter"
                     android:textAlignment="center"
                     android:textColor="#ffffff"
-                    android:textSize="40dp" />
+                    android:textSize="32sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -100,45 +100,46 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <androidx.appcompat.widget.AppCompatImageButton
                         android:id="@+id/imageButton2"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
                         android:foreground="@mipmap/i1"
                         tools:ignore="MissingConstraints" />
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Compare"
                         android:textAlignment="center"
                         android:textColor="#ffffff"
-                        android:textSize="23sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/imageButton1"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginLeft="40dp"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
                         android:foreground="@mipmap/i2"
                         tools:ignore="MissingConstraints" />
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
                         android:text="Survey"
                         android:textAlignment="center"
                         android:textColor="#ffffff"
-                        android:textSize="23sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -155,12 +156,13 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/imageButton3"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
                         android:foreground="@mipmap/i3"
                         tools:ignore="MissingConstraints" />
 
@@ -170,37 +172,37 @@
                         android:text="Setting"
                         android:textAlignment="center"
                         android:textColor="#ffffff"
-                        android:textSize="23sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="36dp"
+                    android:gravity="center_horizontal"
                     android:orientation="vertical">
 
                     <ImageButton
                         android:id="@+id/imageButton4"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginLeft="40dp"
+                        android:layout_width="82dp"
+                        android:layout_height="82dp"
                         android:foreground="@mipmap/i4"
                         tools:ignore="MissingConstraints" />
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="40dp"
                         android:text="Send Data"
                         android:textAlignment="center"
                         android:textColor="#ffffff"
-                        android:textSize="21sp" />
+                        android:textSize="18sp" />
                 </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/LinearLayout5"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/LinearLayout4"
                 android:gravity="center"
                 android:orientation="horizontal"
