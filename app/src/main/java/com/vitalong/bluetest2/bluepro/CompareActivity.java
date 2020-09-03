@@ -1,11 +1,10 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -13,15 +12,18 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
-
-import java.io.File;
+import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -64,11 +66,13 @@ public class CompareActivity extends AppCompatActivity {
     String selectNums = "10";
     String selectDirection = "All";
     String selectShowMode = "Disable";
+    MyApplication application;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compare);
+        application = (MyApplication) getApplication();
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
@@ -125,10 +129,25 @@ public class CompareActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                final EditText et = new EditText(CompareActivity.this);
+                et.setHint("請輸入確認密碼");
+                new AlertDialog.Builder(CompareActivity.this).setTitle(selectDirName + "_" + selectFileName + "文檔清除后無法恢復!")
+                        .setIcon(R.mipmap.logo)
+                        .setView(et)
+                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //按下确定键后的事件
+                                String inputPwd = et.getText().toString();
+                                if ("111222".equals(inputPwd)) {
+                                    application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDirName + "_" + selectFileName)).buildDelete().executeDeleteWithoutDetachingEntities();
+                                    Toast.makeText(CompareActivity.this, "刪除成功", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).setNegativeButton("取消", null).show();
             }
         });
     }
-
 
 
     private void itemSelected(AdapterView<?> parent, View view, int position, long id) {

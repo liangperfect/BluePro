@@ -228,8 +228,8 @@
 
             <ImageView
                 android:id="@+id/imgAxis1"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginEnd="12dp"
                 android:contentDescription=""
                 android:src="@mipmap/df"
@@ -267,8 +267,8 @@
 
             <ImageView
                 android:id="@+id/imgAxisTest2"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
                 android:layout_marginEnd="12dp"
                 android:contentDescription=""
                 android:src="@mipmap/df"

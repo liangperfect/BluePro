@@ -107,7 +107,7 @@ public class SurveyActivity extends MyBaseActivity2 {
 
     private float currOneChannelAngle;//记录轴1的原始角度值
     private float currtwoChannelAngle;//记录轴2的原始角度值
-    private int sendDuration = 300;//循环发送命令的时间间隔
+    private int sendDuration = 150;//循环发送命令的时间间隔
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

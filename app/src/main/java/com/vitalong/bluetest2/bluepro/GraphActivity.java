@@ -60,6 +60,7 @@ public class GraphActivity extends AppCompatActivity {
     private boolean isShow13 = true;
     private boolean isShow24 = true;
     private boolean isWhole = false;
+    private int regionNums = 8;
     ArrayList<ILineDataSet> dataSets = new ArrayList<>();
 
     @Override
@@ -317,7 +318,12 @@ public class GraphActivity extends AppCompatActivity {
                 @Override
                 public String getAxisLabel(float value, AxisBase axis) {
 
-                    return listDatas13.get((int) value % 3).getTime();
+                    if (listDatas13.size() > regionNums) {
+                        return listDatas13.get((int) value).getTime();
+                    } else if ((int) value < listDatas13.size()) {
+                        return listDatas13.get((int) value).getTime();
+                    }
+                    return "";
                 }
             });
 //            xl.setAxisMinimum(0f);
