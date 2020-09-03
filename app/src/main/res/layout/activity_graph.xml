@@ -1,9 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".bluepro.GraphActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:contentInsetStart="0dp"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/nav_arrow_left">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:text="Chart"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="12dp"
+            app:layout_constraintBottom_toTopOf="@id/btn13"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@color/red"
+            android:text="(1-3)"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@color/blue"
+            android:text="(2-4)"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/btn13"
+            app:layout_constraintStart_toEndOf="@id/btn13"
+            app:layout_constraintTop_toTopOf="@id/btn13" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnwhole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:background="@color/color_yellow_dark"
+            android:text="whole"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/btn24"
+            app:layout_constraintStart_toEndOf="@id/btn24"
+            app:layout_constraintTop_toTopOf="@id/btn24" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

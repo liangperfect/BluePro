@@ -113,7 +113,11 @@ public class CompareActivity extends AppCompatActivity {
                 i.putExtra("fromWhich", false);
                 startActivity(i);
             } else {
-
+                Intent i = new Intent(CompareActivity.this, GraphActivity.class);
+                i.putExtra("tableName", tableName);
+                i.putExtra("nums", nums);
+                i.putExtra("direction", direction);
+                startActivity(i);
             }
         });
 

@@ -152,8 +152,16 @@ public class ShareFileActivity extends AppCompatActivity {
                     //长按进行分享
 //                    String filePath = "sdcard/test.txt";
 //                    File file = new File(filePath);
-                    Intent intent = getShareIntent(datas.get(position));
-                    startActivity(Intent.createChooser(intent, "分享一下"));
+//                    Intent intent = getShareIntent(datas.get(position));
+//                    startActivity(Intent.createChooser(intent, "分享一下"));
+
+                    ArrayList<Uri> files = new ArrayList<Uri>();
+                    files.add(Uri.fromFile(datas.get(position)));
+                    //分享文件
+                    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+                    intent.setType("*/*");//多个文件格式
+                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,files);//Intent.EXTRA_STREAM同于传输文件流
+                    startActivity(intent);
                     return false;
                 }
             });
