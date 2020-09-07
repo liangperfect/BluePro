@@ -17,10 +17,11 @@ public class RealDataCached {
     private String rawFirst;
     private String rawSecond;
     private String include;
+    private int realIncline;
 
-    @Generated(hash = 376361347)
-    public RealDataCached(Long id, String formName, String time, String direction,
-                          String rawFirst, String rawSecond, String include) {
+    @Generated(hash = 69512940)
+    public RealDataCached(Long id, String formName, String time, String direction, String rawFirst,
+            String rawSecond, String include, int realIncline) {
         this.id = id;
         this.formName = formName;
         this.time = time;
@@ -28,24 +29,27 @@ public class RealDataCached {
         this.rawFirst = rawFirst;
         this.rawSecond = rawSecond;
         this.include = include;
+        this.realIncline = realIncline;
     }
 
     @Generated(hash = 1334578809)
     public RealDataCached() {
     }
 
+
     public RealDataCached(String formName, String time, String direction,
-                          String rawFirst, String rawSecond, String include) {
+                          String rawFirst, String rawSecond, String include, int realIncline) {
         this.formName = formName;
         this.time = time;
         this.direction = direction;
         this.rawFirst = rawFirst;
         this.rawSecond = rawSecond;
         this.include = include;
+        this.realIncline = realIncline;
     }
 
     public Long getId() {
-        return id;
+        return this.id;
     }
 
     public void setId(Long id) {
@@ -53,7 +57,7 @@ public class RealDataCached {
     }
 
     public String getFormName() {
-        return formName;
+        return this.formName;
     }
 
     public void setFormName(String formName) {
@@ -61,7 +65,7 @@ public class RealDataCached {
     }
 
     public String getTime() {
-        return time;
+        return this.time;
     }
 
     public void setTime(String time) {
@@ -69,7 +73,7 @@ public class RealDataCached {
     }
 
     public String getDirection() {
-        return direction;
+        return this.direction;
     }
 
     public void setDirection(String direction) {
@@ -77,7 +81,7 @@ public class RealDataCached {
     }
 
     public String getRawFirst() {
-        return rawFirst;
+        return this.rawFirst;
     }
 
     public void setRawFirst(String rawFirst) {
@@ -85,7 +89,7 @@ public class RealDataCached {
     }
 
     public String getRawSecond() {
-        return rawSecond;
+        return this.rawSecond;
     }
 
     public void setRawSecond(String rawSecond) {
@@ -93,11 +97,27 @@ public class RealDataCached {
     }
 
     public String getInclude() {
-        return include;
+        return this.include;
     }
 
     public void setInclude(String include) {
         this.include = include;
+    }
+
+    public int getRaelIncline() {
+        return this.realIncline;
+    }
+
+    public void setRaelIncline(int realIncline) {
+        this.realIncline = realIncline;
+    }
+
+    public int getRealIncline() {
+        return this.realIncline;
+    }
+
+    public void setRealIncline(int realIncline) {
+        this.realIncline = realIncline;
     }
 
     public String[] toStrArray() {

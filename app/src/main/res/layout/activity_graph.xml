@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:background="@android:color/transparent"
-                android:text="Chart"
+                android:text="Compare"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -41,6 +41,18 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvYName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:text="ArcSec"
+            android:textColor="@color/red"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <com.github.mikephil.charting.charts.LineChart
             android:id="@+id/chart1"
             android:layout_width="match_parent"
@@ -49,7 +61,7 @@
             app:layout_constraintBottom_toTopOf="@id/btn13"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/tvYName" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn13"
@@ -85,13 +97,12 @@
             android:background="@color/color_yellow_dark"
             android:text="whole"
             android:textColor="@color/white"
-            android:visibility="gone"
             android:textSize="14sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/btn24"
             app:layout_constraintStart_toEndOf="@id/btn24"
             app:layout_constraintTop_toTopOf="@id/btn24" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -254,7 +254,7 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="clear Cache:"
+                    android:text="clear Cache(111222):"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatButton

@@ -247,12 +247,12 @@ public class SaveDataActivity extends AppCompatActivity {
 //            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2), "", "", "", "").toSaveString());
             collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, "0", "", "", "", "").toSaveString());
             collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, "0", "", "", "", "").toSaveString());
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, "0"));
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, "0"));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, "0", intIncline1));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, "0", intIncline2));
         } else {
 
-            int firstInclude = Integer.valueOf(listDatas.get(0).getInclude());
-            int secondInclude = Integer.valueOf(listDatas.get(1).getInclude());
+            int firstInclude = listDatas.get(0).getRaelIncline();
+            int secondInclude = listDatas.get(1).getRaelIncline();
             for (int i = 0; i < listDatas.size(); i++) {
                 RealDataCached realDataCached = listDatas.get(i);
                 collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
@@ -262,8 +262,8 @@ public class SaveDataActivity extends AppCompatActivity {
             collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude), "", "", "", "").toSaveString());
             collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude), "", "", "", "").toSaveString());
 //            //插入到数据库中去
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude)));
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude), intIncline1 - firstInclude));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude), intIncline2 - secondInclude));
         }
         return collection;
     }

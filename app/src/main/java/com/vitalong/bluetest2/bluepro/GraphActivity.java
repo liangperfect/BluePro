@@ -164,7 +164,6 @@ public class GraphActivity extends AppCompatActivity {
 //            values24.add(new Entry(j, val));
         }
 
-
         //1-3的线
         if (chart.getData() != null &&
                 chart.getData().getDataSetCount() > 0) {
@@ -241,8 +240,10 @@ public class GraphActivity extends AppCompatActivity {
 //            set24.enableDashedLine(10f, 5f, 0f);
 
             // black lines and points
-            set24.setColor(Color.BLUE);
-            set24.setCircleColor(Color.BLUE);
+//            set24.setColor(Color.BLUE);
+//            set24.setCircleColor(Color.BLUE);
+            set24.setColor(0xFF2EA2E4);
+            set24.setCircleColor(0xFF2EA2E4);
 
             // line thickness and point size
             set24.setLineWidth(1f);
@@ -317,7 +318,9 @@ public class GraphActivity extends AppCompatActivity {
             xAxis.setValueFormatter(new ValueFormatter() {
                 @Override
                 public String getAxisLabel(float value, AxisBase axis) {
-
+                    if (value < 0) {
+                        value = 0;
+                    }
                     if (listDatas13.size() > regionNums) {
                         return listDatas13.get((int) value).getTime();
                     } else if ((int) value < listDatas13.size()) {
