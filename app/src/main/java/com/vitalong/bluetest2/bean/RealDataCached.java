@@ -17,11 +17,11 @@ public class RealDataCached {
     private String rawFirst;
     private String rawSecond;
     private String include;
-    private int realIncline;
+    private String realIncline;
 
-    @Generated(hash = 69512940)
-    public RealDataCached(Long id, String formName, String time, String direction, String rawFirst,
-                          String rawSecond, String include, int realIncline) {
+    @Generated(hash = 2067405578)
+    public RealDataCached(Long id, String formName, String time, String direction,
+                          String rawFirst, String rawSecond, String include, String realIncline) {
         this.id = id;
         this.formName = formName;
         this.time = time;
@@ -36,9 +36,8 @@ public class RealDataCached {
     public RealDataCached() {
     }
 
-
     public RealDataCached(String formName, String time, String direction,
-                          String rawFirst, String rawSecond, String include, int realIncline) {
+                          String rawFirst, String rawSecond, String include, String realIncline) {
         this.formName = formName;
         this.time = time;
         this.direction = direction;
@@ -46,6 +45,11 @@ public class RealDataCached {
         this.rawSecond = rawSecond;
         this.include = include;
         this.realIncline = realIncline;
+    }
+
+    public String[] toStrArray() {
+
+        return new String[]{time, direction, rawFirst, rawSecond, include, "", "", "", ""};
     }
 
     public Long getId() {
@@ -104,24 +108,11 @@ public class RealDataCached {
         this.include = include;
     }
 
-    public int getRaelIncline() {
+    public String getRealIncline() {
         return this.realIncline;
     }
 
-    public void setRaelIncline(int realIncline) {
+    public void setRealIncline(String realIncline) {
         this.realIncline = realIncline;
-    }
-
-    public int getRealIncline() {
-        return this.realIncline;
-    }
-
-    public void setRealIncline(int realIncline) {
-        this.realIncline = realIncline;
-    }
-
-    public String[] toStrArray() {
-
-        return new String[]{time, direction, rawFirst, rawSecond, include, "", "", "", ""};
     }
 }

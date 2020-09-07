@@ -271,7 +271,7 @@ public class SurveyActivity extends MyBaseActivity2 {
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
-        sendDuration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 300);
+        sendDuration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
         currSnValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
         if (unitValue == Constants.UNIT_DEG) {
 

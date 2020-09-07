@@ -147,13 +147,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="1.46"
+            android:text="2.02"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
             app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
             app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
-            tools:text="1.46" />
+            tools:text="2.01" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSaveTo"
@@ -332,9 +332,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:background="@null"
+            android:enabled="false"
             android:maxLength="3"
             android:maxLines="1"
-            android:enabled="false"
             android:text="150"
             app:layout_constraintBottom_toBottomOf="@id/tvSurveyTitle"
             app:layout_constraintEnd_toEndOf="parent"

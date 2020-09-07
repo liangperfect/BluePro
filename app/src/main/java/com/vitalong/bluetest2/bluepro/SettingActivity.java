@@ -93,7 +93,7 @@ public class SettingActivity extends MyBaseActivity2 {
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
-        int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 300);
+        int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
         edtSurveyDuration.setText(String.valueOf(duration));
         SpSensorModeValue.setSelection(sensorModeValue);
         spSensitivityValue.setSelection(sensitivityValue);
