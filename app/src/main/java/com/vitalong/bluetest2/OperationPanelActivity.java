@@ -203,6 +203,12 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(mGattUpdateReceiver);
+    }
+
     private void showLoadVeriftDataDialog() {
         ProgressBar progressBar = new ProgressBar(OperationPanelActivity.this);
         verifyLoadDialog = new MaterialDialog(OperationPanelActivity.this);

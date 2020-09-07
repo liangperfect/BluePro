@@ -21,7 +21,7 @@ public class RealDataCached {
 
     @Generated(hash = 69512940)
     public RealDataCached(Long id, String formName, String time, String direction, String rawFirst,
-            String rawSecond, String include, int realIncline) {
+                          String rawSecond, String include, int realIncline) {
         this.id = id;
         this.formName = formName;
         this.time = time;
@@ -125,4 +125,3 @@ public class RealDataCached {
         return new String[]{time, direction, rawFirst, rawSecond, include, "", "", "", ""};
     }
 }
-

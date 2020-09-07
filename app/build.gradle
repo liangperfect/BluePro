@@ -53,4 +53,5 @@ dependencies {
     implementation 'org.greenrobot:greendao:3.3.0' // add library
     implementation 'com.github.hsmnzaydn:easy-csv:1.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation files('libs\\bugly_crash_release.jar')
 }

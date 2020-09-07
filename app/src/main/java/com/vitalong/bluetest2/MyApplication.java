@@ -4,6 +4,7 @@ import android.app.Application;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.bean.MService;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
@@ -55,6 +56,8 @@ public class MyApplication extends Application {
         SharedPreferencesUtil.getInstance(getApplicationContext(), "blue");
         verifyDataBean = new VerifyDataBean();
         initDB();
+        //初始化Bugly
+        initBugly();
     }
 
     private void initDB() {
@@ -65,6 +68,11 @@ public class MyApplication extends Application {
         realDataCachedDao = daoSession.getRealDataCachedDao();
     }
 
+    private void initBugly() {
+
+        CrashReport.initCrashReport(getApplicationContext(),"77f2a83f4e",true);
+
+    }
     public void setServices(List<MService> services) {
         this.services.clear();
         this.services.addAll(services);

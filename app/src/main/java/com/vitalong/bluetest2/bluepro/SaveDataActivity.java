@@ -243,8 +243,6 @@ public class SaveDataActivity extends AppCompatActivity {
         int intIncline2 = (int) include2;
         if (listDatas.isEmpty()) {
 
-//            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(include1), "", "", "", "").toSaveString());
-//            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(include2), "", "", "", "").toSaveString());
             collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, "0", "", "", "", "").toSaveString());
             collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, "0", "", "", "", "").toSaveString());
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, "0", intIncline1));
