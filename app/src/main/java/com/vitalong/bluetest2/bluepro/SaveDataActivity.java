@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
 import com.vitalong.bluetest2.Utils.Constants;
+import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.RealDataCached;
 import com.vitalong.bluetest2.bean.SaveSuerveyBean;
@@ -71,6 +72,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private double dBxisC = 0;
     private double dBxisD = 0;
     private SaveSuerveyBean saveSuerveyBean;
+    private String snValue = "";
     private String selectDir = "A001";
     private String selectFileName = "T01";
     private VerifyDataBean verifyDataBean;//矫正参数
@@ -98,13 +100,12 @@ public class SaveDataActivity extends AppCompatActivity {
         saveSuerveyBean = (SaveSuerveyBean) Objects.requireNonNull(getIntent().getExtras()).get("saveData");
         isSingleAxis = (boolean) getIntent().getExtras().get("isSingleAxis");
         canSave = (boolean) getIntent().getExtras().get("canSave");
+        snValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
         bindToolBar();
         makeStatusBar(R.color.white);
+        initVerifyData();
         initView();
         easyCsv = new EasyCsv(SaveDataActivity.this);
-        if (savedInstanceState == null) {
-            initVerifyData();
-        }
     }
 
     private void initView() {
@@ -121,6 +122,9 @@ public class SaveDataActivity extends AppCompatActivity {
             int raw1Double = (int) getRaw(deg1Double);
             deg1 = String.valueOf(deg1Double);
             raw1 = String.valueOf(raw1Double);
+            Log.d("chenliang", "saveSuerveyBean.getOneChannelAngle1():" + saveSuerveyBean.getOneChannelAngle1()
+                    + "    deg1Double:" + deg1Double + "   raw1Double:" + raw1Double
+            );
             double deg2Double = getDeg(saveSuerveyBean.getOneChannelAngle2(), Constants.SFMODE_1AXIS);
             int raw2Double = (int) getRaw(deg2Double);
             deg2 = String.valueOf(deg2Double);
@@ -185,7 +189,7 @@ public class SaveDataActivity extends AppCompatActivity {
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
             String de = sdf.format(date);
-            String saveFileStr = "tiltmeter/" + selectDir + "/" + selectDir + "_" + selectFileName + "_" + de;
+            String saveFileStr = "tiltmeter1/" + selectDir + "/" + selectDir + "_" + selectFileName + "_" + de;
             easyCsv.setSeparatorColumn(",");//列分隔符
             easyCsv.setSeperatorLine("/n");//行分隔符
             List<String> headerList = new ArrayList<>();
@@ -217,7 +221,8 @@ public class SaveDataActivity extends AppCompatActivity {
         final List<String> collection = new ArrayList<>();
         collection.add(new TableRowBean("Type:", "Digital Tiltmeter", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Model:", "6600D", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean("Serial Number:", "1233", "", "", "", "", "", "", "").toSaveString());
+        //todo 将读取到的SN获取到
+        collection.add(new TableRowBean("Serial Number:", snValue, "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Range:", "30 Deg", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Firmware:", "v1.2", "Software:", "v2.0", "", "", "", "", "").toSaveString());
@@ -273,7 +278,7 @@ public class SaveDataActivity extends AppCompatActivity {
      */
     private File createDirAndFile() throws IOException {
 
-        String dir = "sdcard/tiltmeter/" + selectDir + "/";
+        String dir = "sdcard/tiltmeter1/" + selectDir + "/";
         Utils.createDir(dir);
         File dirFile = new File(dir);
         //删除之前的文件
@@ -391,10 +396,10 @@ public class SaveDataActivity extends AppCompatActivity {
     private double getDeg(double angle, int axisMode) {
         double f = angle * 7.2;
         if (axisMode == Constants.SFMODE_1AXIS) {
-            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC + f) + dAxisD;
+            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC * f) + dAxisD;
         }
 
-        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC + f) + dBxisD;
+        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC * f) + dBxisD;
     }
 
     /**

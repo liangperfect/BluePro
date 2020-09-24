@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".bluepro.VerifyResultActivity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis A:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv1Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv1"
+        app:layout_constraintTop_toBottomOf="@id/tv1"
+        tools:text="A axis A:" />
+
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv1Value"
+        app:layout_constraintTop_toBottomOf="@id/tv1Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv2Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv2"
+        app:layout_constraintTop_toBottomOf="@id/tv2" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis C:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv2Value"
+        app:layout_constraintTop_toBottomOf="@id/tv2Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv3Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv3"
+        app:layout_constraintTop_toBottomOf="@id/tv3" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis D:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv3Value"
+        app:layout_constraintTop_toBottomOf="@id/tv3Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv4Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv4"
+        app:layout_constraintTop_toBottomOf="@id/tv4" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B axis A:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv4Value"
+        app:layout_constraintTop_toBottomOf="@id/tv4Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv5Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv5"
+        app:layout_constraintTop_toBottomOf="@id/tv5" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv5Value"
+        app:layout_constraintTop_toBottomOf="@id/tv5Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv6Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv6"
+        app:layout_constraintTop_toBottomOf="@id/tv6" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B axis C:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv6Value"
+        app:layout_constraintTop_toBottomOf="@id/tv6Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv7Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv7"
+        app:layout_constraintTop_toBottomOf="@id/tv7" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="B axis D:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv7Value"
+        app:layout_constraintTop_toBottomOf="@id/tv7Value" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/tv8Value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="A axis B:"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@id/tv8"
+        app:layout_constraintTop_toBottomOf="@id/tv8" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.vitalong.bluetest2.Utils.Constants;
+import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.CompareActivity;
@@ -34,6 +37,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     @Bind(R.id.imageButton4)
     ImageButton imageButton4;
 
+    boolean isPause = false;
     int delayTime = 400;
     private OperationPanelHandler operationPanelHandler;
     int count = 0;
@@ -74,11 +78,18 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     @Override
     protected void receiveDataFromBlue(byte[] array) {
         //进行数据解析
-        String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
-        if (hexStr.length() == 24) {
+        if (!isPause) {
+            String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
+//        if (hexStr.length() == 24) {
             //加判断是为了避免其它命令接收数据造成这里解析出错
-            parseVerifyData(hexStr.substring(6, 20));
+//            parseVerifyData(hexStr.substring(6, 20));
+            try {
+                parseVerifyData(hexStr);
+            } catch (Exception e) {
+                Toast.makeText(OperationPanelActivity.this, "數據解析錯誤，請推送重新鏈接", Toast.LENGTH_SHORT).show();
+            }
         }
+//        }
     }
 
     @Override
@@ -117,7 +128,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
-            if (msg.what == 9) {
+            if (msg.what == 10) {
                 verifyLoadDialog.dismiss();
             } else {
                 sendCmdGetVerifyCode(msg.what);
@@ -159,6 +170,11 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 break;
             case 8:
                 sendCmdCodeByHex(Constants.DATA_VERIFY_NO8);
+                operationPanelHandler.sendEmptyMessageDelayed(9, delayTime);
+                break;
+            case 9:
+                //获取SN参数
+                sendCmdCodeByHex("01 03 00 05 00 02 d4 0a");
                 break;
             default:
                 System.out.println("获取矫正参数命令发送完成");
@@ -168,33 +184,51 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
     private void parseVerifyData(String codeStr) {
 
-        String d = Utils.getVerifyDatas(codeStr);
         count++;
         switch (count) {
             case 1:
-                verifyDataBean.setAaxisA(d);
+                String d1 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setAaxisA(d1);
                 break;
             case 2:
-                verifyDataBean.setAaxisB(d);
+                String d2 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setAaxisB(d2);
                 break;
             case 3:
-                verifyDataBean.setAaxisC(d);
+                String d3 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setAaxisC(d3);
                 break;
             case 4:
-                verifyDataBean.setAaxisD(d);
+                String d4 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setAaxisD(d4);
                 break;
             case 5:
-                verifyDataBean.setBaxisA(d);
+                String d5 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setBaxisA(d5);
                 break;
             case 6:
-                verifyDataBean.setBaxisB(d);
+                String d6 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setBaxisB(d6);
                 break;
             case 7:
-                verifyDataBean.setBaxisC(d);
+                String d7 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setBaxisC(d7);
                 break;
             case 8:
-                verifyDataBean.setBaxisD(d);
+                String d8 = Utils.getVerifyDatas(codeStr.substring(6, 20));
+                verifyDataBean.setBaxisD(d8);
                 myApplication.setVerifyDataBean(verifyDataBean);
+                break;
+            case 9:
+                //进行数据解析
+                try {
+                    String snValueStr = String.valueOf(Integer.parseInt(codeStr.substring(6, 14), 16));
+                    Log.d("chenliang", "获取到的sn:" + snValueStr);
+                    SharedPreferencesUtil.putData("SNVaule", snValueStr);
+                } catch (Exception ex) {
+                    Log.e("chenliang", "解析sn出错");
+                    Toast.makeText(OperationPanelActivity.this, "SN解析出错", Toast.LENGTH_SHORT).show();
+                }
                 count = 0;
                 break;
             default:
@@ -209,12 +243,18 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         unregisterReceiver(mGattUpdateReceiver);
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPause = true;
+    }
+
     private void showLoadVeriftDataDialog() {
         ProgressBar progressBar = new ProgressBar(OperationPanelActivity.this);
         verifyLoadDialog = new MaterialDialog(OperationPanelActivity.this);
         verifyLoadDialog.setTitle("Load verify data,Please wait for 3s")
                 .setContentView(progressBar);
         verifyLoadDialog.show();
-        operationPanelHandler.sendEmptyMessageDelayed(9, 4000);
+        operationPanelHandler.sendEmptyMessageDelayed(10, 4000);
     }
 }

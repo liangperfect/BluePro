@@ -342,6 +342,12 @@ public class SurveyActivity extends MyBaseActivity2 {
                         saveSuerveyBean.setOneChannelAngle1(currOneChannelAngle);
                         saveSuerveyBean.setTwoChannelAngle1(currtwoChannelAngle);
                         saveSuerveyBean.setShow1(tvAxis1Value.getText().toString());
+
+
+                        Log.d("chenliang", "打印原始值的数据->currOneChannelAngle" + currOneChannelAngle + "    getDeg:" +
+                                getDeg(currOneChannelAngle, Constants.SFMODE_1AXIS) + "   getRaw:" +
+                                getRaw(getDeg(currOneChannelAngle, Constants.SFMODE_1AXIS)));
+
                         if (unitValue == Constants.UNIT_RAW) {
                             image1.setImageResource(R.drawable.new_raw2);
 //                            image2.setImageResource(R.mipmap.b2);
@@ -448,10 +454,10 @@ public class SurveyActivity extends MyBaseActivity2 {
     private double getDeg(double angle, int axisMode) {
         double f = angle * 7.2;
         if (axisMode == Constants.SFMODE_1AXIS) {
-            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC + f) + dAxisD;
+            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC * f) + dAxisD;
         }
 
-        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC + f) + dBxisD;
+        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC * f) + dBxisD;
     }
 
     /**
@@ -533,7 +539,7 @@ public class SurveyActivity extends MyBaseActivity2 {
         private float preValue = 0;
 
         public boolean verifyData(float axiaValue) {
-            float changeValue = Float.parseFloat(deg4Format.format(axiaValue));
+            float changeValue = Float.parseFloat(deg3Format.format(axiaValue));
             if (preValue == changeValue) {
                 count = count + 1;
                 if (count > sersitivityMode) {

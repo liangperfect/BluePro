@@ -1,5 +1,6 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -8,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -58,6 +60,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     //    @Bind(R.id.imgBxisD)
     public ImageView imgBxisD;
     public Button btnRefresh;
+    public TextView tvCheck;
     private VerifyDataBean verifyDataBean;
     private CoefficientsHandler coefficientsHandler;
     private int count = 0;
@@ -69,6 +72,15 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     int delayTime = 400;
     private RefreshHandler refreshHandler;
     private boolean isRefresh = false;
+
+    private String orginal1Str = "";
+    private String orginal2Str = "";
+    private String orginal3Str = "";
+    private String orginal4Str = "";
+    private String orginal5Str = "";
+    private String orginal6Str = "";
+    private String orginal7Str = "";
+    private String orginal8Str = "";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +115,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         imgBxisB = findViewById(R.id.imgBxisB);
         imgBxisC = findViewById(R.id.imgBxisC);
         imgBxisD = findViewById(R.id.imgBxisD);
+        tvCheck = findViewById(R.id.check);
     }
 
     private void initData() {
@@ -141,6 +154,22 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 isRefresh = false;
                 clearEdtData();
                 refreshHandler.sendEmptyMessageDelayed(1, delayTime);
+            }
+        });
+
+        tvCheck.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(CoefficientsActivity.this, VerifyResultActivity.class);
+                i.putExtra("orginal1Str", orginal1Str);
+                i.putExtra("orginal2Str", orginal2Str);
+                i.putExtra("orginal3Str", orginal3Str);
+                i.putExtra("orginal4Str", orginal4Str);
+                i.putExtra("orginal5Str", orginal5Str);
+                i.putExtra("orginal6Str", orginal6Str);
+                i.putExtra("orginal7Str", orginal7Str);
+                i.putExtra("orginal8Str", orginal8Str);
+                startActivity(i);
             }
         });
     }
@@ -278,7 +307,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
             if (hexStr.length() == 24) {
                 //加判断是为了避免其它命令接收数据造成这里解析出错
-                refreshVerifyData(hexStr.substring(6, 20));
+                refreshVerifyData(hexStr.substring(6, 20), hexStr);
             }
         }
     }
@@ -482,39 +511,47 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         }
     }
 
-    private void refreshVerifyData(String codeStr) {
+    private void refreshVerifyData(String codeStr, String originalStr) {
         String d = Utils.getVerifyDatas(codeStr);
         refreshCount++;
         switch (refreshCount) {
             case 1:
+                orginal1Str = originalStr;
                 verifyDataBean.setAaxisA(d);
                 edtAxiasA.setText(d);
                 break;
             case 2:
+                orginal2Str = originalStr;
                 verifyDataBean.setAaxisB(d);
                 edtAxiasB.setText(d);
                 break;
             case 3:
+                orginal3Str = originalStr;
                 verifyDataBean.setAaxisC(d);
                 edtAxiasC.setText(d);
                 break;
             case 4:
+                orginal4Str = originalStr;
                 verifyDataBean.setAaxisD(d);
                 edtAxiasD.setText(d);
                 break;
             case 5:
+                orginal5Str = originalStr;
                 verifyDataBean.setBaxisA(d);
                 edtBxiasA.setText(d);
                 break;
             case 6:
+                orginal6Str = originalStr;
                 verifyDataBean.setBaxisB(d);
                 edtBxiasB.setText(d);
                 break;
             case 7:
+                orginal7Str = originalStr;
                 verifyDataBean.setBaxisC(d);
                 edtBxiasC.setText(d);
                 break;
             case 8:
+                orginal8Str = originalStr;
                 verifyDataBean.setBaxisD(d);
                 edtBxiasD.setText(d);
                 myApplication.setVerifyDataBean(verifyDataBean);
