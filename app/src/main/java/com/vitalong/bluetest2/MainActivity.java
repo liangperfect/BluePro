@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -103,7 +104,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private FloatingActionButton fabSearch;
     private int[] fabStartPosition;
     private TextView tvSearchDeviceCount;
-    private RelativeLayout rlSearchInfo;
+    private ConstraintLayout rlSearchInfo;
     private Button stopSearching;
     private RecyclerView recyclerView;
     private String currentDevAddress;
@@ -332,7 +333,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         revealSearchView = (RevealSearchView) findViewById(R.id.realsearchiew);
         revealBackgroundView = (RevealBackgroundView) findViewById(R.id.reveal_background_view);
         tvSearchDeviceCount = (TextView) findViewById(R.id.tv_search_device_count);
-        rlSearchInfo = (RelativeLayout) findViewById(R.id.rl_search_info);
+        rlSearchInfo = (ConstraintLayout) findViewById(R.id.rl_search_info);
         fabSearch = (FloatingActionButton) findViewById(R.id.fab_search);
         stopSearching = (Button) findViewById(R.id.btn_stop_searching);
     }

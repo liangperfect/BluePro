@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -51,6 +52,8 @@ public class GraphActivity extends AppCompatActivity {
     Button btn24;
     @Bind(R.id.btnwhole)
     Button btnwhole;
+    @Bind(R.id.tvTitle)
+    TextView tvTitle;
     MyApplication application;
     private String tableName = "A001_T01"; //默认表单是A001-T01
     List<RealDataCached> listDatas13; //direction1-3的缓存数据
@@ -404,6 +407,7 @@ public class GraphActivity extends AppCompatActivity {
         } else {
             toolbar.setTitleTextColor(getResources().getColor(android.R.color.white));
         }
+        tvTitle.setText(tableName);
     }
 
     protected void makeStatusBar(int colorId) {

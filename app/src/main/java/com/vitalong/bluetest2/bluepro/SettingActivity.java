@@ -1,6 +1,7 @@
 package com.vitalong.bluetest2.bluepro;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -54,6 +55,8 @@ public class SettingActivity extends MyBaseActivity2 {
     public RadioButton radio2Button;
     @Bind(R.id.edtSurveyDuration)
     public EditText edtSurveyDuration;
+    @Bind(R.id.btnSite)
+    public Button btnSite;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
     private int beepValue = 0;
@@ -168,6 +171,15 @@ public class SettingActivity extends MyBaseActivity2 {
     }
 
     private void initListener() {
+
+        btnSite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Uri uri = Uri.parse("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
+                Intent it = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(it);
+            }
+        });
 
         btnCoefficients.setOnClickListener(new View.OnClickListener() {
             @Override

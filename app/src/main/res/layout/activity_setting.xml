@@ -147,13 +147,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="2.02"
+            android:text="2.07"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
             app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
             app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
-            tools:text="2.01" />
+            tools:text="2.06" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/radius_btn_48dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Update"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersionValue"
+            app:layout_constraintStart_toEndOf="@id/tvSoftwareVersionValue"
+            app:layout_constraintTop_toTopOf="@id/tvSoftwareVersionValue" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvSaveTo"
