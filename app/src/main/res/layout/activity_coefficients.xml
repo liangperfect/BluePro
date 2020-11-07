@@ -92,11 +92,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvAaxisA"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="A axis A:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -136,11 +138,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvAaxisB"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="A axis B:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -180,11 +184,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvAaxisC"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="A axis C:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -225,11 +231,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvAaxisD"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="A axis D:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -268,11 +276,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvBaxisA"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="B axis A:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -311,11 +321,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvBaxisB"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="B axis B:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -354,11 +366,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvBaxisC"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="B axis C:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
@@ -397,11 +411,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    android:id="@+id/tvBaxisD"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
                     android:layout_weight="1"
                     android:paddingTop="10dp"
                     android:text="B axis D:   "
+                    android:textColor="@drawable/coefficient_btn_selector"
                     android:textSize="18dp" />
 
                 <androidx.appcompat.widget.AppCompatEditText
