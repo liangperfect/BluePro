@@ -20,6 +20,7 @@ import com.vitalong.bluetest2.bluepro.CompareActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
 import com.vitalong.bluetest2.bluepro.ShareFileActivity;
 import com.vitalong.bluetest2.bluepro.SurveyActivity;
+import com.vitalong.bluetest2.inclinometer.WebViewActivity;
 
 import butterknife.Bind;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -36,6 +37,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     ImageButton imageButton3;
     @Bind(R.id.imageButton4)
     ImageButton imageButton4;
+    @Bind(R.id.imageButton5)
+    ImageButton imageButton5;
 
     boolean isPause = false;
     int delayTime = 400;
@@ -68,6 +71,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         imageButton2.setOnClickListener(this);
         imageButton3.setOnClickListener(this);
         imageButton4.setOnClickListener(this);
+        imageButton5.setOnClickListener(this);
     }
 
     @Override
@@ -117,6 +121,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 break;
             case R.id.imageButton4:
                 startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
+                break;
+            case R.id.imageButton5:
+                startActivity(new Intent(OperationPanelActivity.this,WebViewActivity.class));
                 break;
             default:
                 break;

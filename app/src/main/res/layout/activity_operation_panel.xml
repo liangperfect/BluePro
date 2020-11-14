@@ -81,7 +81,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:width="100dp"
-                    android:text="Digital Tiltmeter"
+                    android:text="Digital Inclinometer"
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="32sp" />

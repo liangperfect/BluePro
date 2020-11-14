@@ -402,6 +402,9 @@ public class GraphActivity extends AppCompatActivity {
     protected void bindToolBar() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowCustomEnabled(true);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         if (Build.VERSION.SDK_INT >= 23) {
             toolbar.setTitleTextColor(getColor(android.R.color.white));
         } else {
