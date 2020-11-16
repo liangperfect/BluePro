@@ -1,13 +1,13 @@
 package com.vitalong.bluetest2.inclinometer;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,31 +15,26 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.vitalong.bluetest2.R;
 
-public class WebViewActivity extends AppCompatActivity {
-
-    private WebView webView;
+/**
+ * 关于我们
+ */
+public class AboutUsActivity extends AppCompatActivity {
     private Toolbar toolbar;
+    private TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_web_view);
+        setContentView(R.layout.activity_about_us);
         initView();
+        bindToolBar();
         makeStatusBar(R.color.white);
     }
 
     private void initView() {
-        webView = findViewById(R.id.webView);
         toolbar = findViewById(R.id.toolbar);
-        bindToolBar();
-        webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return true;
-            }
-        });
-        webView.loadUrl("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
+        textView = findViewById(R.id.tvTitle2);
+        textView.setOnClickListener(v -> startActivity(new Intent(AboutUsActivity.this, WebViewActivity.class)));
     }
 
     private void bindToolBar() {
@@ -58,7 +53,7 @@ public class WebViewActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            WebViewActivity.this.finish();
+            AboutUsActivity.this.finish();
         }
         return super.onOptionsItemSelected(item);
     }

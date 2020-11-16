@@ -29,7 +29,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".inclinometer.WebViewActivity"></activity>
+        <activity android:name=".inclinometer.AboutUsActivity"></activity>
+        <activity android:name=".inclinometer.WebViewActivity" />
         <activity android:name=".bluepro.VerifyResultActivity" />
         <activity android:name=".bluepro.ShareFileActivity" />
         <activity

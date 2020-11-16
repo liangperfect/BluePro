@@ -53,6 +53,7 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
 
     /**
      * 接收蓝牙数据
+     *
      * @param array
      */
     protected abstract void receiveDataFromBlue(byte[] array);
@@ -65,7 +66,6 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        toolbar.setNavigationIcon(R.mipmap.ic_search_white_36dp);
         if (Build.VERSION.SDK_INT >= 23) {
             toolbar.setTitleTextColor(getColor(android.R.color.white));
         } else {

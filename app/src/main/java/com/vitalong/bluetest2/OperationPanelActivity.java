@@ -20,7 +20,7 @@ import com.vitalong.bluetest2.bluepro.CompareActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
 import com.vitalong.bluetest2.bluepro.ShareFileActivity;
 import com.vitalong.bluetest2.bluepro.SurveyActivity;
-import com.vitalong.bluetest2.inclinometer.WebViewActivity;
+import com.vitalong.bluetest2.inclinometer.AboutUsActivity;
 
 import butterknife.Bind;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -123,7 +123,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
                 break;
             case R.id.imageButton5:
-                startActivity(new Intent(OperationPanelActivity.this,WebViewActivity.class));
+//                startActivity(new Intent(OperationPanelActivity.this,WebViewActivity.class));
+                startActivity(new Intent(OperationPanelActivity.this, AboutUsActivity.class));
                 break;
             default:
                 break;

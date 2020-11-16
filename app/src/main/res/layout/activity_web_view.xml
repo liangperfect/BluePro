@@ -31,11 +31,11 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:singleLine="true"
-                android:text="公司介紹"
+                android:text="About us"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="公司介紹" />
+                tools:text="About Us" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
