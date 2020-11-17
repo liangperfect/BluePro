@@ -1,6 +1,5 @@
 package com.vitalong.bluetest2.bluepro;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,8 +36,8 @@ public class CompareActivity extends AppCompatActivity {
     Spinner spinner2;
     @Bind(R.id.spinner3)
     Spinner spinner3;
-    @Bind(R.id.spinner4)
-    Spinner spinner4;
+    //    @Bind(R.id.spinner4)
+//    Spinner spinner4;
     @Bind(R.id.spinner5)
     Spinner spinner5;
     @Bind(R.id.button)
@@ -85,7 +84,7 @@ public class CompareActivity extends AppCompatActivity {
         initSpnr(spinner1, ctype1);
         initSpnr(spinner2, ctype2);
         initSpnr(spinner3, ctype3);
-        initSpnr(spinner4, ctype4);
+//        initSpnr(spinner4, ctype4);
         initSpnr(spinner5, ctype5);
     }
 
@@ -125,30 +124,23 @@ public class CompareActivity extends AppCompatActivity {
             }
         });
 
-        btnCleanData.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        btnCleanData.setOnClickListener(v -> {
 
-                final EditText et = new EditText(CompareActivity.this);
-                et.setHint("請輸入確認密碼");
-                new AlertDialog.Builder(CompareActivity.this).setTitle(selectDirName + "_" + selectFileName + "文檔清除后無法恢復!")
-                        .setIcon(R.mipmap.logo)
-                        .setView(et)
-                        .setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //按下确定键后的事件
-                                String inputPwd = et.getText().toString();
-                                if ("111222".equals(inputPwd)) {
-                                    application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDirName + "_" + selectFileName)).buildDelete().executeDeleteWithoutDetachingEntities();
-                                    Toast.makeText(CompareActivity.this, "刪除成功", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        }).setNegativeButton("取消", null).show();
-            }
+            final EditText et = new EditText(CompareActivity.this);
+            et.setHint("請輸入確認密碼");
+            new AlertDialog.Builder(CompareActivity.this).setTitle(selectDirName + "_" + selectFileName + "文檔清除后無法恢復!")
+                    .setIcon(R.mipmap.logo)
+                    .setView(et)
+                    .setPositiveButton("确定", (dialogInterface, i) -> {
+                        //按下确定键后的事件
+                        String inputPwd = et.getText().toString();
+                        if ("111222".equals(inputPwd)) {
+                            application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDirName + "_" + selectFileName)).buildDelete().executeDeleteWithoutDetachingEntities();
+                            Toast.makeText(CompareActivity.this, "刪除成功", Toast.LENGTH_SHORT).show();
+                        }
+                    }).setNegativeButton("取消", null).show();
         });
     }
-
 
     private void itemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
@@ -161,9 +153,9 @@ public class CompareActivity extends AppCompatActivity {
             case R.id.spinner3:
                 selectNums = ctype3[position];
                 break;
-            case R.id.spinner4:
-                selectDirection = ctype4[position];
-                break;
+//            case R.id.spinner4:
+//                selectDirection = ctype4[position];
+//                break;
             case R.id.spinner5:
                 selectShowMode = ctype5[position];
                 break;

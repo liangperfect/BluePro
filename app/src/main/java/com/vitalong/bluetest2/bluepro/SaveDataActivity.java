@@ -189,7 +189,7 @@ public class SaveDataActivity extends AppCompatActivity {
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
             String de = sdf.format(date);
-            String saveFileStr = "tiltmeter1/" + selectDir + "/" + selectDir + "_" + selectFileName + "_" + de;
+            String saveFileStr = "tiltmeter/" + selectDir + "/" + selectDir + "_" + selectFileName + "_" + de;
             easyCsv.setSeparatorColumn(",");//列分隔符
             easyCsv.setSeperatorLine("/n");//行分隔符
             List<String> headerList = new ArrayList<>();
@@ -278,7 +278,7 @@ public class SaveDataActivity extends AppCompatActivity {
      */
     private File createDirAndFile() throws IOException {
 
-        String dir = "sdcard/tiltmeter1/" + selectDir + "/";
+        String dir = "sdcard/tiltmeter/" + selectDir + "/";
         Utils.createDir(dir);
         File dirFile = new File(dir);
         //删除之前的文件

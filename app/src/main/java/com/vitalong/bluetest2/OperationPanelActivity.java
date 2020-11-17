@@ -12,13 +12,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.leon.lfilepickerlibrary.LFilePicker;
 import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.CompareActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
-import com.vitalong.bluetest2.bluepro.ShareFileActivity;
 import com.vitalong.bluetest2.bluepro.SurveyActivity;
 import com.vitalong.bluetest2.inclinometer.AboutUsActivity;
 
@@ -120,11 +120,19 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 startActivity(new Intent(OperationPanelActivity.this, SettingActivity.class));
                 break;
             case R.id.imageButton4:
-                startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
+//                startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
+                new LFilePicker()
+                        .withActivity(OperationPanelActivity.this)
+                        .withRequestCode(123)
+                        .withStartPath("/storage/emulated/0/tiltmeter")
+                        .withIsGreater(false)
+                        .withFileSize(500 * 1024)
+                        .start();
                 break;
             case R.id.imageButton5:
 //                startActivity(new Intent(OperationPanelActivity.this,WebViewActivity.class));
                 startActivity(new Intent(OperationPanelActivity.this, AboutUsActivity.class));
+//                int REQUESTCODE_FROM_ACTIVITY = 1000;
                 break;
             default:
                 break;
