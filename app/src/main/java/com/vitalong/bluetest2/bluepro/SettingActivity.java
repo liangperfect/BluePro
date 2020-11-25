@@ -248,7 +248,8 @@ public class SettingActivity extends MyBaseActivity2 {
     @Override
     protected void onResume() {
         super.onResume();
-        isPause = false;
+//        isPause = false;
+//      registerBc();
     }
 
     @Override

@@ -10,6 +10,7 @@ public class VerifyDataBean {
     private String BaxisB;
     private String BaxisC;
     private String BaxisD;
+    private boolean isCorrect = true;//矫正系数是否正确
 
     public String getAaxisA() {
         return AaxisA;
@@ -73,5 +74,13 @@ public class VerifyDataBean {
 
     public void setBaxisD(String baxisD) {
         BaxisD = baxisD;
+    }
+
+    public boolean isCorrect() {
+        return isCorrect;
+    }
+
+    public void setCorrect(boolean correct) {
+        isCorrect = correct;
     }
 }

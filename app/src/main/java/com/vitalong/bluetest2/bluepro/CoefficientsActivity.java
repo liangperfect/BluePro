@@ -736,8 +736,10 @@ public class CoefficientsActivity extends MyBaseActivity2 {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        refreshCount = 0;
+        refreshHandler.removeCallbacksAndMessages(null);
         unregisterReceiver(mGattUpdateReceiver);
+        super.onDestroy();
     }
 
     @Override
@@ -811,41 +813,49 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             case 1:
                 orginal1Str = originalStr;
                 verifyDataBean.setAaxisA(d);
+                Log.d("chenliang", "edtAxiasA:" + d);
                 edtAxiasA.setText(d);
                 break;
             case 2:
                 orginal2Str = originalStr;
                 verifyDataBean.setAaxisB(d);
+                Log.d("chenliang", "edtAxiasB:" + d);
                 edtAxiasB.setText(d);
                 break;
             case 3:
                 orginal3Str = originalStr;
                 verifyDataBean.setAaxisC(d);
+                Log.d("chenliang", "edtAxiasC:" + d);
                 edtAxiasC.setText(d);
                 break;
             case 4:
                 orginal4Str = originalStr;
                 verifyDataBean.setAaxisD(d);
+                Log.d("chenliang", "edtAxiasD:" + d);
                 edtAxiasD.setText(d);
                 break;
             case 5:
                 orginal5Str = originalStr;
                 verifyDataBean.setBaxisA(d);
+                Log.d("chenliang", "edtBxiasA:" + d);
                 edtBxiasA.setText(d);
                 break;
             case 6:
                 orginal6Str = originalStr;
                 verifyDataBean.setBaxisB(d);
+                Log.d("chenliang", "edtBxiasB:" + d);
                 edtBxiasB.setText(d);
                 break;
             case 7:
                 orginal7Str = originalStr;
                 verifyDataBean.setBaxisC(d);
+                Log.d("chenliang", "edtBxiasC:" + d);
                 edtBxiasC.setText(d);
                 break;
             case 8:
                 orginal8Str = originalStr;
                 verifyDataBean.setBaxisD(d);
+                Log.d("chenliang", "edtBxiasD:" + d);
                 edtBxiasD.setText(d);
                 myApplication.setVerifyDataBean(verifyDataBean);
                 refreshCount = 0;

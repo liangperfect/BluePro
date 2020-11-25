@@ -342,8 +342,6 @@ public class SurveyActivity extends MyBaseActivity2 {
                         saveSuerveyBean.setOneChannelAngle1(currOneChannelAngle);
                         saveSuerveyBean.setTwoChannelAngle1(currtwoChannelAngle);
                         saveSuerveyBean.setShow1(tvAxis1Value.getText().toString());
-
-
                         Log.d("chenliang", "打印原始值的数据->currOneChannelAngle" + currOneChannelAngle + "    getDeg:" +
                                 getDeg(currOneChannelAngle, Constants.SFMODE_1AXIS) + "   getRaw:" +
                                 getRaw(getDeg(currOneChannelAngle, Constants.SFMODE_1AXIS)));

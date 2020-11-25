@@ -86,10 +86,25 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
             try {
                 parseVerifyData(hexStr);
             } catch (Exception e) {
+                clearVerifyDataBean();
+
                 Toast.makeText(OperationPanelActivity.this, "數據解析錯誤，請推送重新鏈接", Toast.LENGTH_SHORT).show();
             }
         }
 //        }
+    }
+
+    private void clearVerifyDataBean() {
+//        verifyDataBean.setCorrect(false);
+        verifyDataBean.setAaxisA("");
+        verifyDataBean.setAaxisB("");
+        verifyDataBean.setAaxisC("");
+        verifyDataBean.setAaxisD("");
+        verifyDataBean.setBaxisA("");
+        verifyDataBean.setBaxisB("");
+        verifyDataBean.setBaxisC("");
+        verifyDataBean.setBaxisD("");
+        myApplication.setVerifyDataBean(verifyDataBean);
     }
 
     @Override

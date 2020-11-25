@@ -63,9 +63,10 @@ public class ShareFileActivity extends AppCompatActivity {
         File dir = new File(dirPath);
         if (dir.listFiles() != null) {
             for (int i = 0; i < Objects.requireNonNull(dir.listFiles()).length; i++) {
-
-                if (dir.listFiles()[i].isDirectory()) {
-                    cachedFiles.add(dir.listFiles()[i].listFiles()[0]);//默认只会按时间存一个文件的
+                if (Objects.requireNonNull(dir.listFiles())[i].isDirectory()) {
+                    for (int j = 0; j < Objects.requireNonNull(dir.listFiles()[i].listFiles()).length; j++) {
+                        cachedFiles.add(dir.listFiles()[i].listFiles()[j]);//添加字符串
+                    }
                 }
             }
         }
@@ -160,7 +161,7 @@ public class ShareFileActivity extends AppCompatActivity {
                     //分享文件
                     Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
                     intent.setType("*/*");//多个文件格式
-                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM,files);//Intent.EXTRA_STREAM同于传输文件流
+                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
                     startActivity(intent);
                     return false;
                 }
