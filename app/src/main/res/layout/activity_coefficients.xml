@@ -457,7 +457,8 @@
                 android:layout_weight="1"
                 android:background="@drawable/blue"
                 android:text="SET"
-                android:textColor="#fff" />
+                android:textColor="#fff"
+                android:visibility="gone" />
 
         </LinearLayout>
 

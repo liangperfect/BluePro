@@ -192,133 +192,133 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             }
         });
 
-        tvAaxisA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtAxiasA.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 1;
-                    String cmd = edtAxiasA.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(0));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvAaxisB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtAxiasB.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 2;
-                    String cmd = edtAxiasB.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(1));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvAaxisC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtAxiasC.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 3;
-                    String cmd = edtAxiasC.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(2));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvAaxisD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtAxiasD.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 4;
-                    String cmd = edtAxiasD.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(3));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvBaxisA.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtBxiasA.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 5;
-                    String cmd = edtBxiasA.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(4));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvBaxisB.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtBxiasB.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 6;
-                    String cmd = edtBxiasB.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(5));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvBaxisC.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtBxiasC.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 7;
-                    String cmd = edtBxiasC.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(6));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
-
-        tvBaxisD.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (edtBxiasD.getText().toString().isEmpty()) {
-                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-                } else {
-                    isRefresh = 2;
-                    singleCount = 8;
-                    String cmd = edtBxiasD.getText().toString();
-                    cmd = cmdAnalyze.getParamToCmd(cmd);
-                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(7));//getParamsCmd
-                    sendCmdCodeByHex(cmd);
-                }
-            }
-        });
+//        tvAaxisA.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtAxiasA.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 1;
+//                    String cmd = edtAxiasA.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(0));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvAaxisB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtAxiasB.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 2;
+//                    String cmd = edtAxiasB.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(1));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvAaxisC.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtAxiasC.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 3;
+//                    String cmd = edtAxiasC.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(2));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvAaxisD.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtAxiasD.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 4;
+//                    String cmd = edtAxiasD.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(3));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvBaxisA.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtBxiasA.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 5;
+//                    String cmd = edtBxiasA.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(4));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvBaxisB.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtBxiasB.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 6;
+//                    String cmd = edtBxiasB.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(5));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvBaxisC.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtBxiasC.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 7;
+//                    String cmd = edtBxiasC.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(6));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
+//
+//        tvBaxisD.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (edtBxiasD.getText().toString().isEmpty()) {
+//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    isRefresh = 2;
+//                    singleCount = 8;
+//                    String cmd = edtBxiasD.getText().toString();
+//                    cmd = cmdAnalyze.getParamToCmd(cmd);
+//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(7));//getParamsCmd
+//                    sendCmdCodeByHex(cmd);
+//                }
+//            }
+//        });
     }
 
     private void clearUIState() {
