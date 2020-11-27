@@ -159,6 +159,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                     clearUIState();
                     //这个1不是时间
                     btnSet.setEnabled(false);
+                    btnRefresh.setEnabled(false);
                     isRefresh = 1;
                     coefficientsHandler.sendEmptyMessage(1);
                 }
@@ -192,133 +193,133 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             }
         });
 
-//        tvAaxisA.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtAxiasA.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 1;
-//                    String cmd = edtAxiasA.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(0));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvAaxisB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtAxiasB.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 2;
-//                    String cmd = edtAxiasB.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(1));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvAaxisC.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtAxiasC.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 3;
-//                    String cmd = edtAxiasC.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(2));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvAaxisD.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtAxiasD.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 4;
-//                    String cmd = edtAxiasD.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(3));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvBaxisA.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtBxiasA.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 5;
-//                    String cmd = edtBxiasA.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(4));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvBaxisB.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtBxiasB.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 6;
-//                    String cmd = edtBxiasB.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(5));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvBaxisC.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtBxiasC.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 7;
-//                    String cmd = edtBxiasC.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(6));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
-//
-//        tvBaxisD.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (edtBxiasD.getText().toString().isEmpty()) {
-//                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    isRefresh = 2;
-//                    singleCount = 8;
-//                    String cmd = edtBxiasD.getText().toString();
-//                    cmd = cmdAnalyze.getParamToCmd(cmd);
-//                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(7));//getParamsCmd
-//                    sendCmdCodeByHex(cmd);
-//                }
-//            }
-//        });
+        tvAaxisA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtAxiasA.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 1;
+                    String cmd = edtAxiasA.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(0));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvAaxisB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtAxiasB.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 2;
+                    String cmd = edtAxiasB.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(1));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvAaxisC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtAxiasC.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 3;
+                    String cmd = edtAxiasC.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(2));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvAaxisD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtAxiasD.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 4;
+                    String cmd = edtAxiasD.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(3));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvBaxisA.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtBxiasA.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 5;
+                    String cmd = edtBxiasA.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(4));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvBaxisB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtBxiasB.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 6;
+                    String cmd = edtBxiasB.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(5));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvBaxisC.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtBxiasC.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 7;
+                    String cmd = edtBxiasC.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(6));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
+
+        tvBaxisD.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (edtBxiasD.getText().toString().isEmpty()) {
+                    Toast.makeText(CoefficientsActivity.this, "AaxisA的值不能為空", Toast.LENGTH_SHORT).show();
+                } else {
+                    isRefresh = 2;
+                    singleCount = 8;
+                    String cmd = edtBxiasD.getText().toString();
+                    cmd = cmdAnalyze.getParamToCmd(cmd);
+                    cmd = cmdClass.getParamsCmd(cmd, String.valueOf(7));//getParamsCmd
+                    sendCmdCodeByHex(cmd);
+                }
+            }
+        });
     }
 
     private void clearUIState() {
@@ -454,10 +455,16 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         } else if (isRefresh == 0) {
             //刷新数据
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
-            if (hexStr.length() == 24) {
-                //加判断是为了避免其它命令接收数据造成这里解析出错
-                refreshVerifyData(hexStr.substring(6, 20), hexStr);
+//            if (hexStr.length() == 24) {
+            //加判断是为了避免其它命令接收数据造成这里解析出错
+//                refreshVerifyData(hexStr.substring(6, 20), hexStr);
+            try {
+                refreshVerifyData2(hexStr);
+            } catch (Exception ex) {
+                Toast.makeText(CoefficientsActivity.this, "Refresh出錯，請重新刷新", Toast.LENGTH_SHORT).show();
             }
+
+//            }
         } else if (isRefresh == 2) {
             coefficientsHandler.getDelaySendHandler().removeCallbacksAndMessages(null);
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
@@ -719,6 +726,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 imgBxisD.setVisibility(View.VISIBLE);
                 count = 0;
                 btnSet.setEnabled(true);
+                btnRefresh.setEnabled(true);
                 Toast.makeText(CoefficientsActivity.this, "参数设置完毕", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -796,8 +804,6 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
             if (msg.what == 9) {
-//                verifyLoadDialog.dismiss();
-//                Log.d("chenliang111",)
                 btnRefresh.setEnabled(true);
                 Toast.makeText(CoefficientsActivity.this, "Refresh Success", Toast.LENGTH_SHORT).show();
             } else {
@@ -806,108 +812,73 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         }
     }
 
-    private void refreshVerifyData(String codeStr, String originalStr) {
-        String d = Utils.getVerifyDatas(codeStr);
-        refreshCount++;
-        switch (refreshCount) {
+    //需要连续发送8次获取数据
+    private void sendCmdGetVerifyCode(int No) {
+
+        switch (No) {
             case 1:
-                orginal1Str = originalStr;
-                verifyDataBean.setAaxisA(d);
-                Log.d("chenliang", "edtAxiasA:" + d);
-                edtAxiasA.setText(d);
+                sendCmdCodeByHex(Constants.DATA_VERIFY_SEND_5);
+                refreshHandler.sendEmptyMessageDelayed(2, delayTime);
                 break;
             case 2:
-                orginal2Str = originalStr;
-                verifyDataBean.setAaxisB(d);
-                Log.d("chenliang", "edtAxiasB:" + d);
-                edtAxiasB.setText(d);
-                break;
-            case 3:
-                orginal3Str = originalStr;
-                verifyDataBean.setAaxisC(d);
-                Log.d("chenliang", "edtAxiasC:" + d);
-                edtAxiasC.setText(d);
-                break;
-            case 4:
-                orginal4Str = originalStr;
-                verifyDataBean.setAaxisD(d);
-                Log.d("chenliang", "edtAxiasD:" + d);
-                edtAxiasD.setText(d);
-                break;
-            case 5:
-                orginal5Str = originalStr;
-                verifyDataBean.setBaxisA(d);
-                Log.d("chenliang", "edtBxiasA:" + d);
-                edtBxiasA.setText(d);
-                break;
-            case 6:
-                orginal6Str = originalStr;
-                verifyDataBean.setBaxisB(d);
-                Log.d("chenliang", "edtBxiasB:" + d);
-                edtBxiasB.setText(d);
-                break;
-            case 7:
-                orginal7Str = originalStr;
-                verifyDataBean.setBaxisC(d);
-                Log.d("chenliang", "edtBxiasC:" + d);
-                edtBxiasC.setText(d);
-                break;
-            case 8:
-                orginal8Str = originalStr;
-                verifyDataBean.setBaxisD(d);
-                Log.d("chenliang", "edtBxiasD:" + d);
-                edtBxiasD.setText(d);
-                myApplication.setVerifyDataBean(verifyDataBean);
-                refreshCount = 0;
-                btnRefresh.setEnabled(true);
-                Toast.makeText(CoefficientsActivity.this, "刷新成功！", Toast.LENGTH_SHORT).show();
+                sendCmdCodeByHex(Constants.DATA_VERIFY_SEND_3);
+                refreshHandler.sendEmptyMessageDelayed(3, delayTime);
                 break;
             default:
-                refreshCount = 0;
+                Log.d("chenliang", "获取矫正参数命令发送完成");
+                break;
+        }
+    }
+
+    private void refreshVerifyData2(String codeStr) {
+
+        count++;
+        switch (count) {
+            case 1:
+                orginal1Str = codeStr.substring(6, 20);
+                orginal2Str = codeStr.substring(20, 34);
+                orginal3Str = codeStr.substring(34, 48);
+                orginal4Str = codeStr.substring(48, 62);
+                orginal5Str = codeStr.substring(62, 76);
+                String d1 = Utils.getVerifyDatas(orginal1Str);
+                String d2 = Utils.getVerifyDatas(orginal2Str);
+                String d3 = Utils.getVerifyDatas(orginal3Str);
+                String d4 = Utils.getVerifyDatas(orginal4Str);
+                String d5 = Utils.getVerifyDatas(orginal5Str);
+                edtAxiasA.setText(d1);
+                edtAxiasB.setText(d2);
+                edtAxiasC.setText(d3);
+                edtAxiasD.setText(d4);
+                edtBxiasA.setText(d5);
+                verifyDataBean.setAaxisA(d1);
+                verifyDataBean.setAaxisB(d2);
+                verifyDataBean.setAaxisC(d3);
+                verifyDataBean.setAaxisD(d4);
+                verifyDataBean.setBaxisA(d5);
+                break;
+            case 2:
+                orginal6Str = codeStr.substring(6, 20);
+                orginal7Str = codeStr.substring(20, 34);
+                orginal8Str = codeStr.substring(34, 48);
+                String d6 = Utils.getVerifyDatas(orginal6Str);
+                String d7 = Utils.getVerifyDatas(orginal7Str);
+                String d8 = Utils.getVerifyDatas(orginal8Str);
+                edtBxiasB.setText(d6);
+                edtBxiasC.setText(d7);
+                edtBxiasD.setText(d8);
+                verifyDataBean.setBaxisB(d6);
+                verifyDataBean.setBaxisC(d7);
+                verifyDataBean.setBaxisD(d8);
+                myApplication.setVerifyDataBean(verifyDataBean);
+                count = 0;
+                btnRefresh.setEnabled(true);
+                break;
+            default:
+                count = 0;
                 refreshHandler.removeCallbacksAndMessages(null);
                 Toast.makeText(CoefficientsActivity.this, "刷新出錯，請重新點擊刷新！", Toast.LENGTH_SHORT).show();
                 break;
         }
     }
 
-    //需要连续发送8次获取数据
-    private void sendCmdGetVerifyCode(int No) {
-
-        switch (No) {
-            case 1:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO1);
-                refreshHandler.sendEmptyMessageDelayed(2, delayTime);
-                break;
-            case 2:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO2);
-                refreshHandler.sendEmptyMessageDelayed(3, delayTime);
-                break;
-            case 3:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO3);
-                refreshHandler.sendEmptyMessageDelayed(4, delayTime);
-                break;
-            case 4:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO4);
-                refreshHandler.sendEmptyMessageDelayed(5, delayTime);
-                break;
-            case 5:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO5);
-                refreshHandler.sendEmptyMessageDelayed(6, delayTime);
-                break;
-            case 6:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO6);
-                refreshHandler.sendEmptyMessageDelayed(7, delayTime);
-                break;
-            case 7:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO7);
-                refreshHandler.sendEmptyMessageDelayed(8, delayTime);
-                break;
-            case 8:
-                sendCmdCodeByHex(Constants.DATA_VERIFY_NO8);
-                break;
-            default:
-                System.out.println("获取矫正参数命令发送完成");
-                break;
-        }
-    }
 }

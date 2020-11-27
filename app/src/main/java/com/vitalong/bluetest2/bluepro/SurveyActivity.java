@@ -434,8 +434,8 @@ public class SurveyActivity extends MyBaseActivity2 {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         deInit();
+        super.onDestroy();
     }
 
     private void deInit() {

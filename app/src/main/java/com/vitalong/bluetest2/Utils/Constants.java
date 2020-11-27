@@ -243,6 +243,10 @@ public class Constants {
     public static String DATA_LOGGER_FILE_NAAME = "file name";
     public static String DATA_LOGGER_FLAG = "Data Logger Flag";
 
+
+    //发送第一条指令接收5个数据 , 发送第二条指令接收3个数据
+    public static String DATA_VERIFY_SEND_5 = "01 03 01 00 00 0A C4 31";
+    public static String DATA_VERIFY_SEND_3 = "01 03 01 05 00 06 D4 35";
     //发送矫正参数的每次数据
     public static String DATA_VERIFY_NO1 = "01 03 01 00 00 02 c5 f7";
     public static String DATA_VERIFY_NO2 = "01 03 01 01 00 02 94 37";
