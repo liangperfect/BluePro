@@ -452,6 +452,7 @@
 
             <Button
                 android:id="@+id/btnSet"
+                android:visibility="gone"
                 android:layout_width="199dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
