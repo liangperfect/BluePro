@@ -84,14 +84,16 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         //进行数据解析
         if (!isPause) {
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
+            Log.d("chenliang", "获取到的矫正系数" + hexStr);
+            parseAllVerifyData(hexStr);
 //        if (hexStr.length() == 24) {
             //加判断是为了避免其它命令接收数据造成这里解析出错
 //            parseVerifyData(hexStr.substring(6, 20));
-            try {
-                parseVerifyData(hexStr);
-            } catch (Exception e) {
-                Toast.makeText(OperationPanelActivity.this, "數據解析錯誤，請推送重新鏈接", Toast.LENGTH_SHORT).show();
-            }
+//            try {
+//                parseVerifyData(hexStr);
+//            } catch (Exception e) {
+//                Toast.makeText(OperationPanelActivity.this, "數據解析錯誤，請推送重新鏈接", Toast.LENGTH_SHORT).show();
+//            }
         }
 //        }
     }
@@ -147,7 +149,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
             if (msg.what == 10) {
                 verifyLoadDialog.dismiss();
             } else {
-                sendCmdGetVerifyCode(msg.what);
+//                sendCmdGetVerifyCode(msg.what);
+                sendCmdCodeByHex(Constants.DATA_ALL_VERIFY);
             }
         }
     }
@@ -196,6 +199,38 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 System.out.println("获取矫正参数命令发送完成");
                 break;
         }
+    }
+
+    private void parseAllVerifyData(String codeStr) {
+        String AaxisAStr = codeStr.substring(6, 20);
+        String AaxisBStr = codeStr.substring(20, 34);
+        String AaxisCStr = codeStr.substring(34, 48);
+        String AaxisDStr = codeStr.substring(48, 62);
+        String BaxisAStr = codeStr.substring(62, 76);
+        String BaxisBStr = codeStr.substring(76, 90);
+        String BaxisCStr = codeStr.substring(90, 104);
+        String BaxisDStr = codeStr.substring(104, 118);
+        Log.d("chenliang", "解析出的数据是->AaxisAStr:" + AaxisAStr + "   AaxisBStr:" + AaxisBStr +
+                "  AaxisCStr:" + AaxisCStr + "  AaxisDStr:" + AaxisDStr + "  BaxisAStr:" + BaxisAStr + "  BaxisBStr:" + BaxisBStr +
+                "  BaxisCStr:" + BaxisCStr + "  BaxisDStr:" + BaxisDStr);
+        String d1 = Utils.getVerifyDatas(AaxisAStr);
+        String d2 = Utils.getVerifyDatas(AaxisBStr);
+        String d3 = Utils.getVerifyDatas(AaxisCStr);
+        String d4 = Utils.getVerifyDatas(AaxisDStr);
+        String d5 = Utils.getVerifyDatas(BaxisAStr);
+        String d6 = Utils.getVerifyDatas(BaxisBStr);
+        String d7 = Utils.getVerifyDatas(BaxisCStr);
+        String d8 = Utils.getVerifyDatas(BaxisDStr);
+        verifyDataBean.setAaxisA(d1);
+        verifyDataBean.setAaxisB(d2);
+        verifyDataBean.setAaxisC(d3);
+        verifyDataBean.setAaxisD(d4);
+        verifyDataBean.setBaxisA(d5);
+        verifyDataBean.setBaxisB(d6);
+        verifyDataBean.setBaxisC(d7);
+        verifyDataBean.setBaxisD(d8);
+        Log.d("chenliang", "数据结果是->d1:" + d1 + "  d2:" + d2 + "  d3:" + d3 + "  d4:" + d4 + "  d5:" + d5 + "   d6:" + d6 + "  d7:" + d7 + "  d8:" + d8);
+        myApplication.setVerifyDataBean(verifyDataBean);
     }
 
     private void parseVerifyData(String codeStr) {

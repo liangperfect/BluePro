@@ -175,7 +175,8 @@ public class SettingActivity extends MyBaseActivity2 {
         btnSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Uri uri = Uri.parse("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
+//                Uri uri = Uri.parse("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
+                Uri uri = Uri.parse("https://drive.google.com/file/d/1SAnS_4UEruJJTLn-MFzK5sGKi0Bl3B12/view?usp=sharing");
                 Intent it = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(it);
             }

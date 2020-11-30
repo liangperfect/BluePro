@@ -159,6 +159,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                     clearUIState();
                     //这个1不是时间
                     btnSet.setEnabled(false);
+                    btnRefresh.setEnabled(false);
                     isRefresh = 1;
                     coefficientsHandler.sendEmptyMessage(1);
                 }
@@ -454,10 +455,11 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         } else if (isRefresh == 0) {
             //刷新数据
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
-            if (hexStr.length() == 24) {
-                //加判断是为了避免其它命令接收数据造成这里解析出错
-                refreshVerifyData(hexStr.substring(6, 20), hexStr);
-            }
+//            if (hexStr.length() == 24) {
+//                //加判断是为了避免其它命令接收数据造成这里解析出错
+//            refreshVerifyData(hexStr.substring(6, 20), hexStr);
+//            }
+            parseAllVerifyData(hexStr);
         } else if (isRefresh == 2) {
             coefficientsHandler.getDelaySendHandler().removeCallbacksAndMessages(null);
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
@@ -465,6 +467,55 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         } else {
             //nothing todo
         }
+    }
+
+    private void parseAllVerifyData(String codeStr) {
+        String AaxisAStr = codeStr.substring(6, 20);
+        String AaxisBStr = codeStr.substring(20, 34);
+        String AaxisCStr = codeStr.substring(34, 48);
+        String AaxisDStr = codeStr.substring(48, 62);
+        String BaxisAStr = codeStr.substring(62, 76);
+        String BaxisBStr = codeStr.substring(76, 90);
+        String BaxisCStr = codeStr.substring(90, 104);
+        String BaxisDStr = codeStr.substring(104, 118);
+        Log.d("chenliang", "解析出的数据是->AaxisAStr:" + AaxisAStr + "   AaxisBStr:" + AaxisBStr +
+                "  AaxisCStr:" + AaxisCStr + "  AaxisDStr:" + AaxisDStr + "  BaxisAStr:" + BaxisAStr + "  BaxisBStr:" + BaxisBStr +
+                "  BaxisCStr:" + BaxisCStr + "  BaxisDStr:" + BaxisDStr);
+        String d1 = Utils.getVerifyDatas(AaxisAStr);
+        String d2 = Utils.getVerifyDatas(AaxisBStr);
+        String d3 = Utils.getVerifyDatas(AaxisCStr);
+        String d4 = Utils.getVerifyDatas(AaxisDStr);
+        String d5 = Utils.getVerifyDatas(BaxisAStr);
+        String d6 = Utils.getVerifyDatas(BaxisBStr);
+        String d7 = Utils.getVerifyDatas(BaxisCStr);
+        String d8 = Utils.getVerifyDatas(BaxisDStr);
+        orginal1Str = AaxisAStr;
+        edtAxiasA.setText(d1);
+        verifyDataBean.setAaxisA(d1);
+        orginal2Str = AaxisBStr;
+        edtAxiasB.setText(d2);
+        verifyDataBean.setAaxisB(d2);
+        orginal3Str = AaxisCStr;
+        edtAxiasC.setText(d3);
+        verifyDataBean.setAaxisC(d3);
+        orginal4Str = AaxisDStr;
+        edtAxiasD.setText(d4);
+        verifyDataBean.setAaxisD(d4);
+        orginal5Str = BaxisAStr;
+        edtBxiasA.setText(d5);
+        verifyDataBean.setBaxisA(d5);
+        orginal6Str = BaxisBStr;
+        edtBxiasB.setText(d6);
+        verifyDataBean.setBaxisB(d6);
+        orginal7Str = BaxisCStr;
+        edtBxiasC.setText(d7);
+        verifyDataBean.setBaxisC(d7);
+        orginal8Str = BaxisDStr;
+        edtBxiasD.setText(d8);
+        verifyDataBean.setBaxisD(d8);
+        myApplication.setVerifyDataBean(verifyDataBean);
+        btnRefresh.setEnabled(true);
+        Toast.makeText(CoefficientsActivity.this, "Refresh Success", Toast.LENGTH_SHORT).show();
     }
 
     private void parseVerifyDataSingle(String codeStr) {
@@ -719,6 +770,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 imgBxisD.setVisibility(View.VISIBLE);
                 count = 0;
                 btnSet.setEnabled(true);
+                btnRefresh.setEnabled(true);
                 Toast.makeText(CoefficientsActivity.this, "参数设置完毕", Toast.LENGTH_SHORT).show();
                 break;
             default:
@@ -765,6 +817,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             if (msg.what == 9) {
 //                verifyLoadDialog.dismiss();
                 btnSet.setEnabled(true);
+                btnRefresh.setEnabled(true);
                 Toast.makeText(CoefficientsActivity.this, "全部設置完畢", Toast.LENGTH_SHORT).show();
             } else {
                 sendConvertCmd(msg.what);
@@ -795,11 +848,12 @@ public class CoefficientsActivity extends MyBaseActivity2 {
             super.handleMessage(msg);
             if (msg.what == 9) {
 //                verifyLoadDialog.dismiss();
-//                Log.d("chenliang111",)
                 btnRefresh.setEnabled(true);
                 Toast.makeText(CoefficientsActivity.this, "Refresh Success", Toast.LENGTH_SHORT).show();
             } else {
-                sendCmdGetVerifyCode(msg.what);
+                //sendCmdGetVerifyCode(msg.what);
+                //发送命令，直接获取到所有的矫正系数
+                sendCmdCodeByHex(Constants.DATA_ALL_VERIFY);
             }
         }
     }

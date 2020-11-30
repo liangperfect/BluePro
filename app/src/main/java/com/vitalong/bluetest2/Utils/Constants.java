@@ -243,6 +243,9 @@ public class Constants {
     public static String DATA_LOGGER_FILE_NAAME = "file name";
     public static String DATA_LOGGER_FLAG = "Data Logger Flag";
 
+
+    //一次性获取矫正系数
+    public static String DATA_ALL_VERIFY = "01 03 01 00 00 10 45 fa";
     //发送矫正参数的每次数据
     public static String DATA_VERIFY_NO1 = "01 03 01 00 00 02 c5 f7";
     public static String DATA_VERIFY_NO2 = "01 03 01 01 00 02 94 37";

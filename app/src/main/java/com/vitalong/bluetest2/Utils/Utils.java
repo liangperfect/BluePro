@@ -779,7 +779,7 @@ public class Utils {
                 return value;
             }
         } catch (Exception er) {
-            System.out.println("解析数据出错了");
+            Log.e("chenliang", "解析数据出错了");
             return "0";
         }
         return "0";

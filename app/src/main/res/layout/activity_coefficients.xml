@@ -455,7 +455,7 @@
                 android:layout_width="199dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/blue"
+                android:background="@drawable/btn_refresh_selector"
                 android:text="SET"
                 android:textColor="#fff" />
 
@@ -475,7 +475,7 @@
                 android:layout_width="199dp"
                 android:layout_height="50dp"
                 android:layout_weight="1"
-                android:background="@drawable/blue"
+                android:background="@drawable/btn_refresh_selector"
                 android:text="Refresh"
                 android:textColor="#fff" />
         </LinearLayout>
