@@ -36,6 +36,7 @@ public class LFilePicker {
     private String mStartPath;
     private boolean mIsGreater = true;//是否大于
     private long mFileSize;
+    private int selectorMode = 0;
 
     /**
      * 绑定Activity
@@ -254,6 +255,11 @@ public class LFilePicker {
         return this;
     }
 
+    public LFilePicker withSelectorMode(int selectorMode) {
+        this.selectorMode = selectorMode;
+        return this;
+    }
+
     public void start() {
         if (mActivity == null && mFragment == null && mSupportFragment == null) {
             throw new RuntimeException("You must pass Activity or Fragment by withActivity or withFragment or withSupportFragment method");
@@ -303,6 +309,7 @@ public class LFilePicker {
         paramEntity.setPath(mStartPath);
         paramEntity.setFileSize(mFileSize);
         paramEntity.setGreater(mIsGreater);
+        paramEntity.setSelectormode(selectorMode);
         Bundle bundle = new Bundle();
         bundle.putSerializable("param", paramEntity);
         return bundle;

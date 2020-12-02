@@ -29,10 +29,27 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".inclinometer.AboutUsActivity"></activity>
-        <activity android:name=".inclinometer.WebViewActivity" />
-        <activity android:name=".bluepro.VerifyResultActivity" />
-        <activity android:name=".bluepro.ShareFileActivity" />
+        <activity
+            android:name=".inclinometer.Survey2Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inclinometer.BoreholeInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inclinometer.SelectModeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inclinometer.AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inclinometer.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bluepro.VerifyResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bluepro.ShareFileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".bluepro.GraphActivity"
             android:screenOrientation="landscape" />
@@ -87,5 +104,4 @@
             android:name=".UpdateActivity"
             android:theme="@style/dialogstyle" />
     </application>
-
 </manifest>

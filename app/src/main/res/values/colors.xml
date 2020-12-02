@@ -38,4 +38,6 @@
     <color name="transparent">#00000000</color>
     <!--橙色-->
     <color name="orange">#EA5513</color>
+    <color name="red2">#C80D0D</color>
+    <color name="green2">#5BB928</color>
 </resources>

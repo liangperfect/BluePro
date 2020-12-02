@@ -32,15 +32,33 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"></androidx.appcompat.widget.Toolbar>
 
-            <androidx.appcompat.widget.AppCompatTextView
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                android:text="藍牙搜索列表"
-                android:textSize="24sp"
-                android:textStyle="bold" />
+                android:layout_height="match_parent">
 
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="藍牙搜索列表"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
+                <ImageView
+                    android:id="@+id/imgHome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:src="@drawable/operation2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -139,8 +157,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             android:text="Technical Support (Tel:02-23451269)"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -151,8 +169,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="如搜尋不到藍牙裝置 \n 請檢查:"
-            android:textSize="22sp"
             android:textColor="@color/white"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="@id/txt1"
             app:layout_constraintTop_toBottomOf="@id/txt1" />
 
@@ -162,8 +180,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="1.儀器電源開關是否已開啓?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt2"
             app:layout_constraintTop_toBottomOf="@id/txt2" />
 
@@ -173,8 +191,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="2.電池是否已充飽電?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt3"
             app:layout_constraintTop_toBottomOf="@id/txt3" />
 
@@ -184,8 +202,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="3.應用程式定位權限是否已開啓?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt4"
             app:layout_constraintTop_toBottomOf="@id/txt4" />
 
@@ -195,10 +213,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="4.手機是否已開啓用藍牙並與裝置配對成功?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt5"
-            app:layout_constraintTop_toBottomOf="@id/txt5"/>
+            app:layout_constraintTop_toBottomOf="@id/txt5" />
 
         <TextView
             android:id="@+id/txt7"
@@ -206,8 +224,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="5.關閉或禁用附近其他裝置的藍牙功能?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt6"
             app:layout_constraintTop_toBottomOf="@id/txt6" />
 
@@ -217,8 +235,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="6.您的裝置是否不在藍牙覆蓋範圍内?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt7"
             app:layout_constraintTop_toBottomOf="@id/txt7" />
 
@@ -228,8 +246,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="7.是否有完整移除舊版本軟體?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt8"
             app:layout_constraintTop_toBottomOf="@id/txt8" />
 
@@ -239,8 +257,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="8.藍牙天綫是否故障?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt9"
             app:layout_constraintTop_toBottomOf="@id/txt9" />
 
@@ -250,8 +268,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:text="9.儀器是否進水或重摔故障?"
-            android:textSize="18sp"
             android:textColor="@color/white"
+            android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@id/txt10"
             app:layout_constraintTop_toBottomOf="@id/txt10" />
 

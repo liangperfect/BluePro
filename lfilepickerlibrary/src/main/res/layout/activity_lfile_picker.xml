@@ -58,7 +58,8 @@
         android:background="@drawable/lfile_btn_bg"
         android:text="@string/lfile_Selected"
         android:textColor="@color/lfile_white"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/btn_shared"
@@ -68,7 +69,8 @@
         android:background="#00BF60"
         android:text="@string/lfile_Shared"
         android:textColor="@color/lfile_white"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="gone" />
 
     <!--    <Button-->
     <!--        android:id="@+id/btn_share"-->

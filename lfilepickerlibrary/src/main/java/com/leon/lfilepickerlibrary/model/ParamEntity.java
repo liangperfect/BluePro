@@ -25,6 +25,7 @@ public class ParamEntity implements Serializable {
     private String path;
     private long fileSize;
     private boolean isGreater;
+    private int selectormode;
 
     public String getTitle() {
         return title;
@@ -154,5 +155,13 @@ public class ParamEntity implements Serializable {
 
     public void setGreater(boolean greater) {
         isGreater = greater;
+    }
+
+    public int getSelectormode() {
+        return selectormode;
+    }
+
+    public void setSelectormode(int selectormode) {
+        this.selectormode = selectormode;
     }
 }

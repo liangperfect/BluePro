@@ -158,6 +158,7 @@
     <string name="tag_running_app">BLE</string>
     <string name="tag_running_service">SPP</string>
     <string name="transmittal_length">Max transmittal data is %s</string>
+    <string name="wait">Wait</string>
 
 
     <item name="onTiming" type="id"></item>

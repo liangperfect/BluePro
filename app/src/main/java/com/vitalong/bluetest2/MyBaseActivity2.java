@@ -42,7 +42,9 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myApplication = (MyApplication) getApplication();
-        initCharacteristics();
+        if (myApplication.isConnectBlue){
+            initCharacteristics();
+        }
         registerBc();
     }
 
@@ -188,10 +190,12 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
      * @param codeStr
      */
     protected void sendCmdCodeByHex(String codeStr) {
-        String cmdStr = codeStr.replace(" ", "");
-        System.out.println("sendCmdCodeByHex发送的数据是:" + cmdStr);
-        byte[] array = Utils.hexStringToByteArray(cmdStr);
-        writeCharacteristic(writeCharacteristic, array);
+        if (myApplication.isConnectBlue) {
+            String cmdStr = codeStr.replace(" ", "");
+            System.out.println("sendCmdCodeByHex发送的数据是:" + cmdStr);
+            byte[] array = Utils.hexStringToByteArray(cmdStr);
+            writeCharacteristic(writeCharacteristic, array);
+        }
     }
 
     /**

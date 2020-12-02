@@ -2,8 +2,11 @@ package com.leon.lfilepickerlibrary.ui;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -12,6 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +24,7 @@ import com.leon.lfilepickerlibrary.R;
 import com.leon.lfilepickerlibrary.adapter.PathAdapter;
 import com.leon.lfilepickerlibrary.filter.LFileFilter;
 import com.leon.lfilepickerlibrary.model.ParamEntity;
+import com.leon.lfilepickerlibrary.utils.Constant;
 import com.leon.lfilepickerlibrary.utils.FileUtils;
 import com.leon.lfilepickerlibrary.utils.StringUtils;
 import com.leon.lfilepickerlibrary.widget.EmptyRecyclerView;
@@ -27,6 +32,9 @@ import com.leon.lfilepickerlibrary.widget.EmptyRecyclerView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+
+import sakura.bottommenulibrary.bottompopfragmentmenu.BottomMenuFragment;
 
 public class LFilePickerActivity extends AppCompatActivity {
 
@@ -49,6 +57,9 @@ public class LFilePickerActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
         mParamEntity = (ParamEntity) getIntent().getExtras().getSerializable("param");
         setTheme(mParamEntity.getTheme());
         super.onCreate(savedInstanceState);
@@ -158,7 +169,7 @@ public class LFilePickerActivity extends AppCompatActivity {
         });
         mPathAdapter.setOnItemClickListener(new PathAdapter.OnItemClickListener() {
             @Override
-            public void click(int position) {
+            public void click(final int position) {
                 if (mParamEntity.isMutilyMode()) {
                     if (mListFiles.get(position).isDirectory()) {
                         //如果当前是目录，则进入继续查看目录
@@ -188,7 +199,36 @@ public class LFilePickerActivity extends AppCompatActivity {
                 } else {
                     //单选模式直接返回
                     if (mListFiles.get(position).isDirectory()) {
-                        chekInDirectory(position);
+                        if (mParamEntity.getSelectormode() == Constant.SELECTOR_MODE_2) {
+                            if (mListFiles.get(position).getName().startsWith("Namber")) {
+                                //进行弹框
+                                new BottomMenuFragment(LFilePickerActivity.this)
+                                        .addMenuItems(new sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem("開始測量"))
+                                        .addMenuItems(new sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem("修改記錄檔"))
+                                        .setOnItemClickListener(new BottomMenuFragment.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(TextView textView, int i) {
+
+                                                if (i == 0) {
+                                                    //前往实时界面进行测量
+                                                    Intent intent = new Intent();
+                                                    intent.putExtra("selectModel", Constant.SELECTOR_MODE_2_1);
+                                                    intent.putExtra("selectFile", mListFiles.get(position).getParentFile().getName() + "," + mListFiles.get(position).getName());
+                                                    setResult(RESULT_OK, intent);
+                                                    LFilePickerActivity.this.finish();
+                                                } else {
+                                                    //获取下一层数据
+                                                    chekInDirectory(position);
+                                                }
+                                            }
+                                        }).show();
+                            } else {
+                                //如果当前是目录，则进入继续查看目录
+                                chekInDirectory(position);
+                            }
+                        } else {
+                            chekInDirectory(position);
+                        }
                         return;
                     }
                     if (mParamEntity.isChooseMode()) {
@@ -220,24 +260,36 @@ public class LFilePickerActivity extends AppCompatActivity {
         });
 
         mBtnShared.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
 
-                if (mParamEntity.isChooseMode() && mListNumbers.size() < 1) {
-                    String info = mParamEntity.getNotFoundFiles();
-                    if (TextUtils.isEmpty(info)) {
-                        Toast.makeText(LFilePickerActivity.this, R.string.lfile_NotFoundBooks, Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(LFilePickerActivity.this, info, Toast.LENGTH_SHORT).show();
+                //进行文件分享
+                final ArrayList<Uri> files = new ArrayList<Uri>();
+                mListNumbers.forEach(new Consumer<String>() {
+                    @Override
+                    public void accept(String path) {
+                        files.add(Uri.fromFile(new File(path)));
                     }
-                } else {
-                    //返回
-                    chooseDone();
-                }
+                });
+                Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+                intent.setType("*/*");//多个文件格式
+                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
+                startActivity(intent);
+//                if (mParamEntity.isChooseMode() && mListNumbers.size() < 1) {
+//                    String info = mParamEntity.getNotFoundFiles();
+//                    if (TextUtils.isEmpty(info)) {
+//                        Toast.makeText(LFilePickerActivity.this, R.string.lfile_NotFoundBooks, Toast.LENGTH_SHORT).show();
+//                    } else {
+//                        Toast.makeText(LFilePickerActivity.this, info, Toast.LENGTH_SHORT).show();
+//                    }
+//                } else {
+//                    //返回
+//                    chooseDone();
+//                }
             }
         });
     }
-
 
     /**
      * 点击进入目录
@@ -296,6 +348,10 @@ public class LFilePickerActivity extends AppCompatActivity {
 
         if (mParamEntity.getAddText() != null) {
             mBtnAddBook.setText(mParamEntity.getAddText());
+        }
+
+        if (mParamEntity.isMutilyMode()) {
+            mBtnShared.setVisibility(View.VISIBLE);
         }
     }
 

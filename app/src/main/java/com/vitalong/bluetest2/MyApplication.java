@@ -50,6 +50,8 @@ public class MyApplication extends Application {
 
     public RealDataCachedDao realDataCachedDao;
 
+    public boolean isConnectBlue = true;//是否连接了蓝牙进入的主界面
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -70,9 +72,10 @@ public class MyApplication extends Application {
 
     private void initBugly() {
 
-        CrashReport.initCrashReport(getApplicationContext(),"77f2a83f4e",true);
+        CrashReport.initCrashReport(getApplicationContext(), "77f2a83f4e", true);
 
     }
+
     public void setServices(List<MService> services) {
         this.services.clear();
         this.services.addAll(services);

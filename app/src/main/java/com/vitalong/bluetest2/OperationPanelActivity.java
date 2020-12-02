@@ -1,5 +1,6 @@
 package com.vitalong.bluetest2;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.vitalong.bluetest2.Utils.Constants;
@@ -19,8 +21,10 @@ import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.CompareActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
-import com.vitalong.bluetest2.bluepro.SurveyActivity;
 import com.vitalong.bluetest2.inclinometer.AboutUsActivity;
+import com.vitalong.bluetest2.inclinometer.SelectModeActivity;
+
+import java.util.List;
 
 import butterknife.Bind;
 import me.drakeet.materialdialog.MaterialDialog;
@@ -47,6 +51,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
     private VerifyDataBean verifyDataBean;
     private MaterialDialog verifyLoadDialog;
+    private int FILE_SELECTOR_SHARE = 111;//选择文件进行分享
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,7 +118,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 OperationPanelActivity.this.finish();
                 break;
             case R.id.imageButton1:
-                startActivity(new Intent(OperationPanelActivity.this, SurveyActivity.class));
+//                startActivity(new Intent(OperationPanelActivity.this, SurveyActivity.class));
+                startActivity(new Intent(OperationPanelActivity.this, SelectModeActivity.class));
                 break;
             case R.id.imageButton2:
                 startActivity(new Intent(OperationPanelActivity.this, CompareActivity.class));
@@ -125,7 +131,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 //                startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
                 new LFilePicker()
                         .withActivity(OperationPanelActivity.this)
-                        .withRequestCode(123)
+                        .withRequestCode(FILE_SELECTOR_SHARE)
+                        .withMutilyMode(true)
                         .withStartPath("/storage/emulated/0/tiltmeter")
                         .withIsGreater(false)
                         .withFileSize(500 * 1024)
@@ -307,5 +314,31 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 .setContentView(progressBar);
         verifyLoadDialog.show();
         operationPanelHandler.sendEmptyMessageDelayed(10, 4000);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == Activity.RESULT_OK && requestCode == FILE_SELECTOR_SHARE) {
+            List<String> list = data.getStringArrayListExtra("paths");
+            Toast.makeText(getApplicationContext(), "选中了" + list.size() + "个文件", Toast.LENGTH_SHORT).show();
+            //如果是文件夹选择模式，需要获取选择的文件夹路径
+            String path = data.getStringExtra("path");
+            Toast.makeText(getApplicationContext(), "选中的路径为" + path, Toast.LENGTH_SHORT).show();
+        }
+
+//        if (resultCode == Activity.RESULT_OK && requestCode == 123) {
+//            assert data != null;
+//            if (data.getIntExtra("selectModel", 0) == Constant.SELECTOR_MODE_2_1) {
+//                //选择
+//                Intent intent1 = new Intent(OperationPanelActivity.this, Survey2Activity.class);
+//                startActivity(intent1);
+//            } else {
+//                List<String> list = data.getStringArrayListExtra("paths");
+//                Intent intent2 = new Intent(OperationPanelActivity.this, Survey2Activity.class);
+//                startActivity(intent2);
+//                Toast.makeText(getApplicationContext(), "选中文件路径:" + list.get(0), Toast.LENGTH_SHORT).show();
+//            }
+//        }
     }
 }
