@@ -170,7 +170,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:checked="true"
-                android:text="0°"
+                android:text="A0°"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
 
@@ -179,7 +179,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="180°"
+                android:text="A180°"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
         </RadioGroup>

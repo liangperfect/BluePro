@@ -398,6 +398,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="gone"
-            app:constraint_referenced_ids="tvRange,tvRangeValue,tvSensorType,tvSensorTypeValue,SpSensorModeValue,tvSensorMode,tvConnection,spConnectionValue,tvUnit,spUnitValue,tvDecimal,spDecimalValue,tvSurveyTitle,edtSurveyDuration" />
+            app:constraint_referenced_ids="tvRange,tvRangeValue,tvSensorType,tvSensorTypeValue,SpSensorModeValue,tvSensorMode,tvConnection,spConnectionValue,tvUnit,spUnitValue,tvDecimal,spDecimalValue" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -296,4 +296,8 @@ public class Constants {
     //工地选择模式后
     public static int SELECTOR_MODE_2_1 = 1;//开始测量
     public static int SELECTOR_MODE_2_2 = 2;//修改记录，进入到下一步
+
+    //tilemeter的根目录
+    public static String PRO_ROOT_PATH = "/storage/emulated/0/tiltmeter";
+
 }

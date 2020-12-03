@@ -18,7 +18,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.leon.lfilepickerlibrary.utils.Constant;
-import com.vitalong.bluetest2.OperationPanelActivity;
 import com.vitalong.bluetest2.R;
 import com.vitalong.bluetest2.Utils.Constants;
 
@@ -63,7 +62,7 @@ public class SelectModeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-//                startActivity(new Intent(SelectModeActivity.this, BoreholeInfoActivity.class));
+                startActivity(new Intent(SelectModeActivity.this, BoreholeInfoActivity.class));
             }
         });
     }
