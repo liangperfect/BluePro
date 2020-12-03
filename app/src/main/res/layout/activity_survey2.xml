@@ -65,11 +65,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="322"
+            android:text="0000.00"
             android:textColor="@color/black"
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -90,7 +91,7 @@
             android:id="@+id/tvRaw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="RAW"
+            android:text="mm"
             android:textColor="@color/black"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="@id/tvATitle"
@@ -101,7 +102,7 @@
             android:id="@+id/tvB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="14"
+            android:text="0000.00"
             android:textColor="@color/black"
             android:textSize="36sp"
             android:textStyle="bold"
@@ -125,50 +126,71 @@
             android:id="@+id/tvUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="56dp"
             android:text="Unit"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/tvB"
             app:layout_constraintTop_toBottomOf="@id/tvB" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/spUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="mm"
+            android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="@id/tvUnit"
-            app:layout_constraintStart_toStartOf="@id/spDirection"
+            app:layout_constraintStart_toStartOf="@id/radioGroupDirection"
             app:layout_constraintTop_toTopOf="@id/tvUnit" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDirection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="48dp"
             android:layout_marginTop="12dp"
             android:text="Direction"
             android:textColor="@color/black"
-            android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:textSize="18sp"
+            app:layout_constraintStart_toStartOf="@id/tvUnit"
             app:layout_constraintTop_toBottomOf="@id/tvUnit" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spDirection"
+        <RadioGroup
+            android:id="@+id/radioGroupDirection"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="@id/tvDirection"
             app:layout_constraintStart_toEndOf="@id/tvDirection"
-            app:layout_constraintTop_toTopOf="@id/tvDirection" />
+            app:layout_constraintTop_toTopOf="@id/tvDirection">
+
+            <RadioButton
+                android:id="@+id/rb0degree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:checked="true"
+                android:text="0°"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <RadioButton
+                android:id="@+id/rb180degree"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:text="180°"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+        </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/imgUp"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
+            android:layout_width="58dp"
+            android:layout_height="58dp"
+            android:layout_marginTop="56dp"
             android:background="@color/white"
-            app:layout_constraintEnd_toEndOf="@id/tvDirection"
+            android:scaleType="fitXY"
             app:layout_constraintStart_toStartOf="@id/tvDirection"
             app:layout_constraintTop_toBottomOf="@id/tvDirection"
             app:srcCompat="@drawable/arrow_up" />
@@ -179,6 +201,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
             android:background="@color/white"
+            android:scaleType="fitXY"
             app:layout_constraintEnd_toEndOf="@id/imgUp"
             app:layout_constraintStart_toStartOf="@id/imgUp"
             app:layout_constraintTop_toBottomOf="@id/imgUp"
@@ -212,7 +235,7 @@
             android:id="@+id/tvPause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pause"
+            android:text="Auto"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="@id/imgPlay"
             app:layout_constraintStart_toStartOf="@id/imgPlay"
@@ -224,6 +247,7 @@
             android:layout_height="60dp"
             android:layout_marginStart="24dp"
             android:background="@color/white"
+            android:scaleType="fitXY"
             app:layout_constraintBottom_toBottomOf="@id/tvDepthNo"
             app:layout_constraintStart_toEndOf="@id/tvDepthNo"
             app:layout_constraintTop_toTopOf="@id/tvDepthNo"
@@ -236,19 +260,20 @@
             android:layout_marginStart="4dp"
             android:layout_marginEnd="4dp"
             android:background="@drawable/btn_pause_bg"
-            android:text="@string/wait"
+            android:text="Wait"
+            android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="42sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/imgBottom"
-            app:layout_constraintVertical_bias="0.7" />
+            app:layout_constraintVertical_bias="0.5" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvBottomTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="中國科大_Sis1_202011131949"
+            android:text="文件名稱"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/btnSave"
