@@ -804,4 +804,41 @@ public class Utils {
         return dirPath;
     }
 
+    /**
+     * 获取电池电量的公式
+     *
+     * @param value
+     * @return
+     */
+    public static float getBattValue(float value) {
+        float batt_t = 0;
+        if (value >= 8.4)
+            batt_t = 100;
+        else if ((value >= 8.12) && (value < 8.4))
+            batt_t = (float) (90 + ((value - 8.12) * 35.7));
+        else if ((value >= 7.96) && (value < 8.12))
+            batt_t = (float) (80 + ((value - 7.96) * 62.5));
+        else if ((value >= 7.84) && (value < 7.96))
+            batt_t = (float) (70 + ((value - 7.84) * 83.3));
+        else if ((value >= 7.74) && (value < 7.84))
+            batt_t = (float) (60 + ((value - 7.74) * 100));
+        else if ((value >= 7.64) && (value < 7.76))
+            batt_t = (float) (50 + ((value - 7.64) * 100));
+        else if ((value >= 7.58) && (value < 7.64))
+            batt_t = (float) (40 + ((value - 7.58) * 166.6));
+        else if ((value >= 7.54) && (value < 7.58))
+            batt_t = (float) (30 + ((value - 7.54) * 250));
+        else if ((value >= 7.48) && (value < 7.54))
+            batt_t = (float) (20 + ((value - 7.48) * 166.6));
+        else if ((value >= 7.36) && (value < 7.48))
+            batt_t = (float) (10 + ((value - 7.36) * 83.3));
+        else if ((value >= 6.9) && (value < 7.36))
+            batt_t = (float) (5 + ((value - 6.9) * 10.86));
+        else if ((value >= 6) && (value < 6.9))
+            batt_t = (float) ((value - 6) * 5.5);
+        else if (value < 6)
+            batt_t = 0;
+        return batt_t;
+    }
+
 }

@@ -64,13 +64,12 @@
             android:id="@+id/tvA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
             android:layout_marginTop="24dp"
             android:text="0000.00"
             android:textColor="@color/black"
             android:textSize="36sp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.3"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -196,7 +195,7 @@
             app:srcCompat="@drawable/arrow_up" />
 
         <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/imgBottom"
+            android:id="@+id/imgDown"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="24dp"
@@ -219,7 +218,7 @@
             app:layout_constraintTop_toTopOf="@id/imgUp" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDepthNo"
+            android:id="@+id/tvDepthNum"
             android:layout_width="120dp"
             android:layout_height="40dp"
             android:layout_marginTop="12dp"
@@ -248,9 +247,9 @@
             android:layout_marginStart="24dp"
             android:background="@color/white"
             android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="@id/tvDepthNo"
-            app:layout_constraintStart_toEndOf="@id/tvDepthNo"
-            app:layout_constraintTop_toTopOf="@id/tvDepthNo"
+            app:layout_constraintBottom_toBottomOf="@id/tvDepthNum"
+            app:layout_constraintStart_toEndOf="@id/tvDepthNum"
+            app:layout_constraintTop_toTopOf="@id/tvDepthNum"
             app:srcCompat="@drawable/start" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -266,7 +265,7 @@
             android:textSize="42sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/imgBottom"
+            app:layout_constraintTop_toBottomOf="@id/imgDown"
             app:layout_constraintVertical_bias="0.5" />
 
         <androidx.appcompat.widget.AppCompatTextView

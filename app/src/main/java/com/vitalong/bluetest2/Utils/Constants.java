@@ -257,6 +257,8 @@ public class Constants {
     public static String DATA_VERIFY_NO8 = "01 03 01 07 00 02 74 36";
     //Survey界面获取实时数据发送的命令
     public static String REAL_DATA_CMD = "01 03 00 00 00 08 44 0C";
+    //倾度管项目中后去实时数据发送的命令
+    public static String REAL_DATA_CMD2 = "01 03 00 00 00 0A C5 CD";
     //Setting需要保存的参数的Key
     public static String SENSORMODE_KEY = "sensorMode";
     public static String SENSITIVITY_KEY = "sensitivity";

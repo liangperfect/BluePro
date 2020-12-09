@@ -187,6 +187,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             Toast.makeText(BoreholeInfoActivity.this, "請計算測量點數", Toast.LENGTH_SHORT).show();
             return false;
         }
+
+        //这里判断是几个点，是否测试底部数据
         return true;
     }
 
