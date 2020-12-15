@@ -7,10 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.bean.MService;
+import com.vitalong.bluetest2.bean.SurveyDataTable;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
+import com.vitalong.bluetest2.greendaodb.BoreholeInfoTableDao;
 import com.vitalong.bluetest2.greendaodb.DaoMaster;
 import com.vitalong.bluetest2.greendaodb.DaoSession;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
+import com.vitalong.bluetest2.greendaodb.SurveyDataTableDao;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,6 +53,9 @@ public class MyApplication extends Application {
 
     public RealDataCachedDao realDataCachedDao;
 
+    public BoreholeInfoTableDao boreholeInfoTableDao;
+    public SurveyDataTableDao surveyDataTableDao;
+
     public boolean isConnectBlue = true;//是否连接了蓝牙进入的主界面
 
     @Override
@@ -68,6 +74,8 @@ public class MyApplication extends Application {
         DaoMaster daoMaster = new DaoMaster(sqLiteDatabase);
         DaoSession daoSession = daoMaster.newSession();
         realDataCachedDao = daoSession.getRealDataCachedDao();
+        boreholeInfoTableDao = daoSession.getBoreholeInfoTableDao();
+        surveyDataTableDao = daoSession.getSurveyDataTableDao();
     }
 
     private void initBugly() {

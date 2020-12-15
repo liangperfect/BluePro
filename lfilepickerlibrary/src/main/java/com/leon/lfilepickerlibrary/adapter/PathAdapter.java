@@ -75,7 +75,7 @@ public class PathAdapter extends RecyclerView.Adapter<PathAdapter.PathViewHolder
             holder.cbChoose.setVisibility(View.VISIBLE);
         } else {
             updateFloaderIconStyle(holder.ivType);
-            holder.tvName.setText(file.getName().replace("Namber_",""));
+            holder.tvName.setText(file.getName().replace("Namber_", ""));
             //文件大小过滤
             List files = FileUtils.getFileList(file.getAbsolutePath(), mFileFilter, mIsGreater, mFileSize);
             if (files == null) {

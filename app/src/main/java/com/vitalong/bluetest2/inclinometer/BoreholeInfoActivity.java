@@ -20,13 +20,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.leon.lfilepickerlibrary.utils.FileUtils;
+import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
 import com.vitalong.bluetest2.Utils.Constants;
+import com.vitalong.bluetest2.bean.BoreholeInfoTable;
+import com.vitalong.bluetest2.bean.SurveyDataTable;
+import com.vitalong.bluetest2.greendaodb.BoreholeInfoTableDao;
+import com.vitalong.bluetest2.greendaodb.SurveyDataTableDao;
 import com.vitalong.bluetest2.views.CompanySelectDialog;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 public class BoreholeInfoActivity extends AppCompatActivity {
@@ -44,6 +52,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
     private CompanySelectDialog companySelectDialog;
     private Button btnOk;
     private List<File> ConstructionSiteFiles;//工地文件夹名称
+    private BoreholeInfoTableDao boreholeInfoTableDao;
+    private SurveyDataTableDao surveyDataTableDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,8 +137,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
 
                     tvTopHit.setVisibility(View.VISIBLE);
                 } else {
-                    float topValue = Float.valueOf(edtTopDepth.getText().toString());
-                    if (topValue <= 0) {
+                    float topValue = Float.parseFloat(edtTopDepth.getText().toString());
+                    if (topValue > 500) {
                         tvTopHit.setVisibility(View.VISIBLE);
                     } else {
                         if (tvTopHit.getVisibility() == View.VISIBLE) {
@@ -138,10 +148,10 @@ public class BoreholeInfoActivity extends AppCompatActivity {
                         if (s.toString().isEmpty()) {
                             tvMeasurePoints.setText("");
                         } else {
-                            float bottomValue = Float.valueOf(s.toString());
+                            float bottomValue = Float.parseFloat(s.toString());
                             //计算点数
-                            float pointsValue = (topValue - bottomValue) * 2;
-                            int pointsNums = (int) pointsValue;
+                            float pointsValue = (bottomValue - topValue) * 2;
+                            int pointsNums = (int) pointsValue + 1;
                             tvMeasurePoints.setText(String.valueOf(pointsNums));
                         }
                     }
@@ -158,12 +168,99 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if (verify()) {
-
+                    //将新建的工地，孔的属性添加到数据库当中去
+                    addDataSource();
+                    //创建对应的文件夹
+                    HashMap<String, String> csvMap = addDirAndFile();
                     Intent i = new Intent(BoreholeInfoActivity.this, Survey2Activity.class);
+                    i.putExtra("constructionSiteName", edtConstructionSite.getText().toString().trim());
+                    i.putExtra("holeName", FileUtils.fetchHoleName(edtHoleNumber.getText().toString().trim()));
+                    i.putExtra("fromWhich", Constants.FROM_CREATE_NEW_SITE_HOLE);
+                    assert csvMap != null;
+                    i.putExtra("csvFileName", csvMap.get("csvFileName"));
+                    i.putExtra("csvFilePath", csvMap.get("csvFilePath"));
                     startActivity(i);
                 }
             }
         });
+    }
+
+    /**
+     * 添加对应的工地名称文件夹，孔号名称文件夹，再创建对应的csv的文件
+     * 返回创建的csv文件名称
+     */
+    private HashMap<String, String> addDirAndFile() {
+        if (FileUtils.isSDCardState()) {
+            String sdPath = FileUtils.getSDCardPath();
+            String constructionSiteStr = edtConstructionSite.getText().toString();
+            String holeNumberStr = edtHoleNumber.getText().toString();
+            String sitePath = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + constructionSiteStr;
+            //给孔洞的文件夹加Namber_前缀是为了在选择文件时候点击的时候判断是否是孔号的文件夹
+            String holdPath = sitePath + "/" + FileUtils.fetchHoleName(holeNumberStr);
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
+            String de = sdf.format(date);
+            String csvPath = holdPath + "/" + constructionSiteStr + "_" + holeNumberStr + "_" + de + ".csv";
+            String csvFileName = constructionSiteStr + "_" + holeNumberStr + "_" + de + ".csv";
+            if (!FileUtils.isFileExits(sdPath + Constants.PRO_ROOT_DIR_PATH)) {
+                //tilmeter文件夹不存在，进行创建
+                FileUtils.createSDDirection(Constants.PRO_ROOT_DIR_PATH);
+            }
+
+            if (!FileUtils.isFileExits(sitePath)) {
+                //创建工程名称的文件夹
+                FileUtils.createSDDirection(sitePath);
+            }
+
+            if (!FileUtils.isFileExits(holdPath)) {
+                //创建孔号的文件夹
+                FileUtils.createSDDirection(holdPath);
+            }
+            //创建csv文件
+            FileUtils.createFile(csvPath);
+            //根据间隔点位来初实话数据库表，根据csv的文件名为唯一键值对
+            initTableByCsvName(csvFileName);
+            HashMap<String, String> map = new HashMap<>();
+            map.put("csvFileName", csvFileName);
+            map.put("csvFilePath", csvPath);
+            return map;
+        } else {
+            //SD卡不存在
+            Toast.makeText(BoreholeInfoActivity.this, "請插入SD卡", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
+
+    /**
+     * 创建文件就直接生成对应的数据库表数据
+     */
+    private void initTableByCsvName(String csvFileName) {
+
+        float top = Float.parseFloat(edtTopDepth.getText().toString());
+        float bottom = Float.parseFloat(edtBottomDepth.getText().toString());
+
+        while (bottom > top) {
+            String bottomStr = String.valueOf(bottom);
+            surveyDataTableDao.insert(new SurveyDataTable(csvFileName, bottomStr, "", "", "", "", "", "", "", "", "", ""));
+            bottom -= 0.5f;
+        }
+    }
+
+    private void addDataSource() {
+        boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
+        surveyDataTableDao = ((MyApplication) getApplication()).surveyDataTableDao;
+        float topValue = Float.parseFloat(edtTopDepth.getText().toString());
+        float bottomValue = Float.parseFloat(edtBottomDepth.getText().toString());
+        int pointsNumbers = Integer.parseInt(tvMeasurePoints.getText().toString());
+        BoreholeInfoTable boreholeInfoTable = new BoreholeInfoTable();
+        boreholeInfoTable.setConstructionSite(edtConstructionSite.getText().toString());
+        boreholeInfoTable.setHoleName(FileUtils.fetchHoleName(edtHoleNumber.getText().toString()));
+        boreholeInfoTable.setA0Des(edtAoDes.getText().toString());
+        boreholeInfoTable.setTopValue(topValue);
+        boreholeInfoTable.setBottomValue(bottomValue);
+        boreholeInfoTable.setPointsNumber(pointsNumbers);
+        boreholeInfoTable.setDuration(0.5f);
+        boreholeInfoTableDao.insert(boreholeInfoTable);
     }
 
     private boolean verify() {

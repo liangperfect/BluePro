@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
 
 import com.vitalong.bluetest2.MyApplication;
@@ -30,7 +31,9 @@ import com.vitalong.bluetest2.Utils.CRC16CheckUtil;
 import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.Utils.Utils;
+import com.vitalong.bluetest2.bean.BoreholeInfoTable;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
+import com.vitalong.bluetest2.greendaodb.BoreholeInfoTableDao;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -83,12 +86,23 @@ public class Survey2Activity extends MyBaseActivity2 {
     private boolean isFirstPlay = true;
     private int clickNum = 0;//点击次数
     private Handler handler = new Handler(); //事件点击
+    //初始化測量的數據
+    private int fromWhich = 0;
+    private String constructionSiteName;
+    private String holeName;
+    private String csvFileName;
+    private String csvFilePath;
+    private BoreholeInfoTableDao boreholeInfoTableDao;
+    private float topValue;
+    private float bottomValue;
+    private CsvUtil csvUtil;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_survey2);
         initView();
+        fetchIntentData();
         bindToolBar();
         makeStatusBar(R.color.white);
         survey2Handler = new Survey2Handler();
@@ -128,6 +142,29 @@ public class Survey2Activity extends MyBaseActivity2 {
         // TODO: 2020/12/3 蓝牙断开了链接，然后需要判断数据是不是要重新使用
         isShowingDialog = true;
         showStateDialog(getString(R.string.conn_disconnected_home), Survey2Activity.this);
+    }
+
+    private void fetchIntentData() {
+        fromWhich = getIntent().getIntExtra("fromWhich", 0);
+        constructionSiteName = getIntent().getStringExtra("constructionSiteName");
+        holeName = getIntent().getStringExtra("holeName");
+        csvFileName = getIntent().getStringExtra("csvFileName");
+        csvFilePath = getIntent().getStringExtra("csvFilePath");
+        csvUtil = new CsvUtil(Survey2Activity.this);
+        //初始化数据
+        boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
+        try {
+            BoreholeInfoTable boreholeInfoTable = boreholeInfoTableDao.queryBuilder()
+                    .where(BoreholeInfoTableDao.Properties.ConstructionSite.eq(constructionSiteName),
+                            BoreholeInfoTableDao.Properties.HoleName.eq(holeName)).build().list().get(0); //只可能匹配一个
+            topValue = boreholeInfoTable.getTopValue();
+            bottomValue = boreholeInfoTable.getBottomValue();
+            //初始化相关view
+            tvDepthNum.setText(String.valueOf(bottomValue));
+        } catch (Exception exception) {
+
+            Toast.makeText(Survey2Activity.this, "沒找到孔的信息", Toast.LENGTH_SHORT).show();
+        }
     }
 
     protected void bindToolBar() {
@@ -180,6 +217,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             public void onClick(View v) {
                 clickNum++;
                 handler.postDelayed(new Runnable() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void run() {
                         if (clickNum == 1) {
@@ -257,8 +295,9 @@ public class Survey2Activity extends MyBaseActivity2 {
     /**
      * 存储CSV的数据
      */
+    @RequiresApi(api = Build.VERSION_CODES.N)
     private void saveCsvData() {
-
+        csvUtil.saveData(csvFilePath,csvFileName);
     }
 
 
