@@ -42,7 +42,9 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         myApplication = (MyApplication) getApplication();
-        initCharacteristics();
+        if (myApplication.isConnectBlue){
+            initCharacteristics();
+        }
         registerBc();
     }
 

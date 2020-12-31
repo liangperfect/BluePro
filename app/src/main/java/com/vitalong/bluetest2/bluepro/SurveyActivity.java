@@ -498,16 +498,17 @@ public class SurveyActivity extends MyBaseActivity2 {
     void initPlay(String beep) {
         try {
             if (beep.equals("TypeA"))
-                playRd("TypeA.mp3");
+                playRd("TypeA.wav");
             else if (beep.equals("TypeB"))
-                playRd("TypeB.mp3");
+                playRd("TypeB.wav");
             else if (beep.equals("TypeC"))
-                playRd("TypeC.mp3");
+                playRd("TypeC.wav");
             else if (beep.equals("TypeD"))
-                playRd("TypeD.mp3");
+                playRd("TypeD.wav");
             else if (beep.equals("TypeE"))
-                playRd("TypeE.mp3");
+                playRd("TypeE.wav");
         } catch (IOException err) {
+            Log.d("chenliang","错误信息->"+err.getMessage());
             Toast.makeText(SurveyActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

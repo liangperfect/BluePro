@@ -21,7 +21,7 @@ import java.util.List;
 public class MyApplication extends Application {
 
     private boolean clearflag;
-
+    public boolean isConnectBlue = true;//是否连接了蓝牙进入的主界面
     public boolean isClearflag() {
         return clearflag;
     }

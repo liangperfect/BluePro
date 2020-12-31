@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -106,6 +107,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private TextView tvSearchDeviceCount;
     private ConstraintLayout rlSearchInfo;
     private Button stopSearching;
+    private ImageView imgHome;
     private RecyclerView recyclerView;
     private String currentDevAddress;
     private String currentDevName;
@@ -307,8 +309,6 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
                 }
             }
         });
-
-
     }
 
     /**
@@ -336,6 +336,16 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         rlSearchInfo = (ConstraintLayout) findViewById(R.id.rl_search_info);
         fabSearch = (FloatingActionButton) findViewById(R.id.fab_search);
         stopSearching = (Button) findViewById(R.id.btn_stop_searching);
+        imgHome = findViewById(R.id.imgHome);
+        imgHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                myApplication.isConnectBlue = false;
+                Intent intent = new Intent(MainActivity.this, OperationPanelActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
@@ -957,6 +967,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
             } else if (msg.what == 1) {
 //                sendLinkCode("010300000002C40B", true);
                 //进行界面的跳转
+                myApplication.isConnectBlue = true;
                 Intent intent = new Intent(MainActivity.this, OperationPanelActivity.class);
                 startActivity(intent);
 
