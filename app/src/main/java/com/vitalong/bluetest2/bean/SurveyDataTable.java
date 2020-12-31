@@ -16,55 +16,67 @@ public class SurveyDataTable {
 
     @Id
     private Long id; //自增id
-    private String csvFileName;
+    private String csvFileName;//主键
     private String depth;//当前高度
-    private String rawA0;
-    private String rawA180;
-    private String rawB0;
-    private String rawB180;
     private String A0mm;
     private String A180mm;
     private String B0mm;
     private String B180mm;
-    private String checkSumA;
-    private String checkSumB;
+    private String A0Deg;
+    private String A180Deg;
+    private String B0Deg;
+    private String B180Deg;
+    private String A0Raw;
+    private String A180Raw;
+    private String B0Raw;
+    private String B180Raw;
+    private String CheckSumA;
+    private String CheckSumB;
 
-    @Generated(hash = 1962405112)
-    public SurveyDataTable(Long id, String csvFileName, String depth, String rawA0,
-                           String rawA180, String rawB0, String rawB180, String A0mm,
-                           String A180mm, String B0mm, String B180mm, String checkSumA,
-                           String checkSumB) {
+    @Generated(hash = 142778864)
+    public SurveyDataTable(Long id, String csvFileName, String depth, String A0mm,
+                           String A180mm, String B0mm, String B180mm, String A0Deg, String A180Deg,
+                           String B0Deg, String B180Deg, String A0Raw, String A180Raw,
+                           String B0Raw, String B180Raw, String CheckSumA, String CheckSumB) {
         this.id = id;
         this.csvFileName = csvFileName;
         this.depth = depth;
-        this.rawA0 = rawA0;
-        this.rawA180 = rawA180;
-        this.rawB0 = rawB0;
-        this.rawB180 = rawB180;
         this.A0mm = A0mm;
         this.A180mm = A180mm;
         this.B0mm = B0mm;
         this.B180mm = B180mm;
-        this.checkSumA = checkSumA;
-        this.checkSumB = checkSumB;
+        this.A0Deg = A0Deg;
+        this.A180Deg = A180Deg;
+        this.B0Deg = B0Deg;
+        this.B180Deg = B180Deg;
+        this.A0Raw = A0Raw;
+        this.A180Raw = A180Raw;
+        this.B0Raw = B0Raw;
+        this.B180Raw = B180Raw;
+        this.CheckSumA = CheckSumA;
+        this.CheckSumB = CheckSumB;
     }
 
-    public SurveyDataTable(String csvFileName, String depth, String rawA0,
-                           String rawA180, String rawB0, String rawB180, String A0mm,
-                           String A180mm, String B0mm, String B180mm, String checkSumA,
-                           String checkSumB) {
+    public SurveyDataTable(String csvFileName, String depth, String A0mm,
+                           String A180mm, String B0mm, String B180mm, String A0Deg, String A180Deg,
+                           String B0Deg, String B180Deg, String A0Raw, String A180Raw,
+                           String B0Raw, String B180Raw, String CheckSumA, String CheckSumB) {
         this.csvFileName = csvFileName;
         this.depth = depth;
-        this.rawA0 = rawA0;
-        this.rawA180 = rawA180;
-        this.rawB0 = rawB0;
-        this.rawB180 = rawB180;
         this.A0mm = A0mm;
         this.A180mm = A180mm;
         this.B0mm = B0mm;
         this.B180mm = B180mm;
-        this.checkSumA = checkSumA;
-        this.checkSumB = checkSumB;
+        this.A0Deg = A0Deg;
+        this.A180Deg = A180Deg;
+        this.B0Deg = B0Deg;
+        this.B180Deg = B180Deg;
+        this.A0Raw = A0Raw;
+        this.A180Raw = A180Raw;
+        this.B0Raw = B0Raw;
+        this.B180Raw = B180Raw;
+        this.CheckSumA = CheckSumA;
+        this.CheckSumB = CheckSumB;
     }
 
     @Generated(hash = 1972498340)
@@ -93,38 +105,6 @@ public class SurveyDataTable {
 
     public void setDepth(String depth) {
         this.depth = depth;
-    }
-
-    public String getRawA0() {
-        return this.rawA0;
-    }
-
-    public void setRawA0(String rawA0) {
-        this.rawA0 = rawA0;
-    }
-
-    public String getRawA180() {
-        return this.rawA180;
-    }
-
-    public void setRawA180(String rawA180) {
-        this.rawA180 = rawA180;
-    }
-
-    public String getRawB0() {
-        return this.rawB0;
-    }
-
-    public void setRawB0(String rawB0) {
-        this.rawB0 = rawB0;
-    }
-
-    public String getRawB180() {
-        return this.rawB180;
-    }
-
-    public void setRawB180(String rawB180) {
-        this.rawB180 = rawB180;
     }
 
     public String getA0mm() {
@@ -159,20 +139,84 @@ public class SurveyDataTable {
         this.B180mm = B180mm;
     }
 
-    public String getCheckSumA() {
-        return this.checkSumA;
+    public String getA0Deg() {
+        return this.A0Deg;
     }
 
-    public void setCheckSumA(String checkSumA) {
-        this.checkSumA = checkSumA;
+    public void setA0Deg(String A0Deg) {
+        this.A0Deg = A0Deg;
+    }
+
+    public String getA180Deg() {
+        return this.A180Deg;
+    }
+
+    public void setA180Deg(String A180Deg) {
+        this.A180Deg = A180Deg;
+    }
+
+    public String getB0Deg() {
+        return this.B0Deg;
+    }
+
+    public void setB0Deg(String B0Deg) {
+        this.B0Deg = B0Deg;
+    }
+
+    public String getB180Deg() {
+        return this.B180Deg;
+    }
+
+    public void setB180Deg(String B180Deg) {
+        this.B180Deg = B180Deg;
+    }
+
+    public String getA0Raw() {
+        return this.A0Raw;
+    }
+
+    public void setA0Raw(String A0Raw) {
+        this.A0Raw = A0Raw;
+    }
+
+    public String getA180Raw() {
+        return this.A180Raw;
+    }
+
+    public void setA180Raw(String A180Raw) {
+        this.A180Raw = A180Raw;
+    }
+
+    public String getB0Raw() {
+        return this.B0Raw;
+    }
+
+    public void setB0Raw(String B0Raw) {
+        this.B0Raw = B0Raw;
+    }
+
+    public String getB180Raw() {
+        return this.B180Raw;
+    }
+
+    public void setB180Raw(String B180Raw) {
+        this.B180Raw = B180Raw;
+    }
+
+    public String getCheckSumA() {
+        return this.CheckSumA;
+    }
+
+    public void setCheckSumA(String CheckSumA) {
+        this.CheckSumA = CheckSumA;
     }
 
     public String getCheckSumB() {
-        return this.checkSumB;
+        return this.CheckSumB;
     }
 
-    public void setCheckSumB(String checkSumB) {
-        this.checkSumB = checkSumB;
+    public void setCheckSumB(String CheckSumB) {
+        this.CheckSumB = CheckSumB;
     }
 
 }

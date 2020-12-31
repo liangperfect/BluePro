@@ -204,7 +204,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             String csvFileName = constructionSiteStr + "_" + holeNumberStr + "_" + de + ".csv";
             if (!FileUtils.isFileExits(sdPath + Constants.PRO_ROOT_DIR_PATH)) {
                 //tilmeter文件夹不存在，进行创建
-                FileUtils.createSDDirection(Constants.PRO_ROOT_DIR_PATH);
+                FileUtils.createSDDirection(sdPath + Constants.PRO_ROOT_DIR_PATH);
             }
 
             if (!FileUtils.isFileExits(sitePath)) {
@@ -239,10 +239,10 @@ public class BoreholeInfoActivity extends AppCompatActivity {
         float top = Float.parseFloat(edtTopDepth.getText().toString());
         float bottom = Float.parseFloat(edtBottomDepth.getText().toString());
 
-        while (bottom > top) {
-            String bottomStr = String.valueOf(bottom);
-            surveyDataTableDao.insert(new SurveyDataTable(csvFileName, bottomStr, "", "", "", "", "", "", "", "", "", ""));
-            bottom -= 0.5f;
+        while (bottom >= top) {
+            String topStr = String.valueOf(top);
+            surveyDataTableDao.insert(new SurveyDataTable(csvFileName, topStr, "", "", "", "", "", "", "", "", "", "", "", "", "", ""));
+            top += 0.5f;
         }
     }
 

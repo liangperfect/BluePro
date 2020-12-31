@@ -3,10 +3,12 @@ package com.vitalong.bluetest2.inclinometer;
 import android.app.Activity;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
 import com.vitalong.bluetest2.MyApplication;
+import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.bean.SurveyDataTable;
 import com.vitalong.bluetest2.bean.TableRowBean2;
@@ -33,16 +35,51 @@ public class CsvUtil {
     private String snValue = "";
     private EasyCsv easyCsv;
     private Activity activity;
-    private VerifyDataBean verifyDataBean;
     private SurveyDataTableDao surveyDataTableDao;
+    private String siteStr = "";
+    private String HoleStr = "";
+    private String Depth = "";
+    private String Interval = "";
+    private String Date = "";
+    private float topValue;
+    private float bottomValue;
+    private double dAxisA = 0;
+    private double dAxisB = 0;
+    private double dAxisC = 0;
+    private double dAxisD = 0;
+    private double dBxisA = 0;
+    private double dBxisB = 0;
+    private double dBxisC = 0;
+    private double dBxisD = 0;
 
-    public CsvUtil(Activity activity) {
+    public CsvUtil(Activity activity, float topValue, float bottomValue) {
         //获取snValue
         this.activity = activity;
+        this.topValue = topValue;
+        this.bottomValue = bottomValue;
+        initVerifyData();
+        siteStr = activity.getIntent().getStringExtra("constructionSiteName");
+        HoleStr = activity.getIntent().getStringExtra("holeName");
         snValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
-        verifyDataBean = ((MyApplication) activity.getApplication()).getVerifyDataBean();
         surveyDataTableDao = ((MyApplication) activity.getApplication()).surveyDataTableDao;
         easyCsv = new EasyCsv(activity);
+    }
+
+    private void initVerifyData() {
+
+        try {
+            VerifyDataBean verifyDataBean = ((MyApplication) activity.getApplication()).getVerifyDataBean();
+            dAxisA = Double.parseDouble(verifyDataBean.getAaxisA());
+            dAxisB = Double.parseDouble(verifyDataBean.getAaxisB());
+            dAxisC = Double.parseDouble(verifyDataBean.getAaxisC());
+            dAxisD = Double.parseDouble(verifyDataBean.getAaxisD());
+            dBxisA = Double.parseDouble(verifyDataBean.getBaxisA());
+            dBxisB = Double.parseDouble(verifyDataBean.getBaxisB());
+            dBxisC = Double.parseDouble(verifyDataBean.getBaxisC());
+            dBxisD = Double.parseDouble(verifyDataBean.getBaxisD());
+        } catch (Exception e) {
+            Toast.makeText(activity, "verify data is error,please update verify data", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -51,6 +88,7 @@ public class CsvUtil {
             easyCsv.setSeparatorColumn(",");//列分隔符
             easyCsv.setSeperatorLine("/n");//行分隔符
             List<String> headerList = new ArrayList<>();//为空的
+            //生成需要存储的数据
             List<String> dataList = createTableData(csvFileName);
             //截取文件适配csv存储器的文件名称
             String csvAdapterPath = csvFilePath.substring(20, csvFilePath.length() - 4);
@@ -82,67 +120,107 @@ public class CsvUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        String currTime = sdf.format(d);
         final List<String> collection = new ArrayList<>();
-        collection.add(new TableRowBean2("Type:", "Digital Inclinometer", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Model:", "7000BT", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Serial Number:", snValue, "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Range:", "30 Deg", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Firmware:", "V2.58", "Software:", "V1.37.2", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Units:", "Raw / Deg", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Gage Factor(A):", "A1=" + verifyDataBean.getAaxisA(), "A2=" + verifyDataBean.getAaxisB(), "A3=" + verifyDataBean.getAaxisC(), "A4=" + verifyDataBean.getAaxisD(), "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + verifyDataBean.getBaxisA(), "B2=" + verifyDataBean.getBaxisB(), "B3=" + verifyDataBean.getBaxisC(), "B4=" + verifyDataBean.getBaxisD(), "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Site#:", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Hole#:", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Depth(m):", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("", "Raw", "Raw", "Raw", "Raw", "Displacement(mm)=500*SIN(RADIANS)θ", "", "", "", "A0+A180", "B0+B180").toSaveString());
-        collection.add(new TableRowBean2("", "A0", "A180", "B0", "B180", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "CheckSumA", "CheckSumB").toSaveString());
+        collection.add(new TableRowBean2("Type:", "Digital Inclinometer", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Model:", "7000BT", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Serial Number:", snValue, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Range:", "±30 Deg", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Firmware:", "V2.58", "Software:", "V1.37.2", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Units:", "mm / Deg / Raw", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Gage Factor(A):", "A1=" + dAxisA, "A2=" + dAxisB, "A3=" + dAxisC, "A4=" + dAxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + dBxisA, "B2=" + dBxisB, "B3=" + dBxisC, "B4=" + dBxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Site#:", siteStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Hole#:", HoleStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(RADIANS(θ))", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
+        collection.add(new TableRowBean2("", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "A0(Deg)", "A180(Deg)", "B0(Deg)", "B180(Deg)", "A0(Raw)", "A180(Raw)", "B0(Raw)", "B180(Raw)", "CheckSumA", "CheckSumB").toSaveString());
 
         List<SurveyDataTable> surveyDatas = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName)).build().list();
         for (SurveyDataTable item : surveyDatas
         ) {
-
-            collection.add(new TableRowBean2(item.getDepth(), item.getRawA0(), item.getRawA180(), item.getRawA0(), item.getRawA180()
-                    , item.getA0mm(), item.getA180mm(), item.getB0mm(), item.getB180mm(), item.getCheckSumA(), item.getCheckSumB()).toSaveString());
+            collection.add(new TableRowBean2(item.getDepth(), item.getA0mm(), item.getA180mm(), item.getB0mm(), item.getB180mm(), item.getA0Deg()
+                    , item.getA180Deg(), item.getB0Deg(), item.getB180Deg(), item.getA0Raw(), item.getA180Raw(), item.getB0Raw(), item.getB180Raw(),
+                    item.getCheckSumA(), item.getCheckSumB()).toSaveString());
         }
-        //        for (int i = 0; i < 5000; i++) {
-//            collection.add(new TableRowBean2("", "A0", "A180", "B0", "B180", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "CheckSumA", "CheckSumB").toSaveString());
-//        }
-        //        collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
-//        collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
-        //获取数据库中的数据并添加到列表数据容器中
-//        List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
-//        double d1Temp = Double.valueOf(deg1);
-//        double d2Temp = Double.valueOf(deg2);
-//        double d3Temp = Double.valueOf(deg3);
-//        double d4Temp = Double.valueOf(deg4);
-//        double include1 = (d1Temp - d3Temp) / 2 * 3600;
-//        double include2 = (d2Temp - d4Temp) / 2 * 3600;
-//        int intIncline1 = (int) include1;
-//        int intIncline2 = (int) include2;
-//        if (listDatas.isEmpty()) {
-//
-//            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, "0", "", "", "", "").toSaveString());
-//            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, "0", "", "", "", "").toSaveString());
-//            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, "0", String.valueOf(intIncline1)));
-//            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, "0", String.valueOf(intIncline2)));
-//        } else {
-//
-//            int firstInclude = Integer.valueOf(listDatas.get(0).getRealIncline());
-//            int secondInclude = Integer.valueOf(listDatas.get(1).getRealIncline());
-//            for (int i = 0; i < listDatas.size(); i++) {
-//                RealDataCached realDataCached = listDatas.get(i);
-//                collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
-//                        realDataCached.getRawSecond(), realDataCached.getInclude(), "", "", "", "").toSaveString());
-//            }
-//
-//            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude), "", "", "", "").toSaveString());
-//            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude), "", "", "", "").toSaveString());
-////            //插入到数据库中去
-//            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude), String.valueOf(intIncline1 - firstInclude)));
-//            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude), String.valueOf(intIncline2 - secondInclude)));
-//        }
         return collection;
+    }
+
+    /**
+     * 将实时数据存储到数据库中去
+     */
+    public void saveDatasInDB(String csvFileName, String depth, float angleA, float angleB, boolean isZero) {
+        double deg1 = getDeg(angleA, Constants.SFMODE_1AXIS);
+        double deg2 = getDeg(angleB, Constants.SFMODE_2AXIS);
+        double raw1 = getRaw(deg1);
+        double raw2 = getRaw(deg2);
+        double radians1 = Math.toRadians(deg1);
+        double radians2 = Math.toRadians(deg2);
+        double mm1 = Math.sin(radians1) * 500;
+        double mm2 = Math.sin(radians2) * 500;
+        SurveyDataTable surveyDataTable = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName), SurveyDataTableDao.Properties.Depth.eq(depth)).build().list().get(0);
+
+        if (surveyDataTable != null) {
+            if (isZero) {
+                //值要重新计算
+                surveyDataTable.setA0mm(String.valueOf(mm1));
+                surveyDataTable.setB0mm(String.valueOf(mm2));
+                surveyDataTable.setA0Deg(String.valueOf(deg1));
+                surveyDataTable.setB0Deg(String.valueOf(deg2));
+                surveyDataTable.setA0Raw(String.valueOf(raw1));
+                surveyDataTable.setB0Raw(String.valueOf(raw2));
+                if (surveyDataTable.getA180mm().equals("")) {
+                    surveyDataTable.setCheckSumA(String.valueOf(mm1));
+                } else {
+                    surveyDataTable.setCheckSumA(String.valueOf(mm1 + surveyDataTable.getA180mm()));
+                }
+            } else {
+
+                surveyDataTable.setA180mm(String.valueOf(mm1));
+                surveyDataTable.setB180mm(String.valueOf(mm2));
+                surveyDataTable.setA180Deg(String.valueOf(deg1));
+                surveyDataTable.setB180Deg(String.valueOf(deg2));
+                surveyDataTable.setA180Raw(String.valueOf(raw1));
+                surveyDataTable.setB180Raw(String.valueOf(raw2));
+                if (surveyDataTable.getB0mm().equals("")) {
+                    surveyDataTable.setCheckSumA(String.valueOf(mm2));
+                } else {
+                    surveyDataTable.setCheckSumB(mm2 + surveyDataTable.getB0mm());
+                }
+            }
+        }
+        surveyDataTableDao.update(surveyDataTable);
+    }
+
+    /**
+     * 获取单位模式为Deg下的值
+     *
+     * @param angle
+     * @return
+     */
+    private double getDeg(double angle, int axisMode) {
+        double f = angle * 7.2;
+        if (axisMode == Constants.SFMODE_1AXIS) {
+            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC * f) + dAxisD;
+        }
+
+        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC * f) + dBxisD;
+    }
+
+    /**
+     * 根据raw获取Raw
+     *
+     * @param deg
+     * @return
+     */
+    private double getRaw(double deg) {
+
+        try {
+            double raw = Math.sin(deg * Math.PI / 180) * 25000;
+            return raw;
+        } catch (Exception err) {
+            return 100000.0;
+        }
     }
 }

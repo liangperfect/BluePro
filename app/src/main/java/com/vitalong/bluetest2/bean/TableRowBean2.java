@@ -13,8 +13,12 @@ public class TableRowBean2 {
     private String column9;
     private String column10;
     private String column11;
+    private String column12;
+    private String column13;
+    private String column14;
+    private String column15;
 
-    public TableRowBean2(String c1, String c2, String c3, String c4, String c5, String c6, String c7, String c8, String c9, String c10, String c11) {
+    public TableRowBean2(String c1, String c2, String c3, String c4, String c5, String c6, String c7, String c8, String c9, String c10, String c11, String c12, String c13, String c14, String c15) {
         this.column1 = c1;
         this.column2 = c2;
         this.column3 = c3;
@@ -26,6 +30,10 @@ public class TableRowBean2 {
         this.column9 = c9;
         this.column10 = c10;
         this.column11 = c11;
+        this.column12 = c12;
+        this.column13 = c13;
+        this.column14 = c14;
+        this.column15 = c15;
     }
 
     public String getColumn1() {
@@ -116,14 +124,46 @@ public class TableRowBean2 {
         this.column11 = column11;
     }
 
+    public String getColumn12() {
+        return column12;
+    }
+
+    public void setColumn12(String column12) {
+        this.column12 = column12;
+    }
+
+    public String getColumn13() {
+        return column13;
+    }
+
+    public void setColumn13(String column13) {
+        this.column13 = column13;
+    }
+
+    public String getColumn14() {
+        return column14;
+    }
+
+    public void setColumn14(String column14) {
+        this.column14 = column14;
+    }
+
+    public String getColumn15() {
+        return column15;
+    }
+
+    public void setColumn15(String column15) {
+        this.column15 = column15;
+    }
+
     public String[] toStrArray() {
 
-        return new String[]{column1, column2, column3, column4, column5, column6, column7, column8, column9, column10, column11};
+        return new String[]{column1, column2, column3, column4, column5, column6, column7, column8, column9, column10, column11, column12, column13, column14, column15};
     }
 
     public String toSaveString() {
-        return column1 + "," + column2 + "," + column3 + "," + column4 + "," + column5 + "," + column6 + "," + column7 + "," + column8 + "," + column9 + "," + column10 + "," + column11 +
-                "/n";
+        return column1 + "," + column2 + "," + column3 + "," + column4 + "," + column5 + "," + column6 + "," + column7 + "," + column8 + "," + column9 + "," + column10 + "," + column11 + "," + column12 + "," + column13 + "," + column14 + "," + column15+
+        "/n";
     }
 
 }

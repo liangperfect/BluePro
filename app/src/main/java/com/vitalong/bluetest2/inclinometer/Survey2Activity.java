@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -96,6 +97,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     private float topValue;
     private float bottomValue;
     private CsvUtil csvUtil;
+    private boolean isZero = true; //当前模式是不是0模式
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +108,6 @@ public class Survey2Activity extends MyBaseActivity2 {
         bindToolBar();
         makeStatusBar(R.color.white);
         survey2Handler = new Survey2Handler();
-//        saveSuerveyBean = new SaveSuerveyBean();
         initSp();
         initPlay(beeps[beepValue]);
         if (initVerifyData()) {
@@ -150,7 +151,7 @@ public class Survey2Activity extends MyBaseActivity2 {
         holeName = getIntent().getStringExtra("holeName");
         csvFileName = getIntent().getStringExtra("csvFileName");
         csvFilePath = getIntent().getStringExtra("csvFilePath");
-        csvUtil = new CsvUtil(Survey2Activity.this);
+
         //初始化数据
         boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
         try {
@@ -161,6 +162,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             bottomValue = boreholeInfoTable.getBottomValue();
             //初始化相关view
             tvDepthNum.setText(String.valueOf(bottomValue));
+            csvUtil = new CsvUtil(Survey2Activity.this,topValue,bottomValue);
         } catch (Exception exception) {
 
             Toast.makeText(Survey2Activity.this, "沒找到孔的信息", Toast.LENGTH_SHORT).show();
@@ -249,6 +251,23 @@ public class Survey2Activity extends MyBaseActivity2 {
                 changeDepthNumber(false);
             }
         });
+
+        rb0degree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                isZero = true;
+            }
+        });
+
+        rb180degree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                isZero = false;
+            }
+        });
+
     }
 
     /**
@@ -297,7 +316,12 @@ public class Survey2Activity extends MyBaseActivity2 {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void saveCsvData() {
-        csvUtil.saveData(csvFilePath,csvFileName);
+        //计算出表格需要的值,根据csvfilename和高度去更新对应的的值
+        String depthStr = tvDepthNum.getText().toString();
+        //哪种模式下
+        csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, isZero);
+        //将数据存入到csv文件中去
+        csvUtil.saveData(csvFilePath, csvFileName);
     }
 
 
@@ -434,6 +458,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             //显示mm的值
             double deg1 = getDeg(oneChannelAngle, Constants.SFMODE_1AXIS);
             double deg2 = getDeg(twoChannelAngle, Constants.SFMODE_2AXIS);
+
             double radians1 = Math.toRadians(deg1);
             double radians2 = Math.toRadians(deg2);
             double mm1 = Math.sin(radians1) * 500;
@@ -468,6 +493,22 @@ public class Survey2Activity extends MyBaseActivity2 {
         }
 
         return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC * f) + dBxisD;
+    }
+
+    /**
+     * 根据raw获取Raw
+     *
+     * @param deg
+     * @return
+     */
+    private double getRaw(double deg) {
+
+        try {
+            double raw = Math.sin(deg * Math.PI / 180) * 25000;
+            return raw;
+        } catch (Exception err) {
+            return 100000.0;
+        }
     }
 
     /**
