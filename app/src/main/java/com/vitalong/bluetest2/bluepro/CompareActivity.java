@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,9 +22,17 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.leon.lfilepickerlibrary.utils.FileUtils;
 import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
+import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
+import com.vitalong.bluetest2.views.CompanySelectDialog;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,8 +40,10 @@ import butterknife.ButterKnife;
 public class CompareActivity extends AppCompatActivity {
     @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.spinner1)
-    Spinner spinner1;
+    //    @Bind(R.id.spinner1)
+//    Spinner spinner1;
+    @Bind(R.id.tvSiteValue)
+    TextView tvSiteValue;
     @Bind(R.id.spinner2)
     Spinner spinner2;
     @Bind(R.id.spinner3)
@@ -61,7 +72,7 @@ public class CompareActivity extends AppCompatActivity {
     String[] ctype4 = new String[]{"All", "(1-3)", "(2-4)"};
     String[] ctype5 = new String[]{"Disable", "Enable"};
     //选择的内容
-    String selectDirName = "A001";
+    String selectDirName = "";
     String selectFileName = "T01";
     String selectNums = "10";
     String selectDirection = "All";
@@ -82,7 +93,7 @@ public class CompareActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        initSpnr(spinner1, ctype1);
+//        initSpnr(spinner1, ctype1);
         initSpnr(spinner2, ctype2);
         initSpnr(spinner3, ctype3);
         initSpnr(spinner4, ctype4);
@@ -109,18 +120,22 @@ public class CompareActivity extends AppCompatActivity {
             String tableName = selectDirName + "_" + selectFileName;
             String nums = selectNums;
             String direction = selectDirection;
-            if (selectShowMode.equals("Disable")) {
-                Intent i = new Intent(CompareActivity.this, SurveyListActivity.class);
-                i.putExtra("tableName", tableName);
-                i.putExtra("nums", nums);
-                i.putExtra("direction", direction);
-                i.putExtra("fromWhich", false);
-                startActivity(i);
+            if (selectDirection.isEmpty()) {
+                Toast.makeText(CompareActivity.this, "請選擇Site", Toast.LENGTH_SHORT).show();
             } else {
-                Intent i = new Intent(CompareActivity.this, GraphActivity.class);
-                i.putExtra("tableName", tableName);
-                i.putExtra("nums", nums);
-                i.putExtra("direction", direction);
+                Intent i;
+                if (selectShowMode.equals("Disable")) {
+                    i = new Intent(CompareActivity.this, SurveyListActivity.class);
+                    i.putExtra("tableName", tableName);
+                    i.putExtra("nums", nums);
+                    i.putExtra("direction", direction);
+                    i.putExtra("fromWhich", false);
+                } else {
+                    i = new Intent(CompareActivity.this, GraphActivity.class);
+                    i.putExtra("tableName", tableName);
+                    i.putExtra("nums", nums);
+                    i.putExtra("direction", direction);
+                }
                 startActivity(i);
             }
         });
@@ -147,14 +162,38 @@ public class CompareActivity extends AppCompatActivity {
                         }).setNegativeButton("取消", null).show();
             }
         });
+        tvSiteValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<File> ConstructionSiteFiles;
+                CompanySelectDialog companySelectDialog = null;
+                ConstructionSiteFiles = new ArrayList<File>();
+                List<File> list = FileUtils.getFileListByDirPath(Constants.PRO_ROOT_PATH, new FileFilter() {
+                    @Override
+                    public boolean accept(File pathname) {
+                        return true;
+                    }
+                });
+                ConstructionSiteFiles.addAll(list);
+                companySelectDialog = new CompanySelectDialog(CompareActivity.this, ConstructionSiteFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                    @Override
+                    public void changeComapny(File file) {
+
+                        tvSiteValue.setText(file.getName());
+                        selectDirName = file.getName();
+                    }
+                });
+                companySelectDialog.show();
+            }
+        });
     }
 
 
     private void itemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (parent.getId()) {
-            case R.id.spinner1:
-                selectDirName = ctype1[position];
-                break;
+//            case R.id.spinner1:
+//                selectDirName = ctype1[position];
+//                break;
             case R.id.spinner2:
                 selectFileName = ctype2[position];
                 break;

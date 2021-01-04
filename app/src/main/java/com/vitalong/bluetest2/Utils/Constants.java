@@ -288,4 +288,11 @@ public class Constants {
     //    String[] ctype3 = new String[]{"Deg", "Raw"};
     public static int UNIT_DEG = 0;//DEG
     public static int UNIT_RAW = 1;//RAW
+
+    //tilemeter的根目录
+    public static String PRO_ROOT_PATH = "/storage/emulated/0/tiltmeter";
+    //sd卡根目录的名称是
+    public static String PRO_ROOT_DIR_PATH = "/tiltmeter";
+    //从哪里跳转到实时界面的Survey
+    public static int FROM_CREATE_NEW_SITE_HOLE = 0;
 }

@@ -12,15 +12,19 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.leon.lfilepickerlibrary.utils.FileUtils;
 import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
 import com.vitalong.bluetest2.Utils.Constants;
@@ -31,11 +35,13 @@ import com.vitalong.bluetest2.bean.SaveSuerveyBean;
 import com.vitalong.bluetest2.bean.TableRowBean;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
+import com.vitalong.bluetest2.views.CompanySelectDialog;
 
 import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,8 +53,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class SaveDataActivity extends AppCompatActivity {
-    @Bind(R.id.spSite)
-    Spinner spSite;
+    //    @Bind(R.id.spSite)
+//    Spinner spSite;
+    @Bind(R.id.tvSiteValue)
+    TextView tvSiteValue;
     @Bind(R.id.spTiltmeter)
     Spinner spTiltmeter;
     @Bind(R.id.toolbar)
@@ -63,6 +71,8 @@ public class SaveDataActivity extends AppCompatActivity {
     TextView tv4;
     @Bind(R.id.btnSave)
     Button btnSave;
+    @Bind(R.id.imgAdd)
+    ImageView imgAddDir;
     private double dAxisA = 0;
     private double dAxisB = 0;
     private double dAxisC = 0;
@@ -162,7 +172,7 @@ public class SaveDataActivity extends AppCompatActivity {
             raw1Andraw3 = raw1Double + raw3Double;
             raw2Andraw4 = raw2Double + raw4Double;
         }
-        initSpnr(spSite, dirs);
+//        initSpnr(spSite, dirs);
         initSpnr(spTiltmeter, fileNames);
         btnSave.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -178,6 +188,51 @@ public class SaveDataActivity extends AppCompatActivity {
                 }
                 setResult(Activity.RESULT_OK);
                 SaveDataActivity.this.finish();
+            }
+        });
+
+        imgAddDir.setOnClickListener(v -> {
+            //添加文件夹
+            final EditText inputSiteName = new EditText(SaveDataActivity.this);
+            AlertDialog.Builder builder = new AlertDialog.Builder(SaveDataActivity.this);
+            builder.setTitle("請輸入工地名稱").setIcon(R.drawable.img_tip).setView(inputSiteName)
+                    .setNegativeButton("Cancel", null);
+            builder.setPositiveButton("Ok", (dialog, which) -> {
+                if (inputSiteName.getText().toString().isEmpty()) {
+
+                    Toast.makeText(SaveDataActivity.this, "錄入文件名錯誤，請重新錄入", Toast.LENGTH_SHORT).show();
+                } else {
+                    String dirName = inputSiteName.getText().toString();
+                    tvSiteValue.setText(dirName);
+                    //并创建文件夹
+                    String dirPath = Constants.PRO_ROOT_PATH + "/" + dirName;
+                    FileUtils.createSDDirection(dirPath);
+                }
+            });
+            builder.show();
+        });
+
+        tvSiteValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<File> ConstructionSiteFiles;
+                CompanySelectDialog companySelectDialog = null;
+                ConstructionSiteFiles = new ArrayList<File>();
+                List<File> list = FileUtils.getFileListByDirPath(Constants.PRO_ROOT_PATH, new FileFilter() {
+                    @Override
+                    public boolean accept(File pathname) {
+                        return true;
+                    }
+                });
+                ConstructionSiteFiles.addAll(list);
+                companySelectDialog = new CompanySelectDialog(SaveDataActivity.this, ConstructionSiteFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                    @Override
+                    public void changeComapny(File file) {
+
+                        tvSiteValue.setText(file.getName());
+                    }
+                });
+                companySelectDialog.show();
             }
         });
     }
@@ -318,10 +373,10 @@ public class SaveDataActivity extends AppCompatActivity {
 
         switch (parent.getId()) {
 
-            case R.id.spSite:
-
-                selectDir = dirs[position];
-                break;
+//            case R.id.spSite:
+//
+//                selectDir = dirs[position];
+//                break;
             case R.id.spTiltmeter:
 
                 selectFileName = fileNames[position];

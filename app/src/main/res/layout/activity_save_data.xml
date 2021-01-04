@@ -54,21 +54,38 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatSpinner
-            android:id="@+id/spSite"
-            android:layout_width="100dp"
-            android:layout_height="32dp"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSiteValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
             android:background="@drawable/spinner_bg"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
+            android:ellipsize="end"
             android:gravity="center"
-            android:popupBackground="@drawable/shape_spinner_pop"
-            android:textSize="100sp"
+            android:maxLines="1"
+            android:paddingStart="12dp"
+            android:paddingTop="4dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="4dp"
+            android:text="234"
+            android:textColor="@color/black"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSite"
+            app:layout_constraintEnd_toStartOf="@id/imgAdd"
             app:layout_constraintStart_toEndOf="@id/tvSite"
+            app:layout_constraintTop_toTopOf="@id/tvSite" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgAdd"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSite"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tvSite"
-            tools:text="Deg" />
+            app:srcCompat="@drawable/add_dir" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvTiltmeter"
@@ -87,8 +104,8 @@
             android:layout_height="32dp"
             android:layout_marginStart="12dp"
             android:background="@drawable/spinner_bg"
-            android:textSize="40sp"
             android:gravity="center"
+            android:textSize="40sp"
             app:layout_constraintBottom_toBottomOf="@id/tvTiltmeter"
             app:layout_constraintStart_toEndOf="@id/tvTiltmeter"
             app:layout_constraintTop_toTopOf="@id/tvTiltmeter"

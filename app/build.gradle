@@ -54,4 +54,5 @@ dependencies {
     implementation 'com.github.hsmnzaydn:easy-csv:1.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs\\bugly_crash_release.jar')
+    implementation project(path: ':lfilepickerlibrary')
 }
