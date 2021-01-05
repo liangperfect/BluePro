@@ -12,13 +12,14 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.leon.lfilepickerlibrary.LFilePicker;
 import com.vitalong.bluetest2.Utils.Constants;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.Utils.Utils;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.bluepro.CompareActivity;
+import com.vitalong.bluetest2.bluepro.MeregParametersActivity;
 import com.vitalong.bluetest2.bluepro.SettingActivity;
-import com.vitalong.bluetest2.bluepro.ShareFileActivity;
 import com.vitalong.bluetest2.bluepro.SurveyActivity;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import me.drakeet.materialdialog.MaterialDialog;
+import sakura.bottommenulibrary.bottompopfragmentmenu.BottomMenuFragment;
 
 public class OperationPanelActivity extends MyBaseActivity2 implements View.OnClickListener {
 
@@ -39,7 +41,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     ImageButton imageButton3;
     @Bind(R.id.imageButton4)
     ImageButton imageButton4;
-
+    private int FILE_SELECTOR_SHARE = 111;//选择文件进行分享
     boolean isPause = false;
     int delayTime = 600;
     private OperationPanelHandler operationPanelHandler;
@@ -139,11 +141,38 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 startActivity(new Intent(OperationPanelActivity.this, SettingActivity.class));
                 break;
             case R.id.imageButton4:
-                startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
+//                startActivity(new Intent(OperationPanelActivity.this, ShareFileActivity.class));
+                selectDialogShow();
                 break;
             default:
                 break;
         }
+    }
+
+    private void selectDialogShow() {
+
+        new BottomMenuFragment(OperationPanelActivity.this)
+                .addMenuItems(new sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem("Share"))
+                .addMenuItems(new sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem("Merge"))
+                .setOnItemClickListener((textView, i) -> {
+
+                    if (i == 0) {
+                        //前往分享界面
+                        new LFilePicker()
+                                .withActivity(OperationPanelActivity.this)
+                                .withRequestCode(FILE_SELECTOR_SHARE)
+                                .withMutilyMode(true)
+                                .withStartPath(Constants.PRO_ROOT_PATH)
+                                .withIsGreater(false)
+                                .withFileSize(500 * 1024)
+                                .withTitleColor("#000000")
+                                .withBackgroundColor("#FFFFFF")
+                                .start();
+                    } else {
+                        //前往数据合并界面
+                        startActivity(new Intent(OperationPanelActivity.this, MeregParametersActivity.class));
+                    }
+                }).show();
     }
 
     class OperationPanelHandler extends Handler {

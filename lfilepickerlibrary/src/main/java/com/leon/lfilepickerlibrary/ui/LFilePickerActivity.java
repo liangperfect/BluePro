@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,6 +71,7 @@ public class LFilePickerActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         initToolbar();
+        makeStatusBar(R.color.lfile_white);
         updateAddButton();
         if (!checkSDState()) {
             Toast.makeText(this, R.string.lfile_NotFoundPath, Toast.LENGTH_SHORT).show();
@@ -427,4 +430,11 @@ public class LFilePickerActivity extends AppCompatActivity {
         }
     }
 
+    protected void makeStatusBar(int colorId) {
+        Window window = this.getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.setStatusBarColor(getResources().getColor(colorId));
+        this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
 }

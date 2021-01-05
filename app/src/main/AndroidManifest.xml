@@ -29,7 +29,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".bluepro.VerifyResultActivity"></activity>
+        <activity android:name=".bluepro.MeregParametersActivity" />
+        <activity android:name=".bluepro.VerifyResultActivity" />
         <activity android:name=".bluepro.ShareFileActivity" />
         <activity
             android:name=".bluepro.GraphActivity"

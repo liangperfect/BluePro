@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:elevation="0dp">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:contentInsetEnd="0dp"
+            app:contentInsetStart="0dp"
+            app:layout_anchor="@+id/appbar"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/nav_arrow_left"
+            app:title=""
+            app:titleMargin="0dp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:text="Merge Paremeters"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:padding="16dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="請選擇工地號:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tvSiteValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/drop_down_selector"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="6dp"
+            android:text="234"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSite"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvSite"
+            app:layout_constraintTop_toTopOf="@id/tvSite" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvAddHole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:text="添加孔號:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@id/tvSite"
+            app:layout_constraintTop_toBottomOf="@id/tvSite" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgAddHold"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/add_hole"
+            app:layout_constraintBottom_toBottomOf="@id/tvAddHole"
+            app:layout_constraintStart_toStartOf="@id/tvSiteValue"
+            app:layout_constraintTop_toTopOf="@id/tvAddHole" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/scrollView"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/spinner_bg"
+            app:layout_constraintEnd_toEndOf="@id/tvSiteValue"
+            app:layout_constraintStart_toStartOf="@id/tvSite"
+            app:layout_constraintTop_toBottomOf="@id/imgAddHold">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="12dp"
+                android:text="測試i數據" />
+        </androidx.core.widget.NestedScrollView>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvRequiredParemeters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="必選項:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/tvSite"
+            app:layout_constraintTop_toBottomOf="@id/scrollView" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toStartOf="@id/constraModel"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="@id/tvRequiredParemeters"
+            app:layout_constraintTop_toBottomOf="@id/tvRequiredParemeters">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/check_box_selected" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvImgType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Type"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/imgType"
+                app:layout_constraintStart_toEndOf="@id/imgType"
+                app:layout_constraintTop_toTopOf="@id/imgType" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraModel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/constraType"
+            app:layout_constraintEnd_toStartOf="@id/constraSN"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/constraType"
+            app:layout_constraintTop_toTopOf="@id/constraType">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/check_box_selected" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvImgModel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Model"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/imgModel"
+                app:layout_constraintStart_toEndOf="@id/imgModel"
+                app:layout_constraintTop_toTopOf="@id/imgModel" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraSN"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/constraModel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/constraModel"
+            app:layout_constraintTop_toTopOf="@id/constraModel">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgSN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/check_box_selected" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Serial Number"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/imgSN"
+                app:layout_constraintStart_toEndOf="@id/imgSN"
+                app:layout_constraintTop_toTopOf="@id/imgSN" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraSite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="@id/constraType"
+            app:layout_constraintTop_toBottomOf="@id/constraType">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/check_box_selected" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvcbSite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="Site"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toBottomOf="@id/imgSite"
+                app:layout_constraintStart_toEndOf="@id/imgSite"
+                app:layout_constraintTop_toTopOf="@id/imgSite" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvOptionParemeters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="備選項:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@id/constraSite"
+            app:layout_constraintTop_toBottomOf="@id/constraSite" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkRange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Range"
+            app:layout_constraintStart_toStartOf="@id/constraType"
+            app:layout_constraintTop_toBottomOf="@id/tvOptionParemeters" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkGF"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Gage Factor"
+            app:layout_constraintBottom_toBottomOf="@id/checkRange"
+            app:layout_constraintStart_toStartOf="@id/constraModel"
+            app:layout_constraintTop_toTopOf="@id/checkRange" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkIR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="InititalReading"
+            app:layout_constraintBottom_toBottomOf="@id/checkRange"
+            app:layout_constraintStart_toStartOf="@id/constraSN"
+            app:layout_constraintTop_toTopOf="@id/checkRange" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkDeg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deg"
+            app:layout_constraintStart_toStartOf="@id/checkRange"
+            app:layout_constraintTop_toBottomOf="@id/checkRange" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:id="@+id/checkIncline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Deg"
+            app:layout_constraintStart_toStartOf="@id/checkGF"
+            app:layout_constraintTop_toBottomOf="@id/checkRange" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCsvMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:text="Csv生成模式:"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/checkDeg" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/tvCsvModeValue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/drop_down_selector"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:maxLines="1"
+            android:minHeight="0dp"
+            android:paddingStart="12dp"
+            android:paddingTop="6dp"
+            android:paddingEnd="12dp"
+            android:paddingBottom="6dp"
+            android:text="1、所有測量時間"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvCsvMode"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tvCsvMode"
+            app:layout_constraintTop_toTopOf="@id/tvCsvMode" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNextS"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#546DFE"
+            android:text="Create CSV"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -11,9 +11,10 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?android:attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/lfile_white"
         android:minHeight="?android:attr/actionBarSize"
-        app:navigationIcon="?attr/navigationIcon" />
+        android:theme="@style/Custom_AppCompat_ActionBar"
+        app:navigationIcon="@drawable/nav_arrow_left" />
 
     <LinearLayout
         android:id="@+id/layout_path"
@@ -57,16 +58,17 @@
         android:layout_alignParentBottom="true"
         android:background="@drawable/lfile_btn_bg"
         android:text="@string/lfile_Selected"
-        android:textColor="@color/lfile_white"
+        android:textColor="@color/black"
         android:textSize="18sp"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible" />
 
     <Button
         android:id="@+id/btn_shared"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="#00BF60"
+        android:background="@drawable/lfile_btn_bg"
         android:text="@string/lfile_Shared"
         android:textColor="@color/lfile_white"
         android:textSize="18sp"
@@ -86,7 +88,7 @@
         android:id="@+id/recylerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_addbook"
+        android:layout_above="@id/btn_shared"
         android:layout_below="@id/layout_path" />
 
     <include

@@ -76,7 +76,6 @@
             app:layout_constraintStart_toEndOf="@id/tvSite"
             app:layout_constraintTop_toTopOf="@id/tvSite" />
 
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgAdd"
             android:layout_width="40dp"

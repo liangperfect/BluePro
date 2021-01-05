@@ -47,4 +47,10 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="Custom_AppCompat_ActionBar" parent="Widget.AppCompat.ActionBar">
+
+        <item name="android:background">@color/lfile_white</item>
+        <item name="actionMenuTextColor">#000000</item>
+    </style>
+
 </resources>

@@ -63,8 +63,9 @@ public abstract class MyBaseActivity2 extends AppCompatActivity {
 
     protected void bindToolBar() {
         ButterKnife.bind(this);
-        ButterKnife.bind(this);
+//        ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        toolbar.setNavigationIcon(R.mipmap.ic_search_white_36dp);
         if (Build.VERSION.SDK_INT >= 23) {
             toolbar.setTitleTextColor(getColor(android.R.color.white));

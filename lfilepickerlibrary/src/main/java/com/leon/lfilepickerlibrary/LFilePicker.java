@@ -255,6 +255,11 @@ public class LFilePicker {
         return this;
     }
 
+    /**
+     * 选择模式
+     * @param selectorMode
+     * @return
+     */
     public LFilePicker withSelectorMode(int selectorMode) {
         this.selectorMode = selectorMode;
         return this;

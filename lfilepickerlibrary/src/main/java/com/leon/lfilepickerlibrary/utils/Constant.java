@@ -24,5 +24,4 @@ public class Constant {
     //工地选择模式后
     public static int SELECTOR_MODE_2_1 = 1;//开始测量
     public static int SELECTOR_MODE_2_2 = 2;//修改记录，进入到下一步
-
 }
