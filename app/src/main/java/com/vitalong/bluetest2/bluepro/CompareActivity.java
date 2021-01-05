@@ -165,17 +165,14 @@ public class CompareActivity extends AppCompatActivity {
         tvSiteValue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<File> ConstructionSiteFiles;
                 CompanySelectDialog companySelectDialog = null;
-                ConstructionSiteFiles = new ArrayList<File>();
                 List<File> list = FileUtils.getFileListByDirPath(Constants.PRO_ROOT_PATH, new FileFilter() {
                     @Override
                     public boolean accept(File pathname) {
                         return true;
                     }
                 });
-                ConstructionSiteFiles.addAll(list);
-                companySelectDialog = new CompanySelectDialog(CompareActivity.this, ConstructionSiteFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                companySelectDialog = new CompanySelectDialog<File>(CompareActivity.this, list,"工地選擇" ,new CompanySelectDialog.ChangeComapngeListener<File>() {
                     @Override
                     public void changeComapny(File file) {
 

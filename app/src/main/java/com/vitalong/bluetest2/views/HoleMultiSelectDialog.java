@@ -2,6 +2,7 @@ package com.vitalong.bluetest2.views;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.os.Build;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,24 +13,28 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.vitalong.bluetest2.R;
+import com.vitalong.bluetest2.bean.HoleBean;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
-public class CompanySelectDialog<T> extends Dialog {
+public class HoleMultiSelectDialog extends Dialog {
     private ImageView imgClose;
     private RecyclerView recyclerView;
     private TextView tvTitle;
+    private TextView tvConfirm;
     private String dialogTitle;
-    private List<T> datas;
-    private ChangeComapngeListener listener;
+    private List<HoleBean> datas;
+    private ChangeHoleListener listener;
 
-    public CompanySelectDialog(Context context, List<T> d, String title, ChangeComapngeListener l) {
+    public HoleMultiSelectDialog(Context context, List<HoleBean> d, String title, ChangeHoleListener l) {
         super(context, R.style.bottom_dialog);
         dialogTitle = title;
         datas = d;
@@ -37,14 +42,14 @@ public class CompanySelectDialog<T> extends Dialog {
         init(context);
     }
 
-    public CompanySelectDialog(Context context, int themeResId, List<T> d, String title) {
+    public HoleMultiSelectDialog(Context context, int themeResId, List<HoleBean> d, String title) {
         super(context, themeResId);
         dialogTitle = title;
         datas = d;
         init(context);
     }
 
-    public CompanySelectDialog(Context context, boolean cancelable, OnCancelListener cancelListener, List<T> d, String title) {
+    public HoleMultiSelectDialog(Context context, boolean cancelable, OnCancelListener cancelListener, List<HoleBean> d, String title) {
         super(context, cancelable, cancelListener);
         dialogTitle = title;
         datas = d;
@@ -57,18 +62,39 @@ public class CompanySelectDialog<T> extends Dialog {
      * @param context
      */
     private void init(Context context) {
-        View view = getLayoutInflater().inflate(R.layout.company_select, null, false);
+        View view = getLayoutInflater().inflate(R.layout.hole_multi_select, null, false);
         setContentView(view);
         tvTitle = view.findViewById(R.id.tvTitle);
         tvTitle.setText(dialogTitle);
         imgClose = view.findViewById(R.id.imgClose);
         recyclerView = view.findViewById(R.id.recyclerView);
+        tvConfirm = view.findViewById(R.id.tvConfirm);
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CompanySelectDialog.this.dismiss();
+                HoleMultiSelectDialog.this.dismiss();
             }
         });
+
+        tvConfirm.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                List<HoleBean> confirmHoles = new ArrayList<>();
+                datas.forEach(new Consumer<HoleBean>() {
+                    @Override
+                    public void accept(HoleBean b) {
+
+                        if (b.isChecked()) {
+                            confirmHoles.add(b);
+                        }
+                    }
+                });
+                listener.selectMultiHoles(confirmHoles);
+                HoleMultiSelectDialog.this.dismiss();
+            }
+        });
+
         CompanyAdapter companyAdapter = new CompanyAdapter(datas);
         recyclerView.setLayoutManager(new LinearLayoutManager(context));
         recyclerView.setAdapter(companyAdapter);
@@ -83,9 +109,9 @@ public class CompanySelectDialog<T> extends Dialog {
 
     class CompanyAdapter extends RecyclerView.Adapter<CompanyAdapter.ViewHodler> {
 
-        private List<T> datas;
+        private List<HoleBean> datas;
 
-        public CompanyAdapter(List<T> d) {
+        public CompanyAdapter(List<HoleBean> d) {
             this.datas = d;
         }
 
@@ -93,7 +119,7 @@ public class CompanySelectDialog<T> extends Dialog {
         @Override
         public ViewHodler onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_change_company, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_select_hole, parent, false);
             ViewHodler viewHodler = new ViewHodler(view);
             return viewHodler;
         }
@@ -101,17 +127,14 @@ public class CompanySelectDialog<T> extends Dialog {
         @Override
         public void onBindViewHolder(@NonNull ViewHodler holder, int position) {
 
-            if (datas.get(position) instanceof File) {
-                File file = (File) datas.get(position);
-                holder.name.setText(file.getName());
-            } else if (datas.get(position) instanceof String) {
-                String name = (String) datas.get(position);
-                holder.name.setText(name);
-            }
+            String holeName = ((HoleBean) datas.get(position)).getHoleName();
+            holder.name.setText(holeName);
             holder.cardView.setOnClickListener(v -> {
 
-                listener.changeComapny(datas.get(position));
-                CompanySelectDialog.this.dismiss();
+                HoleBean hole = datas.get(position);
+                hole.setChecked(!hole.isChecked());
+                int resId = hole.isChecked() ? R.drawable.check_box_selected : R.drawable.check_box_unselected;
+                holder.imgCheckState.setImageResource(resId);
             });
         }
 
@@ -125,19 +148,23 @@ public class CompanySelectDialog<T> extends Dialog {
             ImageView img;
             TextView name;
             CardView cardView;
+            ImageView imgCheckState;
+            TextView tvConfirm;
 
             public ViewHodler(@NonNull View itemView) {
                 super(itemView);
                 img = itemView.findViewById(R.id.imgCompany);
                 name = itemView.findViewById(R.id.tvCompanyName);
                 cardView = itemView.findViewById(R.id.cardView);
+                imgCheckState = itemView.findViewById(R.id.imgCheckBoxHole);
             }
         }
     }
 
-    public interface ChangeComapngeListener<T> {
-        public void changeComapny(T file);
+    public interface ChangeHoleListener {
+        public void selectHole(HoleBean hole);
 
+        public void selectMultiHoles(List<HoleBean> holes);
     }
 
     public int dp2px(Context context, float dp) {
