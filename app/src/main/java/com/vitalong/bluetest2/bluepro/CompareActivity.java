@@ -31,7 +31,6 @@ import com.vitalong.bluetest2.views.CompanySelectDialog;
 
 import java.io.File;
 import java.io.FileFilter;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -120,7 +119,7 @@ public class CompareActivity extends AppCompatActivity {
             String tableName = selectDirName + "_" + selectFileName;
             String nums = selectNums;
             String direction = selectDirection;
-            if (selectDirection.isEmpty()) {
+            if (selectDirName.isEmpty()) {
                 Toast.makeText(CompareActivity.this, "請選擇Site", Toast.LENGTH_SHORT).show();
             } else {
                 Intent i;
@@ -172,7 +171,7 @@ public class CompareActivity extends AppCompatActivity {
                         return true;
                     }
                 });
-                companySelectDialog = new CompanySelectDialog<File>(CompareActivity.this, list,"工地選擇" ,new CompanySelectDialog.ChangeComapngeListener<File>() {
+                companySelectDialog = new CompanySelectDialog<File>(CompareActivity.this, list, "工地選擇", new CompanySelectDialog.ChangeComapngeListener<File>() {
                     @Override
                     public void changeComapny(File file) {
 

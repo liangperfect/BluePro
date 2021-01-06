@@ -137,7 +137,6 @@ public class CompanySelectDialog<T> extends Dialog {
 
     public interface ChangeComapngeListener<T> {
         public void changeComapny(T file);
-
     }
 
     public int dp2px(Context context, float dp) {

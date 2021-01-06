@@ -18,10 +18,11 @@ public class RealDataCached {
     private String rawSecond;
     private String include;
     private String realIncline;
+    private boolean isChecked = false;//用于手动合并CSV的时候，给item做判断
 
-    @Generated(hash = 2067405578)
-    public RealDataCached(Long id, String formName, String time, String direction,
-                          String rawFirst, String rawSecond, String include, String realIncline) {
+    @Generated(hash = 1035144428)
+    public RealDataCached(Long id, String formName, String time, String direction, String rawFirst,
+            String rawSecond, String include, String realIncline, boolean isChecked) {
         this.id = id;
         this.formName = formName;
         this.time = time;
@@ -30,6 +31,7 @@ public class RealDataCached {
         this.rawSecond = rawSecond;
         this.include = include;
         this.realIncline = realIncline;
+        this.isChecked = isChecked;
     }
 
     @Generated(hash = 1334578809)
@@ -114,5 +116,21 @@ public class RealDataCached {
 
     public void setRealIncline(String realIncline) {
         this.realIncline = realIncline;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public boolean getIsChecked() {
+        return this.isChecked;
+    }
+
+    public void setIsChecked(boolean isChecked) {
+        this.isChecked = isChecked;
     }
 }

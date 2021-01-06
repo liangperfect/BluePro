@@ -1,5 +1,6 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -25,6 +26,7 @@ import com.vitalong.bluetest2.views.HoleMultiSelectDialog;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +44,11 @@ public class MeregParametersActivity extends AppCompatActivity {
     ImageView imgAddHold;
     @Bind(R.id.tvShowHoles)
     TextView tvShowHoles;
+    @Bind(R.id.btnNext)
+    Button btnNext;
+
+    private int currCreateCsvMode = Constants.CREATE_CSV_ALL_TIME;
+    private List<String> holeList = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,20 +56,13 @@ public class MeregParametersActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mereg_parameters);
         bindToolBar();
         makeStatusBar(R.color.white);
-        initData();
         initListener();
-    }
-
-
-    private void initData() {
-
     }
 
     protected void bindToolBar() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-//        toolbar.setNavigationIcon(R.mipmap.ic_search_white_36dp);
         if (Build.VERSION.SDK_INT >= 23) {
             toolbar.setTitleTextColor(getColor(android.R.color.black));
         } else {
@@ -99,8 +99,8 @@ public class MeregParametersActivity extends AppCompatActivity {
                     return true;
                 }
             });
-            CompanySelectDialog companySelectDialog = null;
-            companySelectDialog = new CompanySelectDialog(MeregParametersActivity.this, list, "工地選擇", new CompanySelectDialog.ChangeComapngeListener<File>() {
+            CompanySelectDialog<File> companySelectDialog = null;
+            companySelectDialog = new CompanySelectDialog<File>(MeregParametersActivity.this, list, "工地選擇", new CompanySelectDialog.ChangeComapngeListener<File>() {
                 @Override
                 public void changeComapny(File file) {
                     btnSiteValue.setText(file.getName());
@@ -121,8 +121,24 @@ public class MeregParametersActivity extends AppCompatActivity {
             companySelectDialog = new CompanySelectDialog(MeregParametersActivity.this, csvModes, "模式選擇", new CompanySelectDialog.ChangeComapngeListener<String>() {
                 @Override
                 public void changeComapny(String modeName) {
-
                     btnCsvModeValue.setText(modeName);
+                    switch (modeName) {
+                        case "所有測量時間":
+                            currCreateCsvMode = Constants.CREATE_CSV_ALL_TIME;
+                            btnNext.setText("Create Csv");
+                            break;
+                        case "最新一筆測量時間":
+                            currCreateCsvMode = Constants.CREATE_CSV_LAST_TIME;
+                            btnNext.setText("Create Csv");
+                            break;
+                        case "手動選擇":
+                            currCreateCsvMode = Constants.CREATE_CSV_Manual;
+                            btnNext.setText("Next Step");
+                            break;
+                        default:
+                            //nothing todo
+                            break;
+                    }
                 }
             });
             companySelectDialog.show();
@@ -154,8 +170,10 @@ public class MeregParametersActivity extends AppCompatActivity {
 
                         @Override
                         public void selectMultiHoles(List<HoleBean> holes) {
+                            holeList.clear();
                             StringBuilder holesStr = new StringBuilder();
                             for (int i = 0; i < holes.size(); i++) {
+                                holeList.add(holes.get(i).getHoleName());
                                 holesStr.append(i).append("、").append(holes.get(i).getHoleName()).append("\n");
                             }
                             tvShowHoles.setText(holesStr);
@@ -165,6 +183,34 @@ public class MeregParametersActivity extends AppCompatActivity {
                 } else {
 
                     Toast.makeText(MeregParametersActivity.this, "請先選擇工地", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch (currCreateCsvMode) {
+                    case Constants.CREATE_CSV_ALL_TIME:
+
+                        //直接生成
+                        break;
+                    case Constants.CREATE_CSV_LAST_TIME:
+                        //直接生成
+                        break;
+                    case Constants.CREATE_CSV_Manual:
+                        //将参数传给下一张界面
+                        //工地名称
+                        String siteName = btnSiteValue.getText().toString();
+                        //holeList 选择的孔号
+                        Intent i = new Intent(MeregParametersActivity.this, ManualMergeCsvActivity.class);
+                        i.putExtra("siteName", siteName);
+                        i.putExtra("holes", (Serializable) holeList);
+                        startActivity(i);
+                        break;
+                    default:
+                        //nothing todo
+                        break;
                 }
             }
         });

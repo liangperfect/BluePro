@@ -295,4 +295,8 @@ public class Constants {
     public static String PRO_ROOT_DIR_PATH = "/tiltmeter";
     //从哪里跳转到实时界面的Survey
     public static int FROM_CREATE_NEW_SITE_HOLE = 0;
+    //csv生成模式
+    public final static int CREATE_CSV_ALL_TIME = 0;
+    public final static int CREATE_CSV_LAST_TIME = 1;
+    public final static int CREATE_CSV_Manual = 2;
 }

@@ -55,4 +55,7 @@ dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation files('libs\\bugly_crash_release.jar')
     implementation project(path: ':lfilepickerlibrary')
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 }

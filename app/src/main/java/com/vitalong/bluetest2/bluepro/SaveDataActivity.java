@@ -1,5 +1,6 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
@@ -83,7 +84,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private double dBxisD = 0;
     private SaveSuerveyBean saveSuerveyBean;
     private String snValue = "";
-    private String selectDir = "A001";
+    private String selectDir = "";
     private String selectFileName = "T01";
     private VerifyDataBean verifyDataBean;//矫正参数
     private boolean isSingleAxis = false; //判断数据是单轴还是双轴的 true:单轴   false:双轴
@@ -178,16 +179,22 @@ public class SaveDataActivity extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-                if (canSave) {
-                    saveData();
-                    //保存了数据就前往列表展示页面
-                    Intent i = new Intent(SaveDataActivity.this, SurveyListActivity.class);
-                    i.putExtra("tableName", selectDir + "_" + selectFileName);
-                    i.putExtra("fromWhich", true);
-                    startActivity(i);
+                String tvSelectStr = tvSiteValue.getText().toString();
+                if (!tvSelectStr.isEmpty()) {
+                    if (canSave) {
+                        selectDir = tvSelectStr;
+                        saveData();
+                        //保存了数据就前往列表展示页面
+                        Intent i = new Intent(SaveDataActivity.this, SurveyListActivity.class);
+                        i.putExtra("tableName", selectDir + "_" + selectFileName);
+                        i.putExtra("fromWhich", true);
+                        startActivity(i);
+                    }
+                    setResult(Activity.RESULT_OK);
+                    SaveDataActivity.this.finish();
+                } else {
+                    Toast.makeText(SaveDataActivity.this, "请先选择工地号", Toast.LENGTH_SHORT).show();
                 }
-                setResult(Activity.RESULT_OK);
-                SaveDataActivity.this.finish();
             }
         });
 
@@ -237,7 +244,7 @@ public class SaveDataActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void saveData() {
         try {
-            File file = createDirAndFile();
+            createDirAndFile();
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
             String de = sdf.format(date);
@@ -328,26 +335,29 @@ public class SaveDataActivity extends AppCompatActivity {
      *
      * @return
      */
-    private File createDirAndFile() throws IOException {
+    private void createDirAndFile() throws IOException {
 
         String dir = "sdcard/tiltmeter/" + selectDir + "/";
         Utils.createDir(dir);
         File dirFile = new File(dir);
-        //删除之前的文件
-//        if (dirFile != null && dirFile.list() != null && dirFile.list().length > 0) {
-//            for (String s : dirFile.list()) {
-//                new File(dir + s).delete();
-//            }
-//        }
+        //删除之前的相同工地名称和孔号的csv文件
+        if (dirFile.list() != null && Objects.requireNonNull(dirFile.list()).length > 0) {
+            for (String s : dirFile.list()) {
+                if (s.contains(selectFileName)) {
+                    new File(dir + s).delete();
+                    break;
+                }
+            }
+        }
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
         String de = sdf.format(date);
         String fp = dir + "/" + selectDir + "_" + selectFileName + "_" + de + ".csv";
         File dataFile = new File(fp);
         if (!dataFile.exists()) {
             dataFile.createNewFile();
         }
-        return dataFile;
+//        return dataFile;
     }
 
     public void initSpnr(Spinner spinner, String[] ctype) {
@@ -413,11 +423,11 @@ public class SaveDataActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    String[] dirs = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
-            , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
-            , "A040", "A041", "A042", "A043", "A044", "A045", "A046", "A047", "A048", "A049", "A050", "A051", "A052", "A053", "A054", "A055", "A056", "A057", "A058", "A059"
-            , "A060", "A061", "A062", "A063", "A064", "A065", "A066", "A067", "A068", "A069", "A070", "A071", "A072", "A073", "A074", "A075", "A076", "A077", "A078", "A079"
-            , "A080", "A081", "A082", "A083", "A084", "A085", "A086", "A087", "A088", "A089", "A090", "A091", "A092", "A093", "A094", "A095", "A096", "A097", "A098", "A099"};//2 Axis
+    //    String[] dirs = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
+//            , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
+//            , "A040", "A041", "A042", "A043", "A044", "A045", "A046", "A047", "A048", "A049", "A050", "A051", "A052", "A053", "A054", "A055", "A056", "A057", "A058", "A059"
+//            , "A060", "A061", "A062", "A063", "A064", "A065", "A066", "A067", "A068", "A069", "A070", "A071", "A072", "A073", "A074", "A075", "A076", "A077", "A078", "A079"
+//            , "A080", "A081", "A082", "A083", "A084", "A085", "A086", "A087", "A088", "A089", "A090", "A091", "A092", "A093", "A094", "A095", "A096", "A097", "A098", "A099"};//2 Axis
     String[] fileNames = new String[]{"T01", "T02", "T03", "T04", "T05", "T06", "T07", "T08", "T09", "T10", "T11", "T12", "T13", "T14", "T15", "T16", "T17", "T18", "T19"
             , "T20", "T21", "T22", "T23", "T24", "T25", "T26", "T27", "T28", "T29", "T30", "T31", "T32", "T33", "T34", "T35", "T36", "T37", "T38", "T39"
             , "T40", "T41", "T42", "T43", "T44", "T45", "T46", "T47", "T48", "T49", "T50", "T51", "T52", "T53", "T54", "T55", "T56", "T57", "T58", "T59"

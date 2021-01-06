@@ -342,7 +342,7 @@
             app:layout_constraintTop_toTopOf="@id/tvCsvMode" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btnNextS"
+            android:id="@+id/btnNext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#546DFE"
