@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -205,11 +206,11 @@ public class SaveDataActivity extends AppCompatActivity {
             builder.setTitle("請輸入工地名稱").setIcon(R.drawable.img_tip).setView(inputSiteName)
                     .setNegativeButton("Cancel", null);
             builder.setPositiveButton("Ok", (dialog, which) -> {
-                if (inputSiteName.getText().toString().isEmpty()) {
+                if (inputSiteName.getText().toString().isEmpty() || inputSiteName.getText().toString().contains("_")) {
 
                     Toast.makeText(SaveDataActivity.this, "錄入文件名錯誤，請重新錄入", Toast.LENGTH_SHORT).show();
                 } else {
-                    String dirName = inputSiteName.getText().toString();
+                    String dirName = inputSiteName.getText().toString().trim();
                     tvSiteValue.setText(dirName);
                     //并创建文件夹
                     String dirPath = Constants.PRO_ROOT_PATH + "/" + dirName;
@@ -253,17 +254,24 @@ public class SaveDataActivity extends AppCompatActivity {
             easyCsv.setSeperatorLine("/n");//行分隔符
             List<String> headerList = new ArrayList<>();
             List<String> dataList = createTableData2();
+            File file = new File(Environment.getExternalStorageDirectory() + File.separator + saveFileStr + ".csv");
+            if (file.exists()) {
+                Log.d("chenliang", "文件存在" + file.getPath());
+            } else {
+                Log.d("chenliang", "文件不存在" + file.getPath());
+            }
             easyCsv.createCsvFile(saveFileStr, headerList, dataList, 1, new FileCallback() {
 
                 @Override
                 public void onSuccess(File file) {
 
                     Log.d("chenliang", "file:" + file.getPath());
+                    Toast.makeText(SaveDataActivity.this, "保存成功", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFail(String s) {
-
+                    Toast.makeText(SaveDataActivity.this, "保存失敗:" + s, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (IOException e) {
@@ -294,7 +302,7 @@ public class SaveDataActivity extends AppCompatActivity {
         collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toSaveString());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Incline('')", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "deg", "deg", "Incline('')", "", "").toSaveString());
         //获取数据库中的数据并添加到列表数据容器中
         List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
         double d1Temp = Double.valueOf(deg1);
@@ -307,10 +315,10 @@ public class SaveDataActivity extends AppCompatActivity {
         int intIncline2 = (int) include2;
         if (listDatas.isEmpty()) {
 
-            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, "0", "", "", "", "").toSaveString());
-            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, "0", "", "", "", "").toSaveString());
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, "0", String.valueOf(intIncline1)));
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, "0", String.valueOf(intIncline2)));
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, deg1, deg3, "0", "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, deg2, deg4, "0", "", "").toSaveString());
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, deg1, deg3, "0", String.valueOf(intIncline1)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, deg2, deg4, "0", String.valueOf(intIncline2)));
         } else {
 
             int firstInclude = Integer.valueOf(listDatas.get(0).getRealIncline());
@@ -318,14 +326,14 @@ public class SaveDataActivity extends AppCompatActivity {
             for (int i = 0; i < listDatas.size(); i++) {
                 RealDataCached realDataCached = listDatas.get(i);
                 collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
-                        realDataCached.getRawSecond(), realDataCached.getInclude(), "", "", "", "").toSaveString());
+                        realDataCached.getRawSecond(), realDataCached.getDegFirst(), realDataCached.getDegSecond(), realDataCached.getInclude(), "", "").toSaveString());
             }
 
-            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude), "", "", "", "").toSaveString());
-            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude), "", "", "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, deg1, deg3, String.valueOf(intIncline1 - firstInclude), "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(intIncline2 - secondInclude), "", "").toSaveString());
 //            //插入到数据库中去
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, String.valueOf(intIncline1 - firstInclude), String.valueOf(intIncline1 - firstInclude)));
-            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, String.valueOf(intIncline2 - secondInclude), String.valueOf(intIncline2 - secondInclude)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, deg1, deg3, String.valueOf(intIncline1 - firstInclude), String.valueOf(intIncline1 - firstInclude)));
+            realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(intIncline2 - secondInclude), String.valueOf(intIncline2 - secondInclude)));
         }
         return collection;
     }
@@ -396,6 +404,7 @@ public class SaveDataActivity extends AppCompatActivity {
     protected void bindToolBar() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 //        toolbar.setNavigationIcon(R.mipmap.ic_search_white_36dp);
         if (Build.VERSION.SDK_INT >= 23) {
             toolbar.setTitleTextColor(getColor(android.R.color.white));

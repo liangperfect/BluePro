@@ -16,19 +16,24 @@ public class RealDataCached {
     private String direction; // 1-3的direction
     private String rawFirst;
     private String rawSecond;
+    private String degFirst;
+    private String degSecond;
     private String include;
-    private String realIncline;
+    private String realIncline;//用来记录第一次的incline的值
     private boolean isChecked = false;//用于手动合并CSV的时候，给item做判断
 
-    @Generated(hash = 1035144428)
+    @Generated(hash = 1303882193)
     public RealDataCached(Long id, String formName, String time, String direction, String rawFirst,
-            String rawSecond, String include, String realIncline, boolean isChecked) {
+                          String rawSecond, String degFirst, String degSecond, String include, String realIncline,
+                          boolean isChecked) {
         this.id = id;
         this.formName = formName;
         this.time = time;
         this.direction = direction;
         this.rawFirst = rawFirst;
         this.rawSecond = rawSecond;
+        this.degFirst = degFirst;
+        this.degSecond = degSecond;
         this.include = include;
         this.realIncline = realIncline;
         this.isChecked = isChecked;
@@ -39,12 +44,14 @@ public class RealDataCached {
     }
 
     public RealDataCached(String formName, String time, String direction,
-                          String rawFirst, String rawSecond, String include, String realIncline) {
+                          String rawFirst, String rawSecond, String degFirst, String degSecond, String include, String realIncline) {
         this.formName = formName;
         this.time = time;
         this.direction = direction;
         this.rawFirst = rawFirst;
         this.rawSecond = rawSecond;
+        this.degFirst = degFirst;
+        this.degSecond = degSecond;
         this.include = include;
         this.realIncline = realIncline;
     }
@@ -132,5 +139,21 @@ public class RealDataCached {
 
     public void setIsChecked(boolean isChecked) {
         this.isChecked = isChecked;
+    }
+
+    public String getDegFirst() {
+        return degFirst;
+    }
+
+    public void setDegFirst(String degFirst) {
+        this.degFirst = degFirst;
+    }
+
+    public String getDegSecond() {
+        return degSecond;
+    }
+
+    public void setDegSecond(String degSecond) {
+        this.degSecond = degSecond;
     }
 }

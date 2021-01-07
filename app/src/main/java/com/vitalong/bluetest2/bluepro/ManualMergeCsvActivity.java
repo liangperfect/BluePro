@@ -1,9 +1,13 @@
 package com.vitalong.bluetest2.bluepro;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
+import android.os.StrictMode;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +33,7 @@ import com.vitalong.bluetest2.R;
 import com.vitalong.bluetest2.Utils.SharedPreferencesUtil;
 import com.vitalong.bluetest2.bean.RealDataCached;
 import com.vitalong.bluetest2.bean.TableRowBean;
+import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 
 import net.ozaydin.serkan.easy_csv.EasyCsv;
@@ -62,14 +67,29 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
     private List<RealDataCached> recyclerViewDatas;
     private RealDataCachedDao realDataCachedDao;
     private int defaultValue = 0;
+    private VerifyDataBean verifyDataBean;//矫正参数
+    private boolean hasRange;
+    private boolean hasGF;
+    private boolean hasIR;
+    private boolean hasDeg;
+    private boolean hasIncline;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manual_merge_csv);
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
+        builder.detectFileUriExposure();
         siteName = getIntent().getStringExtra("siteName");
+        hasRange = getIntent().getBooleanExtra("hasRange", true);
+        hasGF = getIntent().getBooleanExtra("hasGF", true);
+        hasIR = getIntent().getBooleanExtra("hasIR", true);
+        hasDeg = getIntent().getBooleanExtra("hasDeg", true);
+        hasIncline = getIntent().getBooleanExtra("hasIncline", true);
         csvFileNames = (List<String>) getIntent().getSerializableExtra("holes");
+        verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
         realDataCachedDao = ((MyApplication) getApplication()).realDataCachedDao;
         holeNames = new ArrayList<String>();
         recyclerViewDatas = new ArrayList<>();
@@ -132,6 +152,7 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == defaultValue) {
+                    //避免初始化spinner的时候onitemSelected被执行了
                     defaultValue = -1;
                     return;
                 }
@@ -154,6 +175,13 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
 
             }
         });
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ManualMergeCsvActivity.this.finish();
+            }
+        });
     }
 
     /**
@@ -173,6 +201,13 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
         collection.add(new TableRowBean("Site:", siteName, "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Date:", currTime, "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
+        if (hasRange) {
+            collection.add(new TableRowBean("Range:", "30 Deg", "", "", "", "", "", "", "").toSaveString());
+        }
+        if (hasGF) {
+            collection.add(new TableRowBean("Gage Factor(A):", "A1=" + verifyDataBean.getAaxisA(), "A2=" + verifyDataBean.getAaxisB(), "A3=" + verifyDataBean.getAaxisC(), "A4=" + verifyDataBean.getAaxisD(), "", "", "", "").toSaveString());
+            collection.add(new TableRowBean("Gage Factor(B):", "B1=" + verifyDataBean.getBaxisA(), "B2=" + verifyDataBean.getBaxisB(), "B3=" + verifyDataBean.getBaxisC(), "B4=" + verifyDataBean.getBaxisD(), "", "", "", "").toSaveString());
+        }
 //        collection.add(new TableRowBean("Range:", "30 Deg", "", "", "", "", "", "", "").toSaveString());
 //        collection.add(new TableRowBean("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "").toSaveString());
 //        collection.add(new TableRowBean("Firmware:", "v1.2", "Software:", "v2.0", "", "", "", "", "").toSaveString());
@@ -180,14 +215,40 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
 //        collection.add(new TableRowBean("Gage Factor(A):", "A1=" + verifyDataBean.getAaxisA(), "A2=" + verifyDataBean.getAaxisB(), "A3=" + verifyDataBean.getAaxisC(), "A4=" + verifyDataBean.getAaxisD(), "", "", "", "").toSaveString());
 //        collection.add(new TableRowBean("Gage Factor(B):", "B1=" + verifyDataBean.getBaxisA(), "B2=" + verifyDataBean.getBaxisB(), "B3=" + verifyDataBean.getBaxisC(), "B4=" + verifyDataBean.getBaxisD(), "", "", "", "").toSaveString());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean("", "Date/Time", "Direction", "Raw", "Raw", "", "", "", "").toSaveString());
+//        collection.add(new TableRowBean("", "Date/Time", "Direction", "Raw", "Raw", "", "", "", "").toSaveString());
+        if (hasDeg && hasIncline) {
+            collection.add(new TableRowBean("", "Date/Time", "Direction", "Raw", "Raw", "Deg", "Deg", "incline('' '')", "").toSaveString());
+        } else if (hasDeg) {
+            collection.add(new TableRowBean("", "Date/Time", "Direction", "Raw", "Raw", "Deg", "Deg", "", "").toSaveString());
+        } else if (hasIncline) {
+            collection.add(new TableRowBean("", "Date/Time", "Direction", "Raw", "Raw", "incline('' '')", "", "", "").toSaveString());
+        } else {
+            collection.add(new TableRowBean("", "Date/Time", "Direction", "Raw", "Raw", "", "", "", "").toSaveString());
+        }
         for (String key : dataMap.keySet()) {
             for (int index = 0; index < dataMap.get(key).size(); index = index + 2) {
                 RealDataCached cached13 = dataMap.get(key).get(index);
                 RealDataCached cached24 = dataMap.get(key).get(index + 1);
                 if (cached13.isChecked()) {
-                    collection.add(new TableRowBean(key, cached13.getTime(), cached13.getDirection(), cached13.getRawFirst(), cached13.getRawSecond(), "", "", "", "").toSaveString());
-                    collection.add(new TableRowBean("", cached24.getTime(), cached24.getDirection(), cached24.getRawFirst(), cached24.getRawSecond(), "", "", "", "").toSaveString());
+                    String degFirst13 = hasDeg ? cached13.getDegFirst() : "";
+                    String degSecond13 = hasDeg ? cached13.getDegSecond() : "";
+                    String degFirst24 = hasDeg ? cached24.getDegSecond() : "";
+                    String degSecond24 = hasDeg ? cached24.getDegSecond() : "";
+                    String incline13 = hasIncline ? cached13.getInclude() : "";
+                    String incline24 = hasIncline ? cached24.getInclude() : "";
+                    if (hasDeg && hasIncline) {
+                        collection.add(new TableRowBean(key, cached13.getTime(), cached13.getDirection(), cached13.getRawFirst(), cached13.getRawSecond(), degFirst13, degSecond13, incline13, "").toSaveString());
+                        collection.add(new TableRowBean("", cached24.getTime(), cached24.getDirection(), cached24.getRawFirst(), cached24.getRawSecond(), degFirst24, degSecond24, incline24, "").toSaveString());
+                    } else if (hasDeg) {
+                        collection.add(new TableRowBean(key, cached13.getTime(), cached13.getDirection(), cached13.getRawFirst(), cached13.getRawSecond(), degFirst13, degSecond13, "", "").toSaveString());
+                        collection.add(new TableRowBean("", cached24.getTime(), cached24.getDirection(), cached24.getRawFirst(), cached24.getRawSecond(), degFirst24, degSecond24, "", "").toSaveString());
+                    } else if (hasIncline) {
+                        collection.add(new TableRowBean(key, cached13.getTime(), cached13.getDirection(), cached13.getRawFirst(), cached13.getRawSecond(), incline13, "", "", "").toSaveString());
+                        collection.add(new TableRowBean("", cached24.getTime(), cached24.getDirection(), cached24.getRawFirst(), cached24.getRawSecond(), incline24, "", "", "").toSaveString());
+                    } else {
+                        collection.add(new TableRowBean(key, cached13.getTime(), cached13.getDirection(), cached13.getRawFirst(), cached13.getRawSecond(), "", "", "", "").toSaveString());
+                        collection.add(new TableRowBean("", cached24.getTime(), cached24.getDirection(), cached24.getRawFirst(), cached24.getRawSecond(), "", "", "", "").toSaveString());
+                    }
                 }
             }
         }
@@ -201,7 +262,9 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
             @Override
             public void onSuccess(File file) {
 
-                Log.d("chenliang", "file:" + file.getPath());
+//                Log.d("chenliang", "file:" + file.getPath());
+//                Toast.makeText(ManualMergeCsvActivity.this, file.getName() + "合并成功", Toast.LENGTH_SHORT).show();
+                showShareDialog(file);
             }
 
             @Override
@@ -209,6 +272,30 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    public void showShareDialog(File file) {
+        new AlertDialog.Builder(ManualMergeCsvActivity.this)
+                .setTitle("Csv合并成功")
+                .setMessage("是否分享該" + file.getName())
+                .setPositiveButton("分享", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ArrayList<Uri> files = new ArrayList<Uri>();
+                        files.add(Uri.fromFile(file));
+                        //分享文件
+                        Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+                        intent.setType("*/*");//多个文件格式
+                        intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
+                        startActivity(intent);
+                    }
+                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        }).show();
     }
 
     static class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
