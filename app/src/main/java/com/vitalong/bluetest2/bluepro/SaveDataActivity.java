@@ -206,9 +206,9 @@ public class SaveDataActivity extends AppCompatActivity {
             builder.setTitle("請輸入工地名稱").setIcon(R.drawable.img_tip).setView(inputSiteName)
                     .setNegativeButton("Cancel", null);
             builder.setPositiveButton("Ok", (dialog, which) -> {
-                if (inputSiteName.getText().toString().isEmpty() || inputSiteName.getText().toString().contains("_")) {
+                if (inputSiteName.getText().toString().isEmpty() || inputSiteName.getText().toString().contains("_") || inputSiteName.getText().toString().contains("TI")) {
 
-                    Toast.makeText(SaveDataActivity.this, "錄入文件名錯誤，請重新錄入", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveDataActivity.this, "Site不能為空且不能包含非法字符 _ ,TI,@等", Toast.LENGTH_SHORT).show();
                 } else {
                     String dirName = inputSiteName.getText().toString().trim();
                     tvSiteValue.setText(dirName);

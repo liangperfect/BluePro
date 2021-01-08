@@ -189,7 +189,7 @@ public class MeregParametersActivity extends AppCompatActivity {
                     List<File> csvFileList = FileUtils.getFileListByDirPath(Constants.PRO_ROOT_PATH + "/" + siteName, new FileFilter() {
                         @Override
                         public boolean accept(File file) {
-                            return file.isFile();
+                            return file.isFile() && !file.getName().contains("TI");
                         }
                     });
                     List<HoleBean> holeBeans = new ArrayList<>();
