@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
     defaultConfig {
-        applicationId "com.vitalong.bluetest2"
+        applicationId "com.vitalong.inclinometer"
         minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
@@ -32,7 +32,7 @@ android {
         //指定数据库schema版本号，迁移等操作会用到;
         schemaVersion 1
         //dao的包名，包名默认是entity所在的包；
-        daoPackage 'com.vitalong.bluetest2.greendaodb'
+        daoPackage 'com.vitalong.inclinometer.greendaodb'
         //生成数据库文件的目录;
         targetGenDir 'src/main/java'
     }

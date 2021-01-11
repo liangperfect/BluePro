@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.vitalong.bluetest2.CharacteristicsActivity">
+    tools:context="com.vitalong.inclinometer.CharacteristicsActivity">
 
     <include
         layout="@layout/toolbar_top"/>

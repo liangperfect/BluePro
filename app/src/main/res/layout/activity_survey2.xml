@@ -62,7 +62,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvA"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="24dp"
@@ -99,7 +99,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvB"
-            android:layout_width="wrap_content"
+            android:layout_width="160dp"
             android:layout_height="wrap_content"
             android:text="0000.00"
             android:textColor="@color/black"
@@ -182,6 +182,24 @@
                 android:textColor="@color/black"
                 android:textSize="24sp" />
         </RadioGroup>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/imgUp"
+            app:layout_constraintStart_toStartOf="@id/tvDirection"
+            app:layout_constraintTop_toBottomOf="@id/tvDirection"
+            tools:text="Bottom:100m" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvTop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="@id/tvBottom"
+            app:layout_constraintEnd_toEndOf="@id/radioGroupDirection"
+            app:layout_constraintTop_toTopOf="@id/tvBottom"
+            tools:text="bottom:100m" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/imgUp"
@@ -272,7 +290,7 @@
             android:id="@+id/tvBottomTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="文件名稱"
+            android:text="XXX"
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@id/btnSave"
