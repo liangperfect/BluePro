@@ -74,7 +74,7 @@ public class MeregParametersActivity extends AppCompatActivity {
     @Bind(R.id.checkIncline)
     CheckBox checkIncline;
     private VerifyDataBean verifyDataBean;
-    private EasyCsv easyCsv;
+    private EasyCsvCopy easyCsv;
     private RealDataCachedDao realDataCachedDao;
     private int currCreateCsvMode = Constants.CREATE_CSV_ALL_TIME;
     private List<String> holeList = new ArrayList<String>();
@@ -88,7 +88,7 @@ public class MeregParametersActivity extends AppCompatActivity {
         builder.detectFileUriExposure();
         realDataCachedDao = ((MyApplication) getApplication()).realDataCachedDao;
         verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
-        easyCsv = new EasyCsv(MeregParametersActivity.this);
+        easyCsv = new EasyCsvCopy(MeregParametersActivity.this);
         bindToolBar();
         makeStatusBar(R.color.white);
         initListener();

@@ -41,7 +41,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:paddingStart="12dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="12dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.appcompat.widget.AppCompatSpinner
@@ -49,6 +51,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingTop="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <org.angmarch.views.NiceSpinner
+            android:id="@+id/niceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -57,10 +68,11 @@
             android:id="@+id/constraPart1"
             android:layout_width="match_parent"
             android:layout_height="32dp"
+            android:layout_marginTop="8dp"
             android:background="@color/grey_light"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/spinner">
+            app:layout_constraintTop_toBottomOf="@id/niceSpinner">
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/imgState"

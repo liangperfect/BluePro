@@ -102,7 +102,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private double raw2Andraw4 = 0;
     private boolean canSave = false; //当前传过来的值是否可以保存了
     private RealDataCachedDao realDataCachedDao;
-    private EasyCsv easyCsv;
+    private EasyCsvCopy easyCsv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,7 +117,7 @@ public class SaveDataActivity extends AppCompatActivity {
         makeStatusBar(R.color.white);
         initVerifyData();
         initView();
-        easyCsv = new EasyCsv(SaveDataActivity.this);
+        easyCsv = new EasyCsvCopy(SaveDataActivity.this);
     }
 
     private void initView() {
@@ -302,7 +302,7 @@ public class SaveDataActivity extends AppCompatActivity {
         collection.add(new TableRowBean(currTime, selectDir, selectFileName, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(raw2Andraw4)).toSaveString());
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "deg", "deg", "Incline('')", "", "").toSaveString());
+        collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "deg", "deg", "Incline('')", "CheckSum", "").toSaveString());
         //获取数据库中的数据并添加到列表数据容器中
         List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
         double d1Temp = Double.valueOf(deg1);
@@ -314,23 +314,27 @@ public class SaveDataActivity extends AppCompatActivity {
         int intIncline1 = (int) include1;
         int intIncline2 = (int) include2;
         if (listDatas.isEmpty()) {
-
-            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, deg1, deg3, "0", "", "").toSaveString());
-            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, deg2, deg4, "0", "", "").toSaveString());
+            String doubleRaw1AndRaw3 = String.valueOf(Double.parseDouble(raw1) + Double.parseDouble(raw3));
+            String doubleRaw2AndRaw4 = String.valueOf(Double.parseDouble(raw2) + Double.parseDouble(raw4));
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, deg1, deg3, "0", doubleRaw1AndRaw3, "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, deg2, deg4, "0", doubleRaw2AndRaw4, "").toSaveString());
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, deg1, deg3, "0", String.valueOf(intIncline1)));
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, deg2, deg4, "0", String.valueOf(intIncline2)));
         } else {
 
             int firstInclude = Integer.valueOf(listDatas.get(0).getRealIncline());
             int secondInclude = Integer.valueOf(listDatas.get(1).getRealIncline());
+            String strRaw1AndRaw3 = String.valueOf(Double.parseDouble(raw1) + Double.parseDouble(raw3));
+            String strRaw2AndRaw4 = String.valueOf(Double.parseDouble(raw2) + Double.parseDouble(raw4));
             for (int i = 0; i < listDatas.size(); i++) {
                 RealDataCached realDataCached = listDatas.get(i);
+                String strRawSum = String.valueOf(Double.parseDouble(realDataCached.getRawFirst()) + Double.parseDouble(realDataCached.getRawSecond()));
                 collection.add(new TableRowBean(realDataCached.getTime(), realDataCached.getDirection(), realDataCached.getRawFirst(),
-                        realDataCached.getRawSecond(), realDataCached.getDegFirst(), realDataCached.getDegSecond(), realDataCached.getInclude(), "", "").toSaveString());
+                        realDataCached.getRawSecond(), realDataCached.getDegFirst(), realDataCached.getDegSecond(), realDataCached.getInclude(), strRawSum, "").toSaveString());
             }
 
-            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, deg1, deg3, String.valueOf(intIncline1 - firstInclude), "", "").toSaveString());
-            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(intIncline2 - secondInclude), "", "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(1-3)", raw1, raw3, deg1, deg3, String.valueOf(intIncline1 - firstInclude), strRaw1AndRaw3, "").toSaveString());
+            collection.add(new TableRowBean(currTime, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(intIncline2 - secondInclude), strRaw2AndRaw4, "").toSaveString());
 //            //插入到数据库中去
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(1-3)", raw1, raw3, deg1, deg3, String.valueOf(intIncline1 - firstInclude), String.valueOf(intIncline1 - firstInclude)));
             realDataCachedDao.insert(new RealDataCached(selectDir + "_" + selectFileName, currTime, "(2-4)", raw2, raw4, deg2, deg4, String.valueOf(intIncline2 - secondInclude), String.valueOf(intIncline2 - secondInclude)));

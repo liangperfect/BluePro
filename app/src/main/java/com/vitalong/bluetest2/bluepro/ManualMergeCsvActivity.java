@@ -13,8 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
@@ -39,6 +37,9 @@ import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
+import org.angmarch.views.NiceSpinner;
+import org.angmarch.views.OnSpinnerItemSelectedListener;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -55,11 +56,13 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
     Toolbar toolbar;
     @Bind(R.id.spinner)
     Spinner spinner;
+    @Bind(R.id.niceSpinner)
+    NiceSpinner niceSpinner;
     @Bind(R.id.recyclerViewMerge)
     RecyclerView recyclerView;
     @Bind(R.id.btnCreate)
     Button btnCreate;
-    private EasyCsv easyCsv;
+    private EasyCsvCopy easyCsv;
     private String siteName;
     private List<String> csvFileNames;
     private List<String> holeNames;
@@ -93,7 +96,7 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
         realDataCachedDao = ((MyApplication) getApplication()).realDataCachedDao;
         holeNames = new ArrayList<String>();
         recyclerViewDatas = new ArrayList<>();
-        easyCsv = new EasyCsv(ManualMergeCsvActivity.this);
+        easyCsv = new EasyCsvCopy(ManualMergeCsvActivity.this);
         bindToolBar();
         makeStatusBar(R.color.white);
         initData();
@@ -104,9 +107,10 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
     private void initData() {
         dataMap = new HashMap<>();
         csvFileNames.forEach(s -> holeNames.add(s.split("_")[1]));
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, holeNames);  //创建一个数组适配器
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);     //设置下拉列表框的下拉选项样式
-        spinner.setAdapter(adapter);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, holeNames);  //创建一个数组适配器
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);     //设置下拉列表框的下拉选项样式
+//        spinner.setAdapter(adapter);
+        niceSpinner.attachDataSource(holeNames);
         for (String str : holeNames) {
             List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(siteName + "_" + str)).build().list();
             //进来后将选中的状态重置为未选中状态
@@ -148,21 +152,29 @@ public class ManualMergeCsvActivity extends AppCompatActivity {
     }
 
     private void initListener() {
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+//                if (position == defaultValue) {
+//                    //避免初始化spinner的时候onitemSelected被执行了
+//                    defaultValue = -1;
+//                    return;
+//                }
+//                String str = holeNames.get(position);
+//                recyclerView.setAdapter(new RecyclerAdapter(ManualMergeCsvActivity.this, dataMap.get(str)));
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> parent) {
+//
+//            }
+//        });
+
+        niceSpinner.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == defaultValue) {
-                    //避免初始化spinner的时候onitemSelected被执行了
-                    defaultValue = -1;
-                    return;
-                }
+            public void onItemSelected(NiceSpinner parent, View view, int position, long id) {
                 String str = holeNames.get(position);
                 recyclerView.setAdapter(new RecyclerAdapter(ManualMergeCsvActivity.this, dataMap.get(str)));
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
