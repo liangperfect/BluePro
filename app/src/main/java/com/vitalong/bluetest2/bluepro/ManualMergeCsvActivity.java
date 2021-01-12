@@ -34,7 +34,6 @@ import com.vitalong.bluetest2.bean.TableRowBean;
 import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 
-import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import org.angmarch.views.NiceSpinner;

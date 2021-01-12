@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,12 +28,15 @@ import java.util.function.Consumer;
 
 public class HoleMultiSelectDialog extends Dialog {
     private ImageView imgClose;
+    private ImageView imgAllSelected;
+    private ConstraintLayout constraSelectAll;
     private RecyclerView recyclerView;
     private TextView tvTitle;
     private TextView tvConfirm;
     private String dialogTitle;
     private List<HoleBean> datas;
     private ChangeHoleListener listener;
+    private boolean isAllSelected = false;
 
     public HoleMultiSelectDialog(Context context, List<HoleBean> d, String title, ChangeHoleListener l) {
         super(context, R.style.bottom_dialog);
@@ -69,6 +73,20 @@ public class HoleMultiSelectDialog extends Dialog {
         imgClose = view.findViewById(R.id.imgClose);
         recyclerView = view.findViewById(R.id.recyclerView);
         tvConfirm = view.findViewById(R.id.tvConfirm);
+        imgAllSelected = view.findViewById(R.id.imgAllSelected);
+        constraSelectAll = view.findViewById(R.id.constraSelectAll);
+
+        constraSelectAll.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                isAllSelected = !isAllSelected;
+                imgAllSelected.setImageResource(isAllSelected ? R.drawable.check_box_selected : R.drawable.check_box_unselected);
+                datas.forEach(holeBean -> holeBean.setChecked(isAllSelected));
+                recyclerView.getAdapter().notifyDataSetChanged();
+            }
+        });
+
         imgClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,12 +144,12 @@ public class HoleMultiSelectDialog extends Dialog {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHodler holder, int position) {
-
-            String holeName = ((HoleBean) datas.get(position)).getHoleName();
+            HoleBean hole = datas.get(position);
+            String holeName = hole.getHoleName();
             holder.name.setText(holeName);
+            holder.imgCheckState.setImageResource(hole.isChecked() ? R.drawable.check_box_selected : R.drawable.check_box_unselected);
             holder.cardView.setOnClickListener(v -> {
 
-                HoleBean hole = datas.get(position);
                 hole.setChecked(!hole.isChecked());
                 int resId = hole.isChecked() ? R.drawable.check_box_selected : R.drawable.check_box_unselected;
                 holder.imgCheckState.setImageResource(resId);

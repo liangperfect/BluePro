@@ -35,7 +35,6 @@ import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 import com.vitalong.bluetest2.views.CompanySelectDialog;
 import com.vitalong.bluetest2.views.HoleMultiSelectDialog;
 
-import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
@@ -73,6 +72,7 @@ public class MeregParametersActivity extends AppCompatActivity {
     CheckBox checkDeg;
     @Bind(R.id.checkIncline)
     CheckBox checkIncline;
+
     private VerifyDataBean verifyDataBean;
     private EasyCsvCopy easyCsv;
     private RealDataCachedDao realDataCachedDao;
@@ -160,15 +160,15 @@ public class MeregParametersActivity extends AppCompatActivity {
                     switch (modeName) {
                         case "所有測量時間":
                             currCreateCsvMode = Constants.CREATE_CSV_ALL_TIME;
-                            btnNext.setText("Create Csv");
+                            btnNext.setText("CREATE Csv");
                             break;
                         case "最新一筆測量時間":
                             currCreateCsvMode = Constants.CREATE_CSV_LAST_TIME;
-                            btnNext.setText("Create Csv");
+                            btnNext.setText("CREATE Csv");
                             break;
                         case "手動選擇":
                             currCreateCsvMode = Constants.CREATE_CSV_Manual;
-                            btnNext.setText("Next Step");
+                            btnNext.setText("NEXT STEP");
                             break;
                         default:
                             //nothing todo
@@ -209,7 +209,7 @@ public class MeregParametersActivity extends AppCompatActivity {
                             StringBuilder holesStr = new StringBuilder();
                             for (int i = 0; i < holes.size(); i++) {
                                 holeList.add(holes.get(i).getHoleName());
-                                holesStr.append(i).append("、").append(holes.get(i).getHoleName()).append("\n");
+                                holesStr.append(i).append(". ").append(holes.get(i).getHoleName()).append("\n");
                             }
                             tvShowHoles.setText(holesStr);
                         }
@@ -386,8 +386,8 @@ public class MeregParametersActivity extends AppCompatActivity {
                 try {
                     if (!listCached.isEmpty()) {
                         int lastIndex = listCached.size() - 1;
-                        RealDataCached lastCached13 = listCached.get(lastIndex);
-                        RealDataCached lastCached24 = listCached.get(lastIndex - 1);
+                        RealDataCached lastCached13 = listCached.get(lastIndex - 1);
+                        RealDataCached lastCached24 = listCached.get(lastIndex);
                         String degFirst13 = hasDeg ? lastCached13.getDegFirst() : "";
                         String degSecond13 = hasDeg ? lastCached13.getDegSecond() : "";
                         String degFirst24 = hasDeg ? lastCached24.getDegSecond() : "";
