@@ -72,7 +72,7 @@ public class SurveyActivity extends MyBaseActivity2 {
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
     String filePath = "/geostar/tiltmeter/";
     String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)", "4(Degree)", "5(Degree)", "6(Degree)", "7(Degree)", "8(Degree)", "9(Degree)"};
-    String[] beeps = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
+    String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
     String[] ctype4ByDeg = new String[]{"3", "4"};
     String[] ctype4ByRaw = new String[]{"1"};
@@ -268,7 +268,7 @@ public class SurveyActivity extends MyBaseActivity2 {
 
         sensorModeValue = (int) SharedPreferencesUtil.getData(Constants.SENSORMODE_KEY, 0);
         sensitivityValue = (int) SharedPreferencesUtil.getData(Constants.SENSITIVITY_KEY, 0);
-        beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
+        beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 1);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
         sendDuration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
@@ -497,7 +497,9 @@ public class SurveyActivity extends MyBaseActivity2 {
 
     void initPlay(String beep) {
         try {
-            if (beep.equals("TypeA"))
+            if (beep.equals("Default")) {
+                playRd("Default.mp3");
+            } else if (beep.equals("TypeA"))
                 playRd("TypeA.wav");
             else if (beep.equals("TypeB"))
                 playRd("TypeB.wav");
@@ -508,7 +510,7 @@ public class SurveyActivity extends MyBaseActivity2 {
             else if (beep.equals("TypeE"))
                 playRd("TypeE.wav");
         } catch (IOException err) {
-            Log.d("chenliang","错误信息->"+err.getMessage());
+            Log.d("chenliang", "错误信息->" + err.getMessage());
             Toast.makeText(SurveyActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

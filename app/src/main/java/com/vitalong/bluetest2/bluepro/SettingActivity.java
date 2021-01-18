@@ -59,7 +59,7 @@ public class SettingActivity extends MyBaseActivity2 {
     public Button btnSite;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
-    private int beepValue = 0;
+    private int beepValue = 1;
     private int unitValue = 0;
     private int decimalValue = 0;
 
@@ -68,10 +68,10 @@ public class SettingActivity extends MyBaseActivity2 {
     String filePath = "/geostar/tiltmeter/";
     //    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)", "4(Degree)", "5(Degree)", "6(Degree)", "7(Degree)", "8(Degree)", "9(Degree)"};
     String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
-    String[] ctype2 = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
+    String[] ctype2 = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
-    //    String[] ctype4ByDeg = new String[]{"3", "4"};
-//    String[] ctype4ByRaw = new String[]{"0"};
+    //String[] ctype4ByDeg = new String[]{"3", "4"};
+    //String[] ctype4ByRaw = new String[]{"0"};
     boolean isPause = false;
 
     @Override
@@ -93,7 +93,7 @@ public class SettingActivity extends MyBaseActivity2 {
         initSpiners(spUnitValue, ctype3);
         sensorModeValue = (int) SharedPreferencesUtil.getData(Constants.SENSORMODE_KEY, 0);
         sensitivityValue = (int) SharedPreferencesUtil.getData(Constants.SENSITIVITY_KEY, 0);
-        beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
+        beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 1);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
         int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
