@@ -49,11 +49,15 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation 'com.google.android.material:material:1.1.0'
     implementation project(':MaterialDesignDialoglibrary')
-    implementation 'com.google.code.gson:gson:2.8.2'
+    implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'org.greenrobot:greendao:3.3.0' // add library
     implementation 'com.github.hsmnzaydn:easy-csv:1.0.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'com.github.YangsBryant:TeaPickerView:1.0.2'
     implementation files('libs\\bugly_crash_release.jar')
     implementation project(path: ':lfilepickerlibrary')
+
+    //RxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.9'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.1'
 }

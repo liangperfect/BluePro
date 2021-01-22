@@ -1,4 +1,4 @@
-package com.vitalong.inclinometer.bluepro;
+package com.vitalong.inclinometer.Utils;
 
 import android.app.Activity;
 import android.os.Environment;
@@ -15,6 +15,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 public class EasyCsvCopy {
     private Activity activity;
@@ -46,7 +50,6 @@ public class EasyCsvCopy {
         } else {
             fileCallback.onFail("Write Permission Error");
         }
-
     }
 
     private File writeDataToFile(File file, List<String> dataList, final FileCallback fileCallback) {
@@ -59,35 +62,33 @@ public class EasyCsvCopy {
 
             final OutputStream finalFo = this.outputStream;
             String[] headerArray = new String[dataList.size() - 1];
-            headerArray = (String[])dataList.toArray(headerArray);
-//            Observable.fromArray(headerArray).subscribe(new Observer() {
-//                public void onSubscribe(Disposable d) {
-//                }
-//
-//                public void onNext(Object o) {
-//                    String dataWithLineBreak = (String)o;
-//
-//                    try {
-//                        finalFo.write(dataWithLineBreak.getBytes());
-//                    } catch (IOException var4) {
-//                        fileCallback.onFail(var4.getMessage());
-//                    }
-//
-//                }
-//
-//                public void onError(Throwable e) {
-//                    fileCallback.onFail(e.getMessage());
-//                }
-//
-//                public void onComplete() {
-//                    try {
-//                        finalFo.close();
-//                    } catch (IOException var2) {
-//                        var2.printStackTrace();
-//                    }
-//
-//                }
-//            });
+            headerArray = (String[]) dataList.toArray(headerArray);
+            Observable.fromArray(headerArray).subscribe(new Observer() {
+                public void onSubscribe(Disposable d) {
+                }
+
+                public void onNext(Object o) {
+                    String dataWithLineBreak = (String) o;
+
+                    try {
+                        finalFo.write(dataWithLineBreak.getBytes("GBK"));
+                    } catch (IOException var4) {
+                        fileCallback.onFail(var4.getMessage());
+                    }
+                }
+
+                public void onError(Throwable e) {
+                    fileCallback.onFail(e.getMessage());
+                }
+
+                public void onComplete() {
+                    try {
+                        finalFo.close();
+                    } catch (IOException var2) {
+                        var2.printStackTrace();
+                    }
+                }
+            });
             return file;
         } else {
             fileCallback.onFail("Couldn't create CSV file");
@@ -100,15 +101,15 @@ public class EasyCsvCopy {
         Iterator var4 = headerList.iterator();
 
         String value;
-        while(var4.hasNext()) {
-            value = (String)var4.next();
+        while (var4.hasNext()) {
+            value = (String) var4.next();
             stringList.add(value);
         }
 
         var4 = dataList.iterator();
 
-        while(var4.hasNext()) {
-            value = (String)var4.next();
+        while (var4.hasNext()) {
+            value = (String) var4.next();
             stringList.add(value);
         }
 

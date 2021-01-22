@@ -193,16 +193,16 @@ public class BoreholeInfoActivity extends AppCompatActivity {
     private HashMap<String, String> addDirAndFile() {
         if (FileUtils.isSDCardState()) {
             String sdPath = FileUtils.getSDCardPath();
-            String constructionSiteStr = edtConstructionSite.getText().toString();
-            String holeNumberStr = edtHoleNumber.getText().toString();
-            String sitePath = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + constructionSiteStr;
-            //给孔洞的文件夹加Namber_前缀是为了在选择文件时候点击的时候判断是否是孔号的文件夹
-            String holdPath = sitePath + "/" + FileUtils.fetchHoleName(holeNumberStr);
+            String SiteStr = edtConstructionSite.getText().toString();
+            String holeStr = edtHoleNumber.getText().toString();
+            String sitePath = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + SiteStr;
             Date date = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmm");
             String de = sdf.format(date);
-            String csvPath = holdPath + "/" + constructionSiteStr + "_" + holeNumberStr + "_" + de + ".csv";
-            String csvFileName = constructionSiteStr + "_" + holeNumberStr + "_" + de + ".csv";
+            //给孔洞的文件夹加Namber_前缀是为了在选择文件时候点击的时候判断是否是孔号的文件夹
+            String holePath = sitePath + "/" + FileUtils.fetchHoleName(holeStr);
+            String csvFileName = SiteStr + "_" + holeStr + "_" + de + ".csv";
+            String csvPath = holePath + "/" + csvFileName;
             if (!FileUtils.isFileExits(sdPath + Constants.PRO_ROOT_DIR_PATH)) {
                 //tilmeter文件夹不存在，进行创建
                 FileUtils.createSDDirection(sdPath + Constants.PRO_ROOT_DIR_PATH);
@@ -213,9 +213,9 @@ public class BoreholeInfoActivity extends AppCompatActivity {
                 FileUtils.createSDDirection(sitePath);
             }
 
-            if (!FileUtils.isFileExits(holdPath)) {
+            if (!FileUtils.isFileExits(holePath)) {
                 //创建孔号的文件夹
-                FileUtils.createSDDirection(holdPath);
+                FileUtils.createSDDirection(holePath);
             }
             //创建csv文件
             FileUtils.createFile(csvPath);
@@ -233,7 +233,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
     }
 
     /**
-     * 创建文件就直接生成对应的数据库表数据
+     * 根据csv的文件名初始化从底部到顶部的空数据，文件名不包含Namber_关键字
      */
     private void initTableByCsvName(String csvFileName) {
 

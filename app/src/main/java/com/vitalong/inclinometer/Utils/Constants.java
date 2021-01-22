@@ -304,7 +304,9 @@ public class Constants {
     //sd卡根目录的名称是
     public static String PRO_ROOT_DIR_PATH = "/tiltmeter";
     //从哪里跳转到实时界面的Survey
-    public static int FROM_CREATE_NEW_SITE_HOLE = 0;
+    public static int FROM_CREATE_NEW_SITE_HOLE = 0;//从创建新孔号过去
+    public static int FROM_HAS_SITE_HOLE_CREATE_CSV = 1;//工地名称和孔号名称都，创建新的csv文件
+    public static int FROM_MODIFY_CSV = 2;//修改原有csv文件的数据
 
     //倾度管测量装填
     public static int SURVEY_PLAY_MANUAL = 0; //手动测量

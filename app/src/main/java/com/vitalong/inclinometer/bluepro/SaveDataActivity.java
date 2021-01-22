@@ -24,6 +24,7 @@ import androidx.appcompat.widget.Toolbar;
 import com.vitalong.inclinometer.MyApplication;
 import com.vitalong.inclinometer.R;
 import com.vitalong.inclinometer.Utils.Constants;
+import com.vitalong.inclinometer.Utils.EasyCsvCopy;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.bean.RealDataCached;
@@ -32,7 +33,6 @@ import com.vitalong.inclinometer.bean.TableRowBean;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
 import com.vitalong.inclinometer.greendaodb.RealDataCachedDao;
 
-import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
@@ -90,7 +90,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private double raw2Andraw4 = 0;
     private boolean canSave = false; //当前传过来的值是否可以保存了
     private RealDataCachedDao realDataCachedDao;
-    private EasyCsv easyCsv;
+    private EasyCsvCopy easyCsv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,7 +105,7 @@ public class SaveDataActivity extends AppCompatActivity {
         makeStatusBar(R.color.white);
         initVerifyData();
         initView();
-        easyCsv = new EasyCsv(SaveDataActivity.this);
+        easyCsv = new EasyCsvCopy(SaveDataActivity.this);
     }
 
     private void initView() {

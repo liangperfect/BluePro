@@ -9,13 +9,13 @@ import androidx.annotation.RequiresApi;
 
 import com.vitalong.inclinometer.MyApplication;
 import com.vitalong.inclinometer.Utils.Constants;
+import com.vitalong.inclinometer.Utils.EasyCsvCopy;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.bean.SurveyDataTable;
 import com.vitalong.inclinometer.bean.TableRowBean2;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
 import com.vitalong.inclinometer.greendaodb.SurveyDataTableDao;
 
-import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
@@ -33,11 +33,11 @@ import java.util.List;
  */
 public class CsvUtil {
     private String snValue = "";
-    private EasyCsv easyCsv;
+    private EasyCsvCopy easyCsv;
     private Activity activity;
     private SurveyDataTableDao surveyDataTableDao;
     private String siteStr = "";
-    private String HoleStr = "";
+    private String holeStr = "";
     private String Depth = "";
     private String Interval = "";
     private String Date = "";
@@ -52,17 +52,17 @@ public class CsvUtil {
     private double dBxisC = 0;
     private double dBxisD = 0;
 
-    public CsvUtil(Activity activity, float topValue, float bottomValue) {
+    public CsvUtil(Activity activity, String siteStr, String holeStr, float topValue, float bottomValue) {
         //获取snValue
         this.activity = activity;
         this.topValue = topValue;
         this.bottomValue = bottomValue;
+        this.siteStr = siteStr;
+        this.holeStr = holeStr;
         initVerifyData();
-        siteStr = activity.getIntent().getStringExtra("constructionSiteName");
-        HoleStr = activity.getIntent().getStringExtra("holeName");
         snValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
         surveyDataTableDao = ((MyApplication) activity.getApplication()).surveyDataTableDao;
-        easyCsv = new EasyCsv(activity);
+        easyCsv = new EasyCsvCopy(activity);
     }
 
     private void initVerifyData() {
@@ -132,7 +132,7 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Gage Factor(A):", "A1=" + dAxisA, "A2=" + dAxisB, "A3=" + dAxisC, "A4=" + dAxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + dBxisA, "B2=" + dBxisB, "B3=" + dBxisC, "B4=" + dBxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Site#:", siteStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Hole#:", HoleStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Hole#:", holeStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
@@ -176,7 +176,7 @@ public class CsvUtil {
                 if (surveyDataTable.getA180mm().equals("")) {
                     surveyDataTable.setCheckSumA(String.valueOf(mm1));
                 } else {
-                    surveyDataTable.setCheckSumA(String.valueOf(mm1 + surveyDataTable.getA180mm()));
+                    surveyDataTable.setCheckSumA(String.valueOf(mm1 + Double.parseDouble(surveyDataTable.getA180mm())));
                 }
             } else {
 
@@ -189,11 +189,22 @@ public class CsvUtil {
                 if (surveyDataTable.getB0mm().equals("")) {
                     surveyDataTable.setCheckSumA(String.valueOf(mm2));
                 } else {
-                    surveyDataTable.setCheckSumB(mm2 + surveyDataTable.getB0mm());
+                    surveyDataTable.setCheckSumB(String.valueOf(mm2 + Double.parseDouble(surveyDataTable.getB0mm())));
                 }
             }
         }
         surveyDataTableDao.update(surveyDataTable);
+    }
+
+    /**
+     * 根据csv文件名主键和高度来获取对应数据库记录
+     *
+     * @param csvFileName csv文件名称
+     * @param depth       对应的高度
+     * @return
+     */
+    public SurveyDataTable getSurveyByDepth(String csvFileName, String depth) {
+        return surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName), SurveyDataTableDao.Properties.Depth.eq(depth)).build().list().get(0);
     }
 
     /**

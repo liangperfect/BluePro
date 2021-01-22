@@ -16,7 +16,7 @@ public class SurveyDataTable {
 
     @Id
     private Long id; //自增id
-    private String csvFileName;//主键
+    private String csvFileName;//主键  带有csv后缀
     private String depth;//当前高度
     private String A0mm;
     private String A180mm;

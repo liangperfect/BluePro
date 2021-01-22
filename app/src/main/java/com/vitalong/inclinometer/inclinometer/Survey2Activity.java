@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -35,9 +36,12 @@ import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.bean.BoreholeInfoTable;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
 import com.vitalong.inclinometer.greendaodb.BoreholeInfoTableDao;
+import com.vitalong.inclinometer.views.NumberSelectDialog;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Survey2Activity extends MyBaseActivity2 {
     final String TAG = "Survey2Activity";
@@ -158,7 +162,6 @@ public class Survey2Activity extends MyBaseActivity2 {
         holeName = getIntent().getStringExtra("holeName");
         csvFileName = getIntent().getStringExtra("csvFileName");
         csvFilePath = getIntent().getStringExtra("csvFilePath");
-
         //初始化数据
         boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
         try {
@@ -171,15 +174,15 @@ public class Survey2Activity extends MyBaseActivity2 {
             tvDepthNum.setText(String.valueOf(bottomValue));
             tvBottom.setText("Bottom:" + bottomValue + "m");
             tvTop.setText("Top:" + topValue + "m");
-            csvUtil = new CsvUtil(Survey2Activity.this, topValue, bottomValue);
+            csvUtil = new CsvUtil(Survey2Activity.this, constructionSiteName, holeName, topValue, bottomValue);
         } catch (Exception exception) {
-
             Toast.makeText(Survey2Activity.this, "沒找到孔的信息", Toast.LENGTH_SHORT).show();
         }
     }
 
     protected void bindToolBar() {
         setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -233,7 +236,7 @@ public class Survey2Activity extends MyBaseActivity2 {
                         public void run() {
                             if (clickNum == 1) {
 
-                            } else if (clickNum == 2) {
+                            } else if (clickNum >= 2) {
                                 //将数据存储起来
                                 saveCsvData();
                                 changeLogicUI();
@@ -265,16 +268,39 @@ public class Survey2Activity extends MyBaseActivity2 {
         rb0degree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-
-                isZero = true;
+                if (isChecked) {
+                    isZero = true;
+                }
             }
         });
 
         rb180degree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    isZero = false;
+                }
+            }
+        });
 
-                isZero = false;
+        tvDepthNum.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> numbers = new ArrayList<>();
+                float topTemp = topValue;
+                float bottomTemp = bottomValue;
+                while (topTemp <= bottomTemp) {
+                    numbers.add(String.valueOf(topTemp));
+                    topTemp += 0.5;
+                }
+                NumberSelectDialog selectDialog = new NumberSelectDialog(Survey2Activity.this, numbers, new NumberSelectDialog.ChangeNumberListener() {
+                    @Override
+                    public void onSelectWhichNum(String numberStr) {
+
+                        tvDepthNum.setText(numberStr);
+                    }
+                });
+                selectDialog.show();
             }
         });
     }
@@ -298,18 +324,27 @@ public class Survey2Activity extends MyBaseActivity2 {
         float depthValue = Float.parseFloat(tvDepthNum.getText().toString());
         if (isUp) {
             depthValue = depthValue + 0.5f;
+            if (depthValue > bottomValue)
+                depthValue = bottomValue;
+
         } else {
             depthValue = depthValue - 0.5f;
+            if (depthValue < topValue)
+                depthValue = topValue;
         }
         if (depthValue == topValue || depthValue == bottomValue) {
             if (isZero) {
+
                 showRevertDegree();
             } else {
 
                 Toast.makeText(Survey2Activity.this, "測量完成", Toast.LENGTH_SHORT).show();
             }
         }
-        tvDepthNum.setText(String.valueOf(depthValue));
+        String depStr = String.valueOf(depthValue);
+        tvDepthNum.setText(depStr);
+        //获取对应坐标的mm值进行展示
+        csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depStr));
     }
 
     private void showRevertDegree() {
@@ -504,37 +539,6 @@ public class Survey2Activity extends MyBaseActivity2 {
     }
 
     /**
-     * 获取单位模式为Deg下的值
-     *
-     * @param angle
-     * @return
-     */
-    private double getDeg(double angle, int axisMode) {
-        double f = angle * 7.2;
-        if (axisMode == Constants.SFMODE_1AXIS) {
-            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC * f) + dAxisD;
-        }
-
-        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC * f) + dBxisD;
-    }
-
-    /**
-     * 根据raw获取Raw
-     *
-     * @param deg
-     * @return
-     */
-    private double getRaw(double deg) {
-
-        try {
-            double raw = Math.sin(deg * Math.PI / 180) * 25000;
-            return raw;
-        } catch (Exception err) {
-            return 100000.0;
-        }
-    }
-
-    /**
      * 看值的变动
      *
      * @param axisValue 从板子获取到的原始值
@@ -617,11 +621,50 @@ public class Survey2Activity extends MyBaseActivity2 {
         }
     }
 
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            Survey2Activity.this.finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     protected void makeStatusBar(int colorId) {
         Window window = this.getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.setStatusBarColor(getResources().getColor(colorId));
         this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+    }
+
+    /**
+     * 获取单位模式为Deg下的值
+     *
+     * @param angle
+     * @return
+     */
+    private double getDeg(double angle, int axisMode) {
+        double f = angle * 7.2;
+        if (axisMode == Constants.SFMODE_1AXIS) {
+            return dAxisA * (f * f * f) + dAxisB * (f * f) + (dAxisC * f) + dAxisD;
+        }
+
+        return dBxisA * (f * f * f) + dBxisB * (f * f) + (dBxisC * f) + dBxisD;
+    }
+
+    /**
+     * 根据raw获取Raw
+     *
+     * @param deg
+     * @return
+     */
+    private double getRaw(double deg) {
+
+        try {
+            double raw = Math.sin(deg * Math.PI / 180) * 25000;
+            return raw;
+        } catch (Exception err) {
+            return 100000.0;
+        }
     }
 }

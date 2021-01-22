@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -199,6 +200,9 @@ public class LFilePickerActivity extends AppCompatActivity {
                 } else {
                     //单选模式直接返回
                     if (mListFiles.get(position).isDirectory()) {
+                        Log.d("chenliang", "选择的文件夹是" + mListFiles.get(position).getName()
+                                + "  它的父文件夹的名称是" + mListFiles.get(position).getParentFile().getName()
+                                + " 上以及的Stris:" + mListFiles.get(position).getParent());
                         if (mParamEntity.getSelectormode() == Constant.SELECTOR_MODE_2) {
                             if (mListFiles.get(position).getName().startsWith("Namber")) {
                                 //进行弹框
@@ -210,10 +214,11 @@ public class LFilePickerActivity extends AppCompatActivity {
                                             public void onItemClick(TextView textView, int i) {
 
                                                 if (i == 0) {
-                                                    //前往实时界面进行测量
+                                                    //创建新的csv进行测量
                                                     Intent intent = new Intent();
                                                     intent.putExtra("selectModel", Constant.SELECTOR_MODE_2_1);
-                                                    intent.putExtra("selectFile", mListFiles.get(position).getParentFile().getName() + "," + mListFiles.get(position).getName());
+                                                    intent.putExtra("siteName", mListFiles.get(position).getParentFile().getName());
+                                                    intent.putExtra("holeName", mListFiles.get(position).getName().split("_")[1]);
                                                     setResult(RESULT_OK, intent);
                                                     LFilePickerActivity.this.finish();
                                                 } else {
@@ -234,7 +239,7 @@ public class LFilePickerActivity extends AppCompatActivity {
                     if (mParamEntity.isChooseMode()) {
                         //选择文件模式,需要添加文件路径，否则为文件夹模式，直接返回当前路径
                         mListNumbers.add(mListFiles.get(position).getAbsolutePath());
-                        chooseDone();
+                        chooseDone(mListFiles.get(position).getName());
                     } else {
                         Toast.makeText(LFilePickerActivity.this, R.string.lfile_ChooseTip, Toast.LENGTH_SHORT).show();
                     }
@@ -254,7 +259,7 @@ public class LFilePickerActivity extends AppCompatActivity {
                     }
                 } else {
                     //返回
-                    chooseDone();
+                    chooseDone("");
                 }
             }
         });
@@ -276,17 +281,6 @@ public class LFilePickerActivity extends AppCompatActivity {
                 intent.setType("*/*");//多个文件格式
                 intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
                 startActivity(intent);
-//                if (mParamEntity.isChooseMode() && mListNumbers.size() < 1) {
-//                    String info = mParamEntity.getNotFoundFiles();
-//                    if (TextUtils.isEmpty(info)) {
-//                        Toast.makeText(LFilePickerActivity.this, R.string.lfile_NotFoundBooks, Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(LFilePickerActivity.this, info, Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    //返回
-//                    chooseDone();
-//                }
             }
         });
     }
@@ -309,7 +303,7 @@ public class LFilePickerActivity extends AppCompatActivity {
     /**
      * 完成提交
      */
-    private void chooseDone() {
+    private void chooseDone(String fileName) {
         //判断是否数量符合要求
         if (mParamEntity.isChooseMode()) {
             if (mParamEntity.getMaxNum() > 0 && mListNumbers.size() > mParamEntity.getMaxNum()) {
@@ -320,6 +314,7 @@ public class LFilePickerActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.putStringArrayListExtra("paths", mListNumbers);
         intent.putExtra("path", mTvPath.getText().toString().trim());
+        intent.putExtra("csvFileName", fileName);
         setResult(RESULT_OK, intent);
         this.finish();
     }

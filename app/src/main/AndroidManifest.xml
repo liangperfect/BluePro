@@ -21,7 +21,7 @@
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
-        android:name="com.vitalong.inclinometer.MyApplication"
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/launch_start"
         android:label="@string/app_name"
@@ -29,79 +29,91 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.vitalong.inclinometer.inclinometer.Survey2Activity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.inclinometer.BoreholeInfoActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.inclinometer.SelectModeActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.inclinometer.AboutUsActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.inclinometer.WebViewActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.bluepro.VerifyResultActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.bluepro.ShareFileActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.bluepro.GraphActivity"
-            android:screenOrientation="landscape" />
-        <activity android:name="com.vitalong.inclinometer.bluepro.SurveyListActivity" />
-        <activity android:name="com.vitalong.inclinometer.bluepro.CompareActivity" />
-        <activity android:name="com.vitalong.inclinometer.bluepro.SaveDataActivity" />
-        <activity android:name="com.vitalong.inclinometer.bluepro.SurveyActivity" />
-        <activity android:name="com.vitalong.inclinometer.bluepro.CoefficientsActivity" />
-        <activity
-            android:name="com.vitalong.inclinometer.bluepro.SettingActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.OperationPanelActivity"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name="com.vitalong.inclinometer.MainActivity"
-            android:screenOrientation="portrait">
+        <activity android:name=".inclinometer.Graph3Activity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".inclinometer.Graph2Activity"
+            android:screenOrientation="portrait"
+            android:turnScreenOn="true">
+
+        </activity>
+        <activity
+            android:name=".inclinometer.Survey2Activity"
+            android:screenOrientation="portrait"
+            android:turnScreenOn="true" />
+        <activity
+            android:name=".inclinometer.BoreholeInfoActivity"
+            android:screenOrientation="portrait"
+            android:turnScreenOn="true" />
+        <activity
+            android:name=".inclinometer.SelectModeActivity"
+            android:screenOrientation="portrait"
+            android:turnScreenOn="true" />
+        <activity
+            android:name=".inclinometer.AboutUsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".inclinometer.WebViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bluepro.VerifyResultActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bluepro.ShareFileActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".bluepro.GraphActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".bluepro.SurveyListActivity" />
+        <activity android:name=".bluepro.CompareActivity" />
+        <activity android:name=".bluepro.SaveDataActivity" />
+        <activity android:name=".bluepro.SurveyActivity" />
+        <activity android:name=".bluepro.CoefficientsActivity" />
+        <activity
+            android:name=".bluepro.SettingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".OperationPanelActivity"
+            android:screenOrientation="portrait"
+            android:turnScreenOn="true" />
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait"></activity>
 
         <service
-            android:name="com.vitalong.inclinometer.BlueToothLeService.BluetoothLeService"
+            android:name=".BlueToothLeService.BluetoothLeService"
             android:enabled="true" />
         <service
-            android:name="com.vitalong.inclinometer.BlueToothLeService.SppConnectService"
+            android:name=".BlueToothLeService.SppConnectService"
             android:enabled="true" />
 
         <activity
-            android:name="com.vitalong.inclinometer.ServicesActivity"
+            android:name=".ServicesActivity"
             android:label="@string/title_activity_services"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransparentAct" />
         <activity
-            android:name="com.vitalong.inclinometer.CharacteristicsActivity"
+            android:name=".CharacteristicsActivity"
             android:label="@string/title_activity_characteritics"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransparentAct" />
         <activity
-            android:name="com.vitalong.inclinometer.GattDetailActivity"
+            android:name=".GattDetailActivity"
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.TransparentAct"
             android:windowSoftInputMode="stateHidden" />
         <activity
-            android:name="com.vitalong.inclinometer.SPPBlueTooth.SppBlueThoothActivity"
+            android:name=".SPPBlueTooth.SppBlueThoothActivity"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <activity
-            android:name="com.vitalong.inclinometer.UpdateActivity"
+            android:name=".UpdateActivity"
             android:theme="@style/dialogstyle" />
     </application>
+
 </manifest>
