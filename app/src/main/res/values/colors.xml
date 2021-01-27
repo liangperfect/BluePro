@@ -26,6 +26,8 @@
     <color name="grey_light">#f3f3f3</color>
     <!-- 黑色 -->
     <color name="black">#000000</color>
+    <color name="black2">#272928</color>
+
     <!-- 红色 -->
     <color name="red">#ff0000</color>
     <!-- 深红色 -->
@@ -43,5 +45,6 @@
 
     <color name="line_bg">#BCBCBC</color>
     <color name="line_gride_color">#9F9D9E</color>
+
 
 </resources>

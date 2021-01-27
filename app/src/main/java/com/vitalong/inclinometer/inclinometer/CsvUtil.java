@@ -19,6 +19,8 @@ import com.vitalong.inclinometer.greendaodb.SurveyDataTableDao;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +53,14 @@ public class CsvUtil {
     private double dBxisB = 0;
     private double dBxisC = 0;
     private double dBxisD = 0;
+
+    public CsvUtil(Activity activity) {
+        this.activity = activity;
+//        initVerifyData();
+        snValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
+        surveyDataTableDao = ((MyApplication) activity.getApplication()).surveyDataTableDao;
+        easyCsv = new EasyCsvCopy(activity);
+    }
 
     public CsvUtil(Activity activity, String siteStr, String holeStr, float topValue, float bottomValue) {
         //获取snValue
@@ -154,8 +164,10 @@ public class CsvUtil {
      * 将实时数据存储到数据库中去
      */
     public void saveDatasInDB(String csvFileName, String depth, float angleA, float angleB, boolean isZero) {
-        double deg1 = getDeg(angleA, Constants.SFMODE_1AXIS);
-        double deg2 = getDeg(angleB, Constants.SFMODE_2AXIS);
+        BigDecimal deg1Scale = BigDecimal.valueOf(getDeg(angleA, Constants.SFMODE_1AXIS)).setScale(2, RoundingMode.UP);
+        BigDecimal deg2Scale = BigDecimal.valueOf(getDeg(angleB, Constants.SFMODE_2AXIS)).setScale(2, RoundingMode.UP);
+        double deg1 = deg1Scale.doubleValue();
+        double deg2 = deg2Scale.doubleValue();
         double raw1 = getRaw(deg1);
         double raw2 = getRaw(deg2);
         double radians1 = Math.toRadians(deg1);
@@ -205,6 +217,17 @@ public class CsvUtil {
      */
     public SurveyDataTable getSurveyByDepth(String csvFileName, String depth) {
         return surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName), SurveyDataTableDao.Properties.Depth.eq(depth)).build().list().get(0);
+    }
+
+    /**
+     * 根据csv文件名来获取到改csv文件的所存储的实时数据
+     *
+     * @param csvFileName
+     * @return 返回查询到的列表
+     */
+    public List<SurveyDataTable> getSurveyListByCsvName(String csvFileName) {
+
+        return surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName)).list();
     }
 
     /**

@@ -37,20 +37,20 @@
                 android:textStyle="bold"
                 tools:text="Inclinometer" />
 
-<!--            <androidx.appcompat.widget.AppCompatTextView-->
-<!--                android:id="@+id/tvTitle2"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_gravity="right"-->
-<!--                android:background="@android:color/transparent"-->
-<!--                android:ellipsize="end"-->
-<!--                android:paddingStart="12dp"-->
-<!--                android:paddingEnd="12dp"-->
-<!--                android:singleLine="true"-->
-<!--                android:text="Company"-->
-<!--                android:textColor="@color/black"-->
-<!--                android:textSize="18sp"-->
-<!--                tools:text="70%" />-->
+            <!--            <androidx.appcompat.widget.AppCompatTextView-->
+            <!--                android:id="@+id/tvTitle2"-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_gravity="right"-->
+            <!--                android:background="@android:color/transparent"-->
+            <!--                android:ellipsize="end"-->
+            <!--                android:paddingStart="12dp"-->
+            <!--                android:paddingEnd="12dp"-->
+            <!--                android:singleLine="true"-->
+            <!--                android:text="Company"-->
+            <!--                android:textColor="@color/black"-->
+            <!--                android:textSize="18sp"-->
+            <!--                tools:text="70%" />-->
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
@@ -88,7 +88,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btnHistory" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

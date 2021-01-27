@@ -43,210 +43,160 @@
         android:padding="24dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <RelativeLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/fff"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:ignore="MissingConstraints">
+            android:layout_height="match_parent">
 
-            <LinearLayout
-                android:id="@+id/LinearLayout2"
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Stie#:"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.2" />
+
+            <Spinner
+                android:id="@+id/spinner1"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:gravity="left"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                tools:ignore="MissingConstraints">
+                android:layout_height="40sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/textView1"
+                app:layout_constraintStart_toEndOf="@id/textView1"
+                app:layout_constraintTop_toTopOf="@id/textView1" />
 
-                <LinearLayout
-                    android:layout_width="60dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Stie#:"
-                        android:textSize="18dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/spinner1"
-                        android:layout_width="match_parent"
-                        android:layout_height="40sp"></Spinner>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_below="@id/LinearLayout2"
-                android:gravity="left"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Tiltmeter#:"
-                        android:textSize="18dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/spinner2"
-                        android:layout_width="match_parent"
-                        android:layout_height="40sp"></Spinner>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout4"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_below="@id/LinearLayout3"
-                android:gravity="left"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="File#:"
-                        android:textSize="18dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/spinner3"
-                        android:layout_width="match_parent"
-                        android:layout_height="40sp"></Spinner>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout6"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@id/LinearLayout4"
-                android:gravity="left"
-                android:orientation="horizontal"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp"
-                tools:ignore="MissingConstraints">
-
-                <LinearLayout
-                    android:layout_width="70dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView5"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Line Graph:"
-                        android:textSize="18dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="120dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-
-                    <Spinner
-                        android:id="@+id/spinner5"
-                        android:layout_width="match_parent"
-                        android:layout_height="40sp"></Spinner>
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout8"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:layout_below="@id/LinearLayout6"
-                android:paddingLeft="20dp"
-                android:paddingTop="20dp">
-
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="clear Cache(111222):"
-                    android:textSize="18dp" />
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnClearData"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="12dp"
-                    android:text="clear" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/LinearLayout7"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/LinearLayout8"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSiteName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/edt_bg_white"
                 android:gravity="center"
-                android:orientation="horizontal"
-                android:paddingLeft="40dp"
-                android:paddingTop="60dp"
-                android:paddingRight="40dp"
-                tools:ignore="MissingConstraints">
-                <!--android:background="@drawable/login_code"-->
-                <Button
-                    android:id="@+id/button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="#000"
-                    android:text="COMPARE"
-                    android:textColor="#fff" />
-            </LinearLayout>
-        </RelativeLayout>
+                android:hint="請選擇工地名稱"
+                app:layout_constraintBottom_toBottomOf="@id/textView1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView1"
+                app:layout_constraintTop_toTopOf="@id/textView1" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tiltmeter#:"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.3" />
+
+            <Spinner
+                android:id="@+id/spinner2"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/textView2"
+                app:layout_constraintStart_toEndOf="@id/textView2"
+                app:layout_constraintTop_toTopOf="@id/textView2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvHoleName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/edt_bg_white"
+                android:gravity="center"
+                android:hint="請選擇孔號"
+                app:layout_constraintBottom_toBottomOf="@id/textView2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView2"
+                app:layout_constraintTop_toTopOf="@id/textView2" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="File#:"
+                android:textSize="18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.4" />
+
+            <Spinner
+                android:id="@+id/spinner3"
+                android:layout_width="match_parent"
+                android:layout_height="40sp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/textView4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvFileName"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/edt_bg_white"
+                android:gravity="center"
+                android:hint="請選擇文件"
+                app:layout_constraintBottom_toBottomOf="@id/textView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/textView4"
+                app:layout_constraintTop_toTopOf="@id/textView4" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Line Graph:"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.5" />
+
+            <Spinner
+                android:id="@+id/spinner5"
+                android:layout_width="200dp"
+                android:layout_height="40sp"
+                android:layout_marginStart="16dp"
+                app:layout_constraintBottom_toBottomOf="@id/textView5"
+                app:layout_constraintStart_toEndOf="@id/textView5"
+                app:layout_constraintTop_toTopOf="@id/textView5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvClear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="clear Cache(111222):"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.6" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnClearData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:text="clear"
+                app:layout_constraintBottom_toBottomOf="@id/tvClear"
+                app:layout_constraintStart_toEndOf="@id/tvClear"
+                app:layout_constraintTop_toTopOf="@id/tvClear" />
+
+            <Button
+                android:id="@+id/button"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="#000"
+                android:text="COMPARE"
+                android:textColor="#fff"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -29,19 +29,12 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".inclinometer.Graph3Activity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".inclinometer.InclinometerSurveyListActivity"></activity>
+        <activity android:name=".inclinometer.Graph3Activity" />
         <activity
             android:name=".inclinometer.Graph2Activity"
             android:screenOrientation="portrait"
-            android:turnScreenOn="true">
-
-        </activity>
+            android:turnScreenOn="true" />
         <activity
             android:name=".inclinometer.Survey2Activity"
             android:screenOrientation="portrait"
@@ -83,7 +76,13 @@
             android:turnScreenOn="true" />
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".BlueToothLeService.BluetoothLeService"

@@ -11,7 +11,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -50,7 +49,9 @@ public class SimpleLineView extends View {
     private int mAxislength = 12;//坐标轴上的刻度长度
     private List<String> xLabels;
     private List<String> yLables;
+    private List<String> y2Lables;
     private List<ChartPoint> mChartPoints;
+    private List<ChartPoint> mChart2Points;
     private float mXOriChange = 0;
     private float mYOriChange = 0;
     private float mXOri = 0;
@@ -64,11 +65,12 @@ public class SimpleLineView extends View {
     private int mPaddingTop = 34;//报个距离上面的距离
     private int yTextWidth = 0;//y轴值的宽度
     private int xTextHeight = 0;//X轴值的宽度
-    private int mXDuratioVaule = 0;
+    private int mXDuratioVaule = 0; //X轴大刻度的数值间距
     int mRecordXMax = 0;//记录最大值
     int mRecordXMin = 0;//记录最小值
     private int yAxisLengenWidth = 0;//Y轴标题的高度
     private int xAxisLengenHeight = 0;//X轴标题的高度
+    private int mYMaxOffset = 0;
 
     public SimpleLineView(Context context) {
         this(context, null);
@@ -86,39 +88,45 @@ public class SimpleLineView extends View {
         super(context, attrs, defStyleAttr, defStyleRes);
         xLabels = new ArrayList<>();
         yLables = new ArrayList<>();
+        y2Lables = new ArrayList<>();
         mChartPoints = new ArrayList<>();
+        mChart2Points = new ArrayList<>();
 
         mRecordXMax = 0;//记录最大值
         mRecordXMin = 0;//记录最小值
         for (int i = 0; i < 100; i++) {
             yLables.add(String.valueOf(i));
             ChartPoint chartPoint;
-            chartPoint = new ChartPoint(-new Random().nextInt(300), i, "第" + i + "個", "titile is " + i);
+
+            if (i == 5) {
+                chartPoint = new ChartPoint(-new Random().nextInt(300), i, "第" + i + "個", "titile is " + i);
+            } else {
+                chartPoint = new ChartPoint(new Random().nextInt(300), i, "第" + i + "個", "titile is " + i);
+            }
             mChartPoints.add(chartPoint);
             mRecordXMax = Math.max(mRecordXMax, chartPoint.getX());
             mRecordXMin = Math.min(mRecordXMin, chartPoint.getX());
         }
 
-        if (mRecordXMin > 0 || mRecordXMax < 0) {
-            mChartPoints.add(new ChartPoint(0, 0, "", ""));
+        for (int j = 0; j < 100; j++) {
+            y2Lables.add(String.valueOf(j));
+            ChartPoint chartPoint;
+            chartPoint = new ChartPoint(-new Random().nextInt(300), j, "第" + j + "個", "titile is " + j);
+            mChart2Points.add(chartPoint);
+            mRecordXMax = Math.max(mRecordXMax, chartPoint.getX());
+            mRecordXMin = Math.min(mRecordXMin, chartPoint.getX());
         }
 
-        if (mRecordXMin % 2 != 0 && mRecordXMin < 0) {
-            mRecordXMin -= -1;
-        } else if (mRecordXMin % 2 != 0 && mRecordXMin > 0) {
-            mRecordXMin -= 1;
+        if (mRecordXMin == 0) {
+            mRecordXMax = mRecordXMax + (5 - mRecordXMax % 5);
         }
 
-        if (mRecordXMax % 2 != 0 && mRecordXMax < 0) {
-            mRecordXMax += 1;
-        } else if (mRecordXMax % 2 != 0 && mRecordXMax > 0) {
-            mRecordXMax += 1;
+        if (mRecordXMax == 0) {
+            mRecordXMin = mRecordXMin - (5 + mRecordXMin % 5);
         }
         mXMaxInterval = mRecordXMax - mRecordXMin;
-        Log.d("chenliang", "mXMaxInterval->" + mXMaxInterval + "   mRecordXMax->" + mRecordXMax + "  mRecordXMin->" + mRecordXMin);
         initChart();
     }
-
 
     //初始化
     private void initChart() {
@@ -188,6 +196,7 @@ public class SimpleLineView extends View {
         h = heightSize;
         mXLength = w - mPaddingRight - mPaddingLeft;//X轴的长度
         mXScall = mXLength / mXDegreeNumber;//X轴的间隔距离,每次都是25个小格子
+        mYMaxOffset = mYScall * yLables.size() - h;
         setMeasuredDimension(w, h);
     }
 
@@ -209,10 +218,6 @@ public class SimpleLineView extends View {
             mXOri = yTextWidth + mXYLineWidth + mPaddingLeft;
             mYOri = xTextHeight + mXYLineWidth + xAxisLengenHeight + mPaddingTop;
             mXDuratioVaule = mXMaxInterval / 5;
-            if (mXDuratioVaule % 2 != 0) {
-                mXDuratioVaule += 1;
-                Log.d("chenliang", "mXDuratioVaule->" + mXDuratioVaule);
-            }
         }
         super.onLayout(changed, left, top, right, bottom);
     }
@@ -231,8 +236,11 @@ public class SimpleLineView extends View {
     //绘制先及坐标点
     private void drawLineAndPoints(Canvas canvas) {
         Path path = new Path();
+        Path path1 = new Path();
         path.moveTo(mXOriChange, mYOriChange);
         int layertId = canvas.saveLayer(0, 0, w, h, null, Canvas.ALL_SAVE_FLAG);
+        mPointPaint.setColor(Color.RED);
+        mBrokenLinePaint.setColor(Color.RED);
         for (int i = 0; i < mChartPoints.size(); i++) {
             ChartPoint chartPoint = mChartPoints.get(i);
             float tempX = mXOriChange + (1 - (chartPoint.getX() - mRecordXMin) / (float) mXMaxInterval) * mXLength;
@@ -243,6 +251,20 @@ public class SimpleLineView extends View {
             path.lineTo(tempX, tempY);
             canvas.drawPath(path, mBrokenLinePaint);
         }
+        path1.moveTo(mXOriChange, mYOriChange);
+        mPointPaint.setColor(Color.BLUE);
+        mBrokenLinePaint.setColor(Color.BLUE);
+        for (int j = 0; j < mChart2Points.size(); j++) {
+            ChartPoint chartPoint = mChart2Points.get(j);
+            float tempX = mXOriChange + (1 - (chartPoint.getX() - mRecordXMin) / (float) mXMaxInterval) * mXLength;
+//            float tempX = mXOriChange + mXLength;
+            float tempY = mYOriChange + j * mYScall;
+            canvas.drawCircle(tempX, tempY, 6, mPointPaint);
+            //连接坐标线
+            path1.lineTo(tempX, tempY);
+            canvas.drawPath(path1, mBrokenLinePaint);
+        }
+
         //裁剪超过坐标轴的折线和坐标点
         PorterDuffXfermode porterDuffXfermode = new PorterDuffXfermode(PorterDuff.Mode.CLEAR);
         mPointPaint.setXfermode(porterDuffXfermode);
@@ -267,11 +289,9 @@ public class SimpleLineView extends View {
                     mYOriChange = mYOri;
                 }
 
-
-                if (mYOriChange <= -(mYScall * 99 - (h ))) {
-                    mYOriChange = -(mYScall * 99 - (h));
+                if (mYOriChange <= -(mYScall * 99 - h)) {
+                    mYOriChange = -(mYScall * 99 - h);
                 }
-
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
@@ -298,7 +318,6 @@ public class SimpleLineView extends View {
         for (int i = 0; i < yLables.size(); i++) {
             //绘制Y轴的刻度点
             tempYByY = mYOriChange + i * mYScall;
-            Log.d("chenliang", "tempYByY->" + tempYByY);
             if (mYOri <= tempYByY) {
                 //绘制文本
                 if (i % 4 == 0) {
@@ -345,6 +364,57 @@ public class SimpleLineView extends View {
         canvas.drawLine(mXOri + mXLength, mYOri, mXOri + mXLength, h, mXYPaint);
         //绘制X轴的封边线
         canvas.drawLine(mXOri, h - mXYLineWidth, mXOri + mXLength, h - mXYLineWidth, mXYPaint);
+        //绘制Y轴的0线
+        if (mRecordXMin < 0 && mRecordXMax > 0) {
+            float tempX = mXOriChange + (Math.abs((0 - mRecordXMin) / (float) mXMaxInterval)) * mXLength;
+            mXYPaint.setColor(Color.GREEN);
+            canvas.drawLine(tempX, mYOri, tempX, h, mXYPaint);
+            mXYPaint.setColor(Color.BLACK);
+        }
+    }
+
+    //重新装载数据
+    public void refreshByData() {
+
+        yLables.clear();
+        y2Lables.clear();
+        mRecordXMax = 0;//记录最大值
+        mRecordXMin = 0;//记录最小值
+        for (int i = 0; i < 100; i++) {
+            yLables.add(String.valueOf(i));
+            ChartPoint chartPoint;
+
+            if (i == 5) {
+                chartPoint = new ChartPoint(-new Random().nextInt(200), i, "第" + i + "個", "titile is " + i);
+            } else {
+                chartPoint = new ChartPoint(new Random().nextInt(300), i, "第" + i + "個", "titile is " + i);
+            }
+            mChartPoints.add(chartPoint);
+            mRecordXMax = Math.max(mRecordXMax, chartPoint.getX());
+            mRecordXMin = Math.min(mRecordXMin, chartPoint.getX());
+        }
+
+        for (int j = 0; j < 100; j++) {
+            y2Lables.add(String.valueOf(j));
+            ChartPoint chartPoint;
+            chartPoint = new ChartPoint(-new Random().nextInt(200), j, "第" + j + "個", "titile is " + j);
+            mChart2Points.add(chartPoint);
+            mRecordXMax = Math.max(mRecordXMax, chartPoint.getX());
+            mRecordXMin = Math.min(mRecordXMin, chartPoint.getX());
+        }
+
+        if (mRecordXMin == 0) {
+            mRecordXMax = mRecordXMax + (5 - mRecordXMax % 5);
+        }
+
+        if (mRecordXMax == 0) {
+            mRecordXMin = mRecordXMin - (5 + mRecordXMin % 5);
+        }
+        mXMaxInterval = mRecordXMax - mRecordXMin;
+
+        mXOriChange = mXOri;
+        mYOriChange = mYOri;
+        invalidate();
     }
 
     /**

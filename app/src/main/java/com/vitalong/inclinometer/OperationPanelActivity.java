@@ -19,9 +19,9 @@ import com.vitalong.inclinometer.Utils.Constants;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
+import com.vitalong.inclinometer.bluepro.CompareActivity;
 import com.vitalong.inclinometer.bluepro.SettingActivity;
 import com.vitalong.inclinometer.inclinometer.AboutUsActivity;
-import com.vitalong.inclinometer.inclinometer.Graph2Activity;
 import com.vitalong.inclinometer.inclinometer.SelectModeActivity;
 
 import java.util.List;
@@ -122,8 +122,8 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                 startActivity(new Intent(OperationPanelActivity.this, SelectModeActivity.class));
                 break;
             case R.id.imageButton2:
-//                startActivity(new Intent(OperationPanelActivity.this, CompareActivity.class));
-                startActivity(new Intent(OperationPanelActivity.this, Graph2Activity.class));
+                startActivity(new Intent(OperationPanelActivity.this, CompareActivity.class));
+//                startActivity(new Intent(OperationPanelActivity.this, Graph2Activity.class));
                 break;
             case R.id.imageButton3:
                 startActivity(new Intent(OperationPanelActivity.this, SettingActivity.class));

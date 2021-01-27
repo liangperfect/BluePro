@@ -6,7 +6,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 /**
  * @Package: com.vitalong.bluetest2.bean
- * @Description:
+ * @Description: 轻度管的保存的数据
  * @Author: 亮
  * @CreateDate: 2020/12/15 15:33
  * @UpdateUser: 更新者

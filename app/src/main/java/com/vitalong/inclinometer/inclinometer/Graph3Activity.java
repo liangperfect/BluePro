@@ -1,6 +1,9 @@
 package com.vitalong.inclinometer.inclinometer;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -22,6 +25,7 @@ public class Graph3Activity extends AppCompatActivity {
     private List<Integer> yValue = new ArrayList<>();
     //折线对应的数据
     private Map<String, Integer> value = new HashMap<>();
+    private Spinner spinner;
     SimpleLineView simpleLineView;
 
     @Override
@@ -46,5 +50,18 @@ public class Graph3Activity extends AppCompatActivity {
 //
 //        chartView.setValue(value, xValue, yValue);
         simpleLineView = findViewById(R.id.simpleLineView);
+        spinner = findViewById(R.id.spinner);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                simpleLineView.refreshByData();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 }

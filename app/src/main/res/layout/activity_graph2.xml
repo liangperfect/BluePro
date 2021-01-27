@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".inclinometer.Graph2Activity">
+    android:orientation="horizontal">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"
@@ -31,20 +31,212 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:singleLine="true"
-                android:text="GraphView"
+                android:text="Inclinometer"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="GraphView" />
+                tools:text="图表" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
 
-
-    <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/barChart"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        android:orientation="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvDepthInMeter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:text="Depth in meter"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/cardView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDepthInMeter" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardElevation="100dp"
+            app:layout_constraintBottom_toTopOf="@id/constraBottom"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="12dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgA"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/red_dot" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvATitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="A"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@id/imgA"
+                    app:layout_constraintStart_toEndOf="@id/imgA"
+                    app:layout_constraintTop_toTopOf="@id/imgA" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgB"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    app:layout_constraintBottom_toBottomOf="@id/imgA"
+                    app:layout_constraintStart_toEndOf="@id/tvATitle"
+                    app:layout_constraintTop_toTopOf="@id/imgA"
+                    app:srcCompat="@drawable/gray_dot" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvBTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="B"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@id/imgB"
+                    app:layout_constraintStart_toEndOf="@id/imgB"
+                    app:layout_constraintTop_toTopOf="@id/imgB" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+        <SeekBar
+            android:id="@+id/seekBar2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@+id/tvYMax"
+            android:max="150"
+            android:paddingBottom="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <SeekBar
+            android:id="@+id/seekBar1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/seekBar2"
+            android:layout_margin="8dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginBottom="35dp"
+            android:layout_toLeftOf="@+id/tvXMax"
+            android:max="500"
+            android:paddingBottom="12dp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvXMax"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/seekBar1"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="right"
+            android:text="dash"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvYMax"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/seekBar2"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="15dp"
+            android:gravity="right"
+            android:text="asd"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraBottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/white"
+            android:padding="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sum"
+                android:textColor="#0011E7"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:text="Dis"
+                android:textColor="#0011E7"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@id/tvSum"
+                app:layout_constraintEnd_toStartOf="@id/tvSum"
+                app:layout_constraintTop_toTopOf="@id/tvSum" />
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spinner"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="12dp"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tvDis"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

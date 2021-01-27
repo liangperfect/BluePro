@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,9 +21,19 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.leon.lfilepickerlibrary.utils.FileUtils;
 import com.vitalong.inclinometer.MyApplication;
 import com.vitalong.inclinometer.R;
+import com.vitalong.inclinometer.Utils.Constants;
 import com.vitalong.inclinometer.greendaodb.RealDataCachedDao;
+import com.vitalong.inclinometer.inclinometer.Graph2Activity;
+import com.vitalong.inclinometer.inclinometer.InclinometerSurveyListActivity;
+import com.vitalong.inclinometer.views.CompanySelectDialog;
+
+import java.io.File;
+import java.io.FileFilter;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -44,6 +55,13 @@ public class CompareActivity extends AppCompatActivity {
     Button button;
     @Bind(R.id.btnClearData)
     Button btnCleanData;
+    @Bind(R.id.tvSiteName)
+    TextView tvSiteName;
+    @Bind(R.id.tvHoleName)
+    TextView tvHoleName;
+    @Bind(R.id.tvFileName)
+    TextView tvFileName;
+
     String[] ctype1 = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
             , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
             , "A040", "A041", "A042", "A043", "A044", "A045", "A046", "A047", "A048", "A049", "A050", "A051", "A052", "A053", "A054", "A055", "A056", "A057", "A058", "A059"
@@ -66,6 +84,13 @@ public class CompareActivity extends AppCompatActivity {
     String selectDirection = "All";
     String selectShowMode = "Disable";
     MyApplication application;
+    private CompanySelectDialog companySelectDialog;
+    private CompanySelectDialog holeSelectDialog;
+    private CompanySelectDialog csvSelectDialog;
+    private List<File> ConstructionSiteFiles;//工地文件夹名称
+    private List<File> holeFiles;//孔号文件列表
+    private List<File> csvFiles;//csv文件名臣
+    private String selectCsvPath = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,8 +101,22 @@ public class CompareActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
         bindToolBar();
+        initData();
         makeStatusBar(R.color.white);
         initView();
+    }
+
+    private void initData() {
+        ConstructionSiteFiles = new ArrayList<File>();
+        holeFiles = new ArrayList<File>();
+        csvFiles = new ArrayList<File>();
+        List<File> list = FileUtils.getFileListByDirPath(Constants.PRO_ROOT_PATH, new FileFilter() {
+            @Override
+            public boolean accept(File pathname) {
+                return true;
+            }
+        });
+        ConstructionSiteFiles.addAll(list);
     }
 
     private void initView() {
@@ -109,17 +148,16 @@ public class CompareActivity extends AppCompatActivity {
             String nums = selectNums;
             String direction = selectDirection;
             if (selectShowMode.equals("Disable")) {
-                Intent i = new Intent(CompareActivity.this, SurveyListActivity.class);
-                i.putExtra("tableName", tableName);
-                i.putExtra("nums", nums);
-                i.putExtra("direction", direction);
-                i.putExtra("fromWhich", false);
+                Intent i = new Intent(CompareActivity.this, InclinometerSurveyListActivity.class);
+                String fn = (String) tvFileName.getText();
+                i.putExtra("csvFileName", fn);
+                i.putExtra("csvFilePath", selectCsvPath);
                 startActivity(i);
             } else {
-                Intent i = new Intent(CompareActivity.this, GraphActivity.class);
-                i.putExtra("tableName", tableName);
-                i.putExtra("nums", nums);
-                i.putExtra("direction", direction);
+                Intent i = new Intent(CompareActivity.this, Graph2Activity.class);
+                String fn = (String) tvFileName.getText();
+                i.putExtra("csvFileName", fn);
+                i.putExtra("csvFilePath", selectCsvPath);
                 startActivity(i);
             }
         });
@@ -139,6 +177,75 @@ public class CompareActivity extends AppCompatActivity {
                             Toast.makeText(CompareActivity.this, "刪除成功", Toast.LENGTH_SHORT).show();
                         }
                     }).setNegativeButton("取消", null).show();
+        });
+
+        tvSiteName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (companySelectDialog == null) {
+                    companySelectDialog = new CompanySelectDialog(CompareActivity.this, ConstructionSiteFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                        @Override
+                        public void changeComapny(File file) {
+
+                            tvSiteName.setText(file.getName());
+                            holeFiles.clear();
+                            List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), new FileFilter() {
+                                @Override
+                                public boolean accept(File pathname) {
+                                    return true;
+                                }
+                            });
+                            holeFiles.addAll(tempList);
+                        }
+                    });
+                }
+                companySelectDialog.show();
+            }
+        });
+
+        tvHoleName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (tvSiteName.getText() == "請選擇工地名稱") {
+                    Toast.makeText(CompareActivity.this, "請先選擇工地名稱", Toast.LENGTH_SHORT).show();
+                } else {
+//                    if (holeSelectDialog == null) {
+                    holeSelectDialog = new CompanySelectDialog(CompareActivity.this, holeFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                        @Override
+                        public void changeComapny(File file) {
+
+                            tvHoleName.setText(file.getName());
+                            holeFiles.clear();
+                            List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), new FileFilter() {
+                                @Override
+                                public boolean accept(File pathname) {
+                                    return true;
+                                }
+                            });
+                            csvFiles.addAll(tempList);
+                        }
+                    });
+//                    }
+                    holeSelectDialog.show();
+                }
+            }
+        });
+
+        tvFileName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                csvSelectDialog = new CompanySelectDialog(CompareActivity.this, csvFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                    @Override
+                    public void changeComapny(File file) {
+
+                        tvFileName.setText(file.getName());
+                        selectCsvPath = file.getPath();
+                    }
+                });
+                csvSelectDialog.show();
+            }
         });
     }
 

@@ -91,7 +91,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
     protected Paint mBorderPaint;
 
-    protected Paint circlePaint;
     /**
      * flag indicating if the grid background should be drawn or not
      */
@@ -180,11 +179,6 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         mBorderPaint.setStyle(Style.STROKE);
         mBorderPaint.setColor(Color.BLACK);
         mBorderPaint.setStrokeWidth(Utils.convertDpToPixel(1f));
-
-        circlePaint = new Paint();
-        circlePaint.setStyle(Style.FILL);
-        circlePaint.setColor(Color.GREEN);
-
     }
 
     // for performance tracking
@@ -194,7 +188,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-//        canvas.rotate(90);
+
         if (mData == null)
             return;
 
@@ -216,12 +210,9 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
         if (mXAxis.isEnabled())
             mXAxisRenderer.computeAxis(mXAxis.mAxisMinimum, mXAxis.mAxisMaximum, false);
 
-//        int tempSaveRestore1 = canvas.save();
-//        canvas.rotate(90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
         mXAxisRenderer.renderAxisLine(canvas);
         mAxisRendererLeft.renderAxisLine(canvas);
         mAxisRendererRight.renderAxisLine(canvas);
-//        canvas.restoreToCount(tempSaveRestore1);
 
         if (mXAxis.isDrawGridLinesBehindDataEnabled())
             mXAxisRenderer.renderGridLines(canvas);
@@ -248,10 +239,7 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
             canvas.clipRect(mViewPortHandler.getContentRect());
         }
 
-        int temp4 = canvas.save();
-        canvas.rotate(90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
         mRenderer.drawData(canvas);
-        canvas.restoreToCount(temp4);
 
         if (!mXAxis.isDrawGridLinesBehindDataEnabled())
             mXAxisRenderer.renderGridLines(canvas);
@@ -268,10 +256,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         // Removes clipping rectangle
         canvas.restoreToCount(clipRestoreCount);
-        int temp2 = canvas.save();
-        canvas.rotate(90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
+
+        //绘制圆点
         mRenderer.drawExtras(canvas);
-        canvas.restoreToCount(temp2);
+
         if (mXAxis.isEnabled() && !mXAxis.isDrawLimitLinesBehindDataEnabled())
             mXAxisRenderer.renderLimitLines(canvas);
 
@@ -280,12 +268,10 @@ public abstract class BarLineChartBase<T extends BarLineScatterCandleBubbleData<
 
         if (mAxisRight.isEnabled() && !mAxisRight.isDrawLimitLinesBehindDataEnabled())
             mAxisRendererRight.renderLimitLines(canvas);
-        int tempSaveRestore = canvas.save();
-        canvas.rotate(90, getMeasuredWidth() / 2, getMeasuredHeight() / 2);
+
         mXAxisRenderer.renderAxisLabels(canvas);
         mAxisRendererLeft.renderAxisLabels(canvas);
         mAxisRendererRight.renderAxisLabels(canvas);
-        canvas.restoreToCount(tempSaveRestore);
 
         if (isClipValuesToContentEnabled()) {
             clipRestoreCount = canvas.save();

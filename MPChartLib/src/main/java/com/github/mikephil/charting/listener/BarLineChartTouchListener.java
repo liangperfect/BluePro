@@ -2,6 +2,7 @@ package com.github.mikephil.charting.listener;
 
 import android.annotation.SuppressLint;
 import android.graphics.Matrix;
+import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -41,12 +42,12 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     /**
      * point where the touch action started
      */
-    private MPPointF mTouchStartPoint = MPPointF.getInstance(0, 0);
+    private MPPointF mTouchStartPoint = MPPointF.getInstance(0,0);
 
     /**
      * center between two pointers (fingers on the display)
      */
-    private MPPointF mTouchPointCenter = MPPointF.getInstance(0, 0);
+    private MPPointF mTouchPointCenter = MPPointF.getInstance(0,0);
 
     private float mSavedXDist = 1f;
     private float mSavedYDist = 1f;
@@ -60,8 +61,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
     private VelocityTracker mVelocityTracker;
 
     private long mDecelerationLastTime = 0;
-    private MPPointF mDecelerationCurrentPoint = MPPointF.getInstance(0, 0);
-    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0, 0);
+    private MPPointF mDecelerationCurrentPoint = MPPointF.getInstance(0,0);
+    private MPPointF mDecelerationVelocity = MPPointF.getInstance(0,0);
 
     /**
      * the distance of movement that will be counted as a drag
@@ -136,12 +137,10 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
                     saveTouchStart(event);
 
                     // get the distance between the pointers on the x-axis
-                    mSavedXDist = getYDist(event);
-//                    mSavedXDist = getXDist(event);
+                    mSavedXDist = getXDist(event);
 
                     // get the distance between the pointers on the y-axis
-//                    mSavedYDist = getYDist(event);
-                    mSavedYDist = getXDist(event);
+                    mSavedYDist = getYDist(event);
 
                     // get the total distance between the pointers
                     mSavedDist = spacing(event);
@@ -476,10 +475,8 @@ public class BarLineChartTouchListener extends ChartTouchListener<BarLineChartBa
      * @return
      */
     private static float spacing(MotionEvent event) {
-//        float x = event.getX(0) - event.getX(1);
-//        float y = event.getY(0) - event.getY(1);
-        float y = event.getX(0) - event.getX(1);
-        float x = event.getY(0) - event.getY(1);
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
         return (float) Math.sqrt(x * x + y * y);
     }
 

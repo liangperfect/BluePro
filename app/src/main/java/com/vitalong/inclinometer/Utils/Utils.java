@@ -46,8 +46,10 @@ import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Environment;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.vitalong.inclinometer.BlueToothLeService.BluetoothLeService;
@@ -841,4 +843,23 @@ public class Utils {
         return batt_t;
     }
 
+    public static int getWindowWidth(Context context) {
+        // 获取屏幕分辨率
+        WindowManager wm = (WindowManager) (context
+                .getSystemService(Context.WINDOW_SERVICE));
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        int mScreenWidth = dm.widthPixels;
+        return mScreenWidth;
+    }
+
+    public static int getWindowHeigh(Context context) {
+        // 获取屏幕分辨率
+        WindowManager wm = (WindowManager) (context
+                .getSystemService(Context.WINDOW_SERVICE));
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        int mScreenHeigh = dm.heightPixels;
+        return mScreenHeigh;
+    }
 }

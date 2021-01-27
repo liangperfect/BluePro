@@ -80,7 +80,7 @@ public class MyApplication extends Application {
     private void initBugly() {
 
         CrashReport.initCrashReport(getApplicationContext(), "77f2a83f4e", true);
-
+        CrashReport.enableBugly(false);
     }
 
     public void setServices(List<MService> services) {
