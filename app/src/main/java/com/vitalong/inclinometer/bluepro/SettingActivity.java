@@ -57,11 +57,14 @@ public class SettingActivity extends MyBaseActivity2 {
     public EditText edtSurveyDuration;
     @Bind(R.id.btnSite)
     public Button btnSite;
+    @Bind(R.id.spTime)
+    public Spinner spTime;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
     private int beepValue = 0;
     private int unitValue = 0;
     private int decimalValue = 0;
+    private int currTimeOut = 3;//自动模式下菱形稳定的最小时间区间
 
     private SettingHandler settingHandler;
     String[] sfMode = new String[]{"1 Axis", "2 Axis"};
@@ -96,6 +99,7 @@ public class SettingActivity extends MyBaseActivity2 {
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
+        currTimeOut = (int) SharedPreferencesUtil.getData(Constants.TIME_OUT, 3);
         int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
         edtSurveyDuration.setText(String.valueOf(duration));
         SpSensorModeValue.setSelection(sensorModeValue);
@@ -114,8 +118,22 @@ public class SettingActivity extends MyBaseActivity2 {
                 SharedPreferencesUtil.putData(Constants.UNIT_KEY, unitValue);
                 SharedPreferencesUtil.putData(Constants.DECIMAL, decimalValue);
                 SharedPreferencesUtil.putData(Constants.SURVEY_DURATION, Integer.valueOf(duration));
+                SharedPreferencesUtil.putData(Constants.TIME_OUT, currTimeOut);
                 SettingActivity.this.finish();
                 Toast.makeText(SettingActivity.this, "Setting success", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        spTime.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                currTimeOut = position + 3;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
     }

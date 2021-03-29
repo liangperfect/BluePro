@@ -44,10 +44,10 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     @Bind(R.id.imageButton5)
     ImageButton imageButton5;
 
-    boolean isPause = false;
-    int delayTime = 400;
+    private boolean isPause = false;
+    private int delayTime = 400;
     private OperationPanelHandler operationPanelHandler;
-    int count = 0;
+    private int count = 0;
 
     private VerifyDataBean verifyDataBean;
     private MaterialDialog verifyLoadDialog;
@@ -134,7 +134,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
                         .withActivity(OperationPanelActivity.this)
                         .withRequestCode(FILE_SELECTOR_SHARE)
                         .withMutilyMode(true)
-                        .withStartPath("/storage/emulated/0/tiltmeter")
+                        .withStartPath(Constants.PRO_ROOT_PATH)
                         .withIsGreater(false)
                         .withFileSize(500 * 1024)
                         .start();

@@ -100,6 +100,9 @@ public class SurveyDataTable {
     }
 
     public String getDepth() {
+        if (this.depth.isEmpty()) {
+            return "0";
+        }
         return this.depth;
     }
 
@@ -108,6 +111,9 @@ public class SurveyDataTable {
     }
 
     public String getA0mm() {
+        if (this.A0mm.isEmpty()) {
+            return "0";
+        }
         return this.A0mm;
     }
 
@@ -116,6 +122,10 @@ public class SurveyDataTable {
     }
 
     public String getA180mm() {
+
+        if (this.A180mm.isEmpty()) {
+            return "0";
+        }
         return this.A180mm;
     }
 
@@ -124,6 +134,10 @@ public class SurveyDataTable {
     }
 
     public String getB0mm() {
+
+        if (this.B0mm.isEmpty()) {
+            return "0";
+        }
         return this.B0mm;
     }
 
@@ -132,6 +146,10 @@ public class SurveyDataTable {
     }
 
     public String getB180mm() {
+
+        if (this.B180mm.isEmpty()) {
+            return "0";
+        }
         return this.B180mm;
     }
 
@@ -140,6 +158,10 @@ public class SurveyDataTable {
     }
 
     public String getA0Deg() {
+
+        if (this.A0Deg.isEmpty()) {
+            return "0";
+        }
         return this.A0Deg;
     }
 
@@ -148,6 +170,10 @@ public class SurveyDataTable {
     }
 
     public String getA180Deg() {
+
+        if (this.A180Deg.isEmpty()) {
+            return "0";
+        }
         return this.A180Deg;
     }
 
@@ -156,6 +182,10 @@ public class SurveyDataTable {
     }
 
     public String getB0Deg() {
+
+        if (this.B0Deg.isEmpty()) {
+            return "0";
+        }
         return this.B0Deg;
     }
 
@@ -164,6 +194,10 @@ public class SurveyDataTable {
     }
 
     public String getB180Deg() {
+
+        if (this.B180Deg.isEmpty()) {
+            return "0";
+        }
         return this.B180Deg;
     }
 
@@ -172,6 +206,10 @@ public class SurveyDataTable {
     }
 
     public String getA0Raw() {
+
+        if (this.A0Raw.isEmpty()) {
+            return "0";
+        }
         return this.A0Raw;
     }
 
@@ -180,6 +218,11 @@ public class SurveyDataTable {
     }
 
     public String getA180Raw() {
+        if (this.A180Raw.isEmpty()) {
+
+            return this.A180Raw;
+        }
+
         return this.A180Raw;
     }
 
@@ -188,6 +231,11 @@ public class SurveyDataTable {
     }
 
     public String getB0Raw() {
+
+        if (this.B0Raw.isEmpty()) {
+            return "0";
+        }
+
         return this.B0Raw;
     }
 
@@ -204,6 +252,9 @@ public class SurveyDataTable {
     }
 
     public String getCheckSumA() {
+        if (this.CheckSumA.isEmpty()) {
+            return "0";
+        }
         return this.CheckSumA;
     }
 
@@ -212,6 +263,9 @@ public class SurveyDataTable {
     }
 
     public String getCheckSumB() {
+        if (this.CheckSumB.isEmpty()) {
+            return "0";
+        }
         return this.CheckSumB;
     }
 

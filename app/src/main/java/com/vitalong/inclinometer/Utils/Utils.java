@@ -38,6 +38,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -45,11 +46,18 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
+import android.text.Layout;
+import android.text.SpannableString;
+import android.text.TextUtils;
+import android.text.style.LeadingMarginSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.vitalong.inclinometer.BlueToothLeService.BluetoothLeService;
@@ -861,5 +869,69 @@ public class Utils {
         wm.getDefaultDisplay().getMetrics(dm);
         int mScreenHeigh = dm.heightPixels;
         return mScreenHeigh;
+    }
+
+
+    /**
+     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
+     *
+     * @param phoneNum 电话号码
+     */
+    public static void callPhone(Context context, String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        context.startActivity(intent);
+    }
+
+    //方案一：将文字查分为两个两个TextView 显示
+    public static void calculateTag1(TextView first, TextView second, final String text) {
+        ViewTreeObserver observer = first.getViewTreeObserver();
+        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                Layout layout = first.getLayout();
+                int lineEnd = layout.getLineEnd(0);
+                String substring = text.substring(0, lineEnd);
+                String substring1 = text.substring(lineEnd, text.length());
+                Log.d("TAG", "onGlobalLayout:" + "+end:" + lineEnd);
+                Log.d("TAG", "onGlobalLayout: 第一行的内容：：" + substring);
+                Log.d("TAG", "onGlobalLayout: 第二行的内容：：" + substring1);
+                if (TextUtils.isEmpty(substring1)) {
+                    second.setVisibility(View.GONE);
+                    second.setText(null);
+                } else {
+                    second.setVisibility(View.VISIBLE);
+                    second.setText(substring1);
+                }
+                first.getViewTreeObserver().removeOnPreDrawListener(
+                        this);
+                return false;
+            }
+        });
+
+    }
+
+    //方案二：动态设置缩进距离的方式
+    public static void calculateTag2(TextView tag, TextView title, final String text) {
+        ViewTreeObserver observer = tag.getViewTreeObserver();
+        observer.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+                SpannableString spannableString = new SpannableString(text);
+                //这里没有获取margin的值，而是直接写死的
+                LeadingMarginSpan.Standard what = new LeadingMarginSpan.Standard(tag.getWidth() + dip2px(tag.getContext(), 10), 0);
+                spannableString.setSpan(what, 0, spannableString.length(), SpannableString.SPAN_INCLUSIVE_INCLUSIVE);
+                title.setText(spannableString);
+                tag.getViewTreeObserver().removeOnPreDrawListener(
+                        this);
+                return false;
+            }
+        });
+    }
+
+    public static int dip2px(Context context, double dpValue) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * density + 0.5);
     }
 }

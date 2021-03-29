@@ -18,6 +18,8 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
     <application
@@ -29,7 +31,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".inclinometer.InclinometerSurveyListActivity"></activity>
+        <activity android:name=".inclinometer.TestMainActivity"></activity>
+        <activity android:name=".inclinometer.InclinometerSurveyListActivity" />
         <activity android:name=".inclinometer.Graph3Activity" />
         <activity
             android:name=".inclinometer.Graph2Activity"

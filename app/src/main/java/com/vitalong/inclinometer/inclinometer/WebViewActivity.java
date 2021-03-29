@@ -39,7 +39,8 @@ public class WebViewActivity extends AppCompatActivity {
                 return true;
             }
         });
-        webView.loadUrl("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
+//        webView.loadUrl("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
+        webView.loadUrl("www.geostar.com.tw");
     }
 
     private void bindToolBar() {

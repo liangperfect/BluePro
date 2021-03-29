@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -103,12 +104,28 @@ public class InclinometerSurveyListActivity extends AppCompatActivity {
 
             ItemViewHolder viewHolder = (ItemViewHolder) holder;
             viewHolder.tvDepth.setText(datas.get(position).getDepth());
-            viewHolder.tvA0.setText(datas.get(position).getA0mm());
-            viewHolder.tvA180.setText(datas.get(position).getA180mm());
-            viewHolder.tvASum.setText(datas.get(position).getCheckSumA());
-            viewHolder.tvB0.setText(datas.get(position).getB0mm());
-            viewHolder.tvB180.setText(datas.get(position).getB180mm());
-            viewHolder.tvBSum.setText(datas.get(position).getCheckSumB());
+            viewHolder.tvA0.setText(convertStr(datas.get(position).getA0mm()));
+            viewHolder.tvA180.setText(convertStr(datas.get(position).getA180mm()));
+            viewHolder.tvASum.setText(convertStr(datas.get(position).getCheckSumA()));
+            viewHolder.tvB0.setText(convertStr(datas.get(position).getB0mm()));
+            viewHolder.tvB180.setText(convertStr(datas.get(position).getB180mm()));
+            viewHolder.tvBSum.setText(convertStr(datas.get(position).getCheckSumB()));
+        }
+
+        private String convertStr(String str) {
+            String temp = "";
+            if (str.length() > 7) {
+                if (str.contains("-")) {
+                    temp = str.substring(0, 7);
+                } else {
+                    temp = ("+" + str).substring(0, 7);
+                }
+            } else {
+                if (str.contains("-")) {
+                    temp = "+" + str;
+                }
+            }
+            return temp;
         }
 
         @Override
@@ -138,5 +155,13 @@ public class InclinometerSurveyListActivity extends AppCompatActivity {
                 tvBSum = itemView.findViewById(R.id.tvBSum);
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            InclinometerSurveyListActivity.this.finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

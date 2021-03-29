@@ -204,7 +204,8 @@ public class LFilePickerActivity extends AppCompatActivity {
                                 + "  它的父文件夹的名称是" + mListFiles.get(position).getParentFile().getName()
                                 + " 上以及的Stris:" + mListFiles.get(position).getParent());
                         if (mParamEntity.getSelectormode() == Constant.SELECTOR_MODE_2) {
-                            if (mListFiles.get(position).getName().startsWith("Namber")) {
+//                            if (mListFiles.get(position).getName().startsWith("Namber")) {
+                            if (mListFiles.get(position).getName().startsWith("#")){
                                 //进行弹框
                                 new BottomMenuFragment(LFilePickerActivity.this)
                                         .addMenuItems(new sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem("開始測量"))
@@ -218,7 +219,9 @@ public class LFilePickerActivity extends AppCompatActivity {
                                                     Intent intent = new Intent();
                                                     intent.putExtra("selectModel", Constant.SELECTOR_MODE_2_1);
                                                     intent.putExtra("siteName", mListFiles.get(position).getParentFile().getName());
-                                                    intent.putExtra("holeName", mListFiles.get(position).getName().split("_")[1]);
+                                                    Log.d("chenliang","mListFiles.get(position).getName():"+mListFiles.get(position).getName());
+//                                                    intent.putExtra("holeName", mListFiles.get(position).getName().split("_")[1]);
+                                                    intent.putExtra("holeName",mListFiles.get(position).getName().replace("#",""));
                                                     setResult(RESULT_OK, intent);
                                                     LFilePickerActivity.this.finish();
                                                 } else {

@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import com.vitalong.inclinometer.R;
+import com.vitalong.inclinometer.Utils.Utils;
 
 /**
  * 关于我们
@@ -21,6 +23,8 @@ import com.vitalong.inclinometer.R;
 public class AboutUsActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private TextView textView;
+    private ImageView imgCall;
+    private ImageView imgLink;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +38,23 @@ public class AboutUsActivity extends AppCompatActivity {
     private void initView() {
         toolbar = findViewById(R.id.toolbar);
         textView = findViewById(R.id.tvTitle2);
+        imgCall = findViewById(R.id.imgCallPhone);
+        imgLink = findViewById(R.id.imgLink);
         textView.setOnClickListener(v -> startActivity(new Intent(AboutUsActivity.this, WebViewActivity.class)));
+        imgCall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Utils.callPhone(AboutUsActivity.this, "+886(0)2-55751088");
+            }
+        });
+        imgLink.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(AboutUsActivity.this, WebViewActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
     private void bindToolBar() {

@@ -2,6 +2,7 @@ package com.vitalong.inclinometer.inclinometer;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.media.MediaPlayer;
@@ -34,6 +35,7 @@ import com.vitalong.inclinometer.Utils.Constants;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.bean.BoreholeInfoTable;
+import com.vitalong.inclinometer.bean.SurveyDataTable;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
 import com.vitalong.inclinometer.greendaodb.BoreholeInfoTableDao;
 import com.vitalong.inclinometer.views.NumberSelectDialog;
@@ -42,6 +44,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Survey2Activity extends MyBaseActivity2 {
     final String TAG = "Survey2Activity";
@@ -61,6 +64,11 @@ public class Survey2Activity extends MyBaseActivity2 {
     private TextView tvBottomTitle;
     private TextView tvBottom;
     private TextView tvTop;
+    private TextView tvAOldmm;
+    private TextView tvBOldmm;
+    private TextView tvPreDepth;
+    private TextView tvPreAValue;
+    private TextView tvPreBValue;
     private double dAxisA = 0;
     private double dAxisB = 0;
     private double dAxisC = 0;
@@ -69,17 +77,13 @@ public class Survey2Activity extends MyBaseActivity2 {
     private double dBxisB = 0;
     private double dBxisC = 0;
     private double dBxisD = 0;
-    private int sensorModeValue = 0;//单轴还是双轴
+    //    private int sensorModeValue = 0;//单轴还是双轴
     private int sensitivityValue = 0;//1 fASTER
     private int beepValue = 0;//声音
-    private int unitValue = 0;//单位
-    private int decimalValue = 3;
+    //    private int unitValue = 0;//单位
+//    private int decimalValue = 3;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
-    //    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)", "4(Degree)", "5(Degree)", "6(Degree)", "7(Degree)", "8(Degree)", "9(Degree)"};
     String[] beeps = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
-    //    String[] ctype3 = new String[]{"Deg", "Raw"};
-//    String[] ctype4ByDeg = new String[]{"3", "4"};
-//    String[] ctype4ByRaw = new String[]{"1"};
     private int sendDuration = 200;//循环发送命令间隔时间
 
     private float currOneChannelAngle;//记录轴1的原始角度值
@@ -108,10 +112,15 @@ public class Survey2Activity extends MyBaseActivity2 {
     private CsvUtil csvUtil;
     private boolean isZero = true; //当前模式是不是0模式
     private boolean isAuto = false;//true:自动  false:手动  记录当前是什么模式
-
+    private int autoTimeOut = 3;//自动模式下稳定的时间
+    private int autoNums = 3;//自动模式下稳定的次数，由时间转换过来
+    private int currAutoIndex = 0;//用于技术当前自动模式下再稳定后又稳定的次数
+    private long lastClickTime = 0;//防止按钮被连续点击造成存储问题
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+                WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);//保持屏幕唤醒
         setContentView(R.layout.activity_survey2);
         initView();
         fetchIntentData();
@@ -175,14 +184,15 @@ public class Survey2Activity extends MyBaseActivity2 {
             tvBottom.setText("Bottom:" + bottomValue + "m");
             tvTop.setText("Top:" + topValue + "m");
             csvUtil = new CsvUtil(Survey2Activity.this, constructionSiteName, holeName, topValue, bottomValue);
+            showOldMMValue(String.valueOf(bottomValue), isZero);
         } catch (Exception exception) {
             Toast.makeText(Survey2Activity.this, "沒找到孔的信息", Toast.LENGTH_SHORT).show();
+//            btnSave.setEnabled(false);
         }
     }
 
     protected void bindToolBar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -209,6 +219,11 @@ public class Survey2Activity extends MyBaseActivity2 {
         tvBottomTitle = findViewById(R.id.tvBottomTitle);
         tvBottom = findViewById(R.id.tvBottom);
         tvTop = findViewById(R.id.tvTop);
+        tvAOldmm = findViewById(R.id.tvAOld);
+        tvBOldmm = findViewById(R.id.tvBOld);
+        tvPreDepth = findViewById(R.id.tvPreDepth);
+        tvPreAValue = findViewById(R.id.tvPreAValue);
+        tvPreBValue = findViewById(R.id.tvPreBValue);
         initListener();
     }
 
@@ -223,28 +238,37 @@ public class Survey2Activity extends MyBaseActivity2 {
             }
         });
         btnSave.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 if (isAuto) {
 
                     Toast.makeText(Survey2Activity.this, "請切換成手動模式再進行存儲", Toast.LENGTH_SHORT).show();
                 } else {
-                    clickNum++;
-                    handler.postDelayed(new Runnable() {
-                        @RequiresApi(api = Build.VERSION_CODES.N)
-                        @Override
-                        public void run() {
-                            if (clickNum == 1) {
-
-                            } else if (clickNum >= 2) {
-                                //将数据存储起来
-                                saveCsvData();
-                                changeLogicUI();
-                            }
-                            handler.removeCallbacksAndMessages(null);//防止handler引起的内存泄漏
-                            clickNum = 0;
-                        }
-                    }, 200);
+                    //双击存储
+//                    clickNum++;
+//                    handler.postDelayed(new Runnable() {
+//                        @RequiresApi(api = Build.VERSION_CODES.N)
+//                        @Override
+//                        public void run() {
+//                            if (clickNum == 1) {
+//
+//                            } else if (clickNum >= 2) {
+//                                //将数据存储起来
+//                                saveCsvData();
+//                                changeLogicUI();
+//                            }
+//                            handler.removeCallbacksAndMessages(null);//防止handler引起的内存泄漏
+//                            clickNum = 0;
+//                        }
+//                    }, 200);
+//                  将数据存储起来
+                    long now = System.currentTimeMillis();
+                    if(now - lastClickTime >1200){
+                        lastClickTime = now;
+                        String preAB = saveCsvData();
+                        changeLogicUI(preAB);
+                    }
                 }
             }
         });
@@ -253,7 +277,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             if (isAuto) {
                 Toast.makeText(Survey2Activity.this, "請切換成手動模式再進行存儲", Toast.LENGTH_SHORT).show();
             } else {
-                changeDepthNumber(true);
+                changeDepthNumber(false);
             }
         });
 
@@ -261,7 +285,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             if (isAuto) {
                 Toast.makeText(Survey2Activity.this, "請切換成手動模式再進行存儲", Toast.LENGTH_SHORT).show();
             } else {
-                changeDepthNumber(false);
+                changeDepthNumber(true);
             }
         });
 
@@ -308,10 +332,27 @@ public class Survey2Activity extends MyBaseActivity2 {
     /**
      * 数据存储成功后，改变UI及相关阈值
      */
-    private void changeLogicUI() {
+    private void changeLogicUI(String preAB) {
 
-        //数字先减去0.5
-        changeDepthNumber(false);
+        try {
+            //数字先减去0.5
+            float pre = changeDepthNumber(false);
+            String preAStr = preAB.split(",")[0];
+            String preBStr = preAB.split(",")[1];
+            showPreABValue(pre, preAStr, preBStr);
+        } catch (Exception e) {
+
+            showPreABValue(0, "0", "0");
+        }
+    }
+
+    private void showPreABValue(float preDepth, String preA, String preB) {
+
+        tvPreDepth.setText(preDepth + "m");
+        double preADouble = Double.parseDouble(preA);
+        double preBDouble = Double.parseDouble(preB);
+        tvPreAValue.setText("A: " + deg2Format.format(preADouble));
+        tvPreBValue.setText("B: " + deg2Format.format(preBDouble));
     }
 
     /**
@@ -319,32 +360,71 @@ public class Survey2Activity extends MyBaseActivity2 {
      *
      * @param isUp true:上升  false:下降
      */
-    public void changeDepthNumber(boolean isUp) {
+    public float changeDepthNumber(boolean isUp) {
 
         float depthValue = Float.parseFloat(tvDepthNum.getText().toString());
+        float returnValue = depthValue;
         if (isUp) {
-            depthValue = depthValue + 0.5f;
+
             if (depthValue > bottomValue)
                 depthValue = bottomValue;
-
+            else
+                depthValue = depthValue + 0.5f;
         } else {
-            depthValue = depthValue - 0.5f;
+
             if (depthValue < topValue)
                 depthValue = topValue;
+            else
+                depthValue = depthValue - 0.5f;
         }
-        if (depthValue == topValue || depthValue == bottomValue) {
+        if (depthValue < topValue || depthValue > bottomValue) {
             if (isZero) {
-
                 showRevertDegree();
             } else {
-
-                Toast.makeText(Survey2Activity.this, "測量完成", Toast.LENGTH_SHORT).show();
+                completeSurvey();
             }
+        } else {
+            String depStr = String.valueOf(depthValue);
+            tvDepthNum.setText(depStr);
+            showOldMMValue(depStr, isZero);
         }
-        String depStr = String.valueOf(depthValue);
-        tvDepthNum.setText(depStr);
+        return returnValue;
+    }
+
+    /**
+     * @param depthStr
+     */
+    private void showOldMMValue(String depthStr, boolean isZero) {
+
         //获取对应坐标的mm值进行展示
-        csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depStr));
+        SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
+        String oldAmm = "";
+        String oldBmm = "";
+        oldAmm = isZero ? surveyDataTable.getA0mm() : surveyDataTable.getA180mm();
+        oldBmm = isZero ? surveyDataTable.getB0mm() : surveyDataTable.getB180mm();
+        if (oldAmm.length() > 7) {
+            int endIndex = oldAmm.contains("-") ? 7 : 6;
+            oldAmm = oldAmm.substring(0, endIndex);
+        }
+
+        if (oldBmm.length() > 7) {
+            int endIndex = oldAmm.contains("-") ? 7 : 6;
+            oldBmm = oldBmm.substring(0, endIndex);
+        }
+        tvAOldmm.setText(oldAmm);
+        tvBOldmm.setText(oldBmm);
+    }
+
+    /**
+     * 完成测量
+     */
+    private void completeSurvey() {
+        Toast.makeText(Survey2Activity.this, "测量完成", Toast.LENGTH_SHORT).show();
+        Intent i;
+        i = new Intent(Survey2Activity.this, InclinometerSurveyListActivity.class);
+        i.putExtra("csvFileName", csvFileName);
+        i.putExtra("csvFilePath", csvFilePath);
+        startActivity(i);
     }
 
     private void showRevertDegree() {
@@ -367,13 +447,17 @@ public class Survey2Activity extends MyBaseActivity2 {
      * 存储CSV的数据
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void saveCsvData() {
+    public String saveCsvData() {
         //计算出表格需要的值,根据csvfilename和高度去更新对应的的值
         String depthStr = tvDepthNum.getText().toString();
         //哪种模式下
-        csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, isZero);
+        String saveAB = "";
+//      if (csvUtil !=null){
+        saveAB = csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, isZero);
         //将数据存入到csv文件中去
         csvUtil.saveData(csvFilePath, csvFileName);
+//        }
+        return saveAB;
     }
 
     private Boolean initVerifyData() {
@@ -397,13 +481,15 @@ public class Survey2Activity extends MyBaseActivity2 {
 
     private void initSp() {
 
-        sensorModeValue = (int) SharedPreferencesUtil.getData(Constants.SENSORMODE_KEY, 0);
+//        sensorModeValue = (int) SharedPreferencesUtil.getData(Constants.SENSORMODE_KEY, 0);
         sensitivityValue = (int) SharedPreferencesUtil.getData(Constants.SENSITIVITY_KEY, 0);
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
-        unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
-        decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
+//        unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
+//        decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
 //        sendDuration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
         currSnValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
+        autoTimeOut = (int) SharedPreferencesUtil.getData(Constants.TIME_OUT, 3);
+        autoNums = autoTimeOut * 1000 / sendDuration;
 //        if (unitValue == Constants.UNIT_DEG) {
 //
 //            image1.setImageResource(R.drawable.new_deg);
@@ -514,16 +600,20 @@ public class Survey2Activity extends MyBaseActivity2 {
             tvB.setText(deg2Format.format(mm2));
             if (isSave) {
                 btnSave.setText("Stable");
-                btnSave.setBackgroundResource(R.drawable.btn_start_bg);
+//                btnSave.setBackgroundResource(R.drawable.btn_start_bg);
+                btnSave.setBackgroundResource(R.drawable.btn_save_selector);
                 toPlay();
-                //
                 if (isAuto && !isAutoSaveData) {
                     //在自动模式稳定情况下，在该点没有存储过数据就进行存储
-                    saveCsvData();
-                    changeLogicUI();
-                    isAutoSaveData = true;
+                    ++currAutoIndex;
+                    if (currAutoIndex == autoNums) {
+                        String preAB =  saveCsvData();
+                        changeLogicUI(preAB);
+                        isAutoSaveData = true;
+                    }
                 }
             } else {
+                currAutoIndex = 0;//重置索引
                 btnSave.setText("Wait");
                 btnSave.setBackgroundResource(R.drawable.btn_pause_bg);
                 isFirstPlay = true;

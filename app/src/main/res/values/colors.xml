@@ -42,9 +42,10 @@
     <color name="orange">#EA5513</color>
     <color name="red2">#C80D0D</color>
     <color name="green2">#5BB928</color>
+    <color name="green3">#008000</color>
 
     <color name="line_bg">#BCBCBC</color>
     <color name="line_gride_color">#9F9D9E</color>
-
+    <color name="select_bg">#D5D4D3</color>
 
 </resources>

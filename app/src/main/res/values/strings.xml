@@ -1,6 +1,6 @@
 <resources>
     <!--    <string name="app_name">BT Tiltmeter</string>-->
-    <string name="app_name">Inclinometer</string>
+    <string name="app_name">BT Inclinometer</string>
     <string name="devices">BLUE Devices</string>
     <string name="menu_usr">Official Website</string>
     <string name="share">Share</string>

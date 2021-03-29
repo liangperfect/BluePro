@@ -147,19 +147,16 @@ public class CompareActivity extends AppCompatActivity {
             String tableName = selectDirName + "_" + selectFileName;
             String nums = selectNums;
             String direction = selectDirection;
+            Intent i;
             if (selectShowMode.equals("Disable")) {
-                Intent i = new Intent(CompareActivity.this, InclinometerSurveyListActivity.class);
-                String fn = (String) tvFileName.getText();
-                i.putExtra("csvFileName", fn);
-                i.putExtra("csvFilePath", selectCsvPath);
-                startActivity(i);
+                i = new Intent(CompareActivity.this, InclinometerSurveyListActivity.class);
             } else {
-                Intent i = new Intent(CompareActivity.this, Graph2Activity.class);
-                String fn = (String) tvFileName.getText();
-                i.putExtra("csvFileName", fn);
-                i.putExtra("csvFilePath", selectCsvPath);
-                startActivity(i);
+                i = new Intent(CompareActivity.this, Graph2Activity.class);
             }
+            String fn = (String) tvFileName.getText();
+            i.putExtra("csvFileName", fn);
+            i.putExtra("csvFilePath", selectCsvPath);
+            startActivity(i);
         });
 
         btnCleanData.setOnClickListener(v -> {
@@ -189,12 +186,7 @@ public class CompareActivity extends AppCompatActivity {
 
                             tvSiteName.setText(file.getName());
                             holeFiles.clear();
-                            List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), new FileFilter() {
-                                @Override
-                                public boolean accept(File pathname) {
-                                    return true;
-                                }
-                            });
+                            List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), File::isDirectory);
                             holeFiles.addAll(tempList);
                         }
                     });
@@ -210,23 +202,21 @@ public class CompareActivity extends AppCompatActivity {
                 if (tvSiteName.getText() == "請選擇工地名稱") {
                     Toast.makeText(CompareActivity.this, "請先選擇工地名稱", Toast.LENGTH_SHORT).show();
                 } else {
-//                    if (holeSelectDialog == null) {
                     holeSelectDialog = new CompanySelectDialog(CompareActivity.this, holeFiles, new CompanySelectDialog.ChangeComapngeListener() {
                         @Override
                         public void changeComapny(File file) {
 
                             tvHoleName.setText(file.getName());
-                            holeFiles.clear();
+                            csvFiles.clear();
                             List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), new FileFilter() {
                                 @Override
-                                public boolean accept(File pathname) {
+                                public boolean accept(File file) {
                                     return true;
                                 }
                             });
                             csvFiles.addAll(tempList);
                         }
                     });
-//                    }
                     holeSelectDialog.show();
                 }
             }

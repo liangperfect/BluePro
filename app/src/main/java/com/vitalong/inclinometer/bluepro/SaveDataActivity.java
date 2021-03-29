@@ -236,6 +236,7 @@ public class SaveDataActivity extends AppCompatActivity {
         collection.add(new TableRowBean("", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean("Compare:", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean(selectDir + "_" + selectFileName, "Direction", "Raw", "Raw", "Incline('')", "", "", "", "").toSaveString());
+        Log.d("chenliang","存储的目录是->"+selectDir+"   选择的文件名称->"+selectFileName);
         //获取数据库中的数据并添加到列表数据容器中
         List<RealDataCached> listDatas = realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDir + "_" + selectFileName)).build().list();
         double d1Temp = Double.valueOf(deg1);

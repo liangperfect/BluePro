@@ -228,7 +228,7 @@
             android:maxLength="4"
             android:paddingStart="4dp"
             android:paddingEnd="4dp"
-            android:text="0"
+            android:text="0.5"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tv6"

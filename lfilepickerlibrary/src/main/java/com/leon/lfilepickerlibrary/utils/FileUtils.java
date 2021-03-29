@@ -171,6 +171,7 @@ public class FileUtils {
      */
     public static String fetchHoleName(String holeName) {
 
-        return "Namber_" + holeName;
+//        return "Namber_" + holeName;
+        return "#" + holeName;
     }
 }

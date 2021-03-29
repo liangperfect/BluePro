@@ -31,11 +31,11 @@
                 android:paddingStart="12dp"
                 android:paddingEnd="12dp"
                 android:singleLine="true"
-                android:text="Inclinometer"
+                android:text="AboutUs"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="Inclinometer" />
+                tools:text="AboutUs" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvTitle2"
@@ -50,6 +50,7 @@
                 android:text="Company"
                 android:textColor="@color/black"
                 android:textSize="18sp"
+                android:visibility="gone"
                 tools:text="Company" />
 
         </androidx.appcompat.widget.Toolbar>
@@ -62,212 +63,370 @@
         android:padding="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine"
-            android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideLine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_end="0dp" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="軟體版本: "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt1Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:layout_marginTop="12dp"
+                android:text="V1.28"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="釋出日期:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt1" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt2Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="2021/01/27"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="系統:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt2" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt3Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt3" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="探头固件版本:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt3" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt4Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="电缆绞盘固件版本:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt5Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt5" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="电缆绞盘固件版本:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt4" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt6Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt6" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="序列号:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt6" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt7Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt7" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="率定日期:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt7" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt8Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="探头测量长度:  "
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="@id/guideLine"
+                app:layout_constraintTop_toBottomOf="@id/tvTxt8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTxt9Value"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                android:text="XXXX"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="@id/guideLine"
+                app:layout_constraintTop_toTopOf="@id/tvTxt9" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraPart1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.5" />
+            android:background="@color/white"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt1"
-            android:layout_width="wrap_content"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvVersionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="軟體版本: V1.28"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTimeTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="釋出日期: 2021/01/27"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvVersionTitle" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEmailTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="銷售及技術問題請電郵至:"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTimeTitle" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEmailValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="geo.star@msa.hinet.net"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvEmailTitle" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraPart2"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="版本号: "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="24dp"
+            android:background="@color/white"
+            android:padding="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraPart1">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt1Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:layout_marginTop="12dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="parent" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvCompanyTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="隼星科技有限公司"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="蓝牙设备名称:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt1" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvSiteTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="22200 台灣新北市深坑區北深路3段107巷27-1號"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvCompanyTitle" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt2Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt2" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvPhone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="電話: +886(0)2-55751088"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvSiteTitle" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="系统:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt2" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgCallPhone"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvPhone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tvPhone"
+                app:srcCompat="@drawable/device_phone" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt3Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt3" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvNet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="網址: www.geostar.com.tw"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvPhone" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="探头固件版本:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt3" />
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/imgLink"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                app:layout_constraintBottom_toBottomOf="@id/tvNet"
+                app:layout_constraintEnd_toEndOf="@id/imgCallPhone"
+                app:layout_constraintStart_toStartOf="@id/imgCallPhone"
+                app:layout_constraintTop_toTopOf="@id/tvNet"
+                app:srcCompat="@drawable/link" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt4Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt4" />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvOpen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="營業時間: 上午9:00-下午6:00"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvNet" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="电缆绞盘固件版本:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt4" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt5Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt5" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="电缆绞盘固件版本:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt4" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt6Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt6" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="序列号:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt6" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt7Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt7" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="率定日期:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt7" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt8Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt8" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="探头测量长度:  "
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="@id/guideLine"
-            app:layout_constraintTop_toBottomOf="@id/tvTxt8" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvTxt9Value"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
-            android:text="XXXX"
-            android:textColor="@color/black"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="@id/guideLine"
-            app:layout_constraintTop_toTopOf="@id/tvTxt9" />
-
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="週一至週五(週六及週日休息)"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvOpen" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

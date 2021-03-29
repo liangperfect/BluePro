@@ -5,6 +5,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -117,6 +118,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
 
+
             }
 
             @Override
@@ -141,6 +143,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
                     if (topValue > 500) {
                         tvTopHit.setVisibility(View.VISIBLE);
                     } else {
+
                         if (tvTopHit.getVisibility() == View.VISIBLE) {
                             tvTopHit.setVisibility(View.GONE);
                         }
@@ -166,6 +169,11 @@ public class BoreholeInfoActivity extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                float topValue = Float.parseFloat(edtTopDepth.getText().toString());
+                if (topValue < 0.5f) {
+                    edtTopDepth.setText("0.5");
+                }
 
                 if (verify()) {
                     //将新建的工地，孔的属性添加到数据库当中去
@@ -201,6 +209,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             String de = sdf.format(date);
             //给孔洞的文件夹加Namber_前缀是为了在选择文件时候点击的时候判断是否是孔号的文件夹
             String holePath = sitePath + "/" + FileUtils.fetchHoleName(holeStr);
+//            String csvFileName = SiteStr + "_" + holeStr + "_" + de + ".csv";
             String csvFileName = SiteStr + "_" + holeStr + "_" + de + ".csv";
             String csvPath = holePath + "/" + csvFileName;
             if (!FileUtils.isFileExits(sdPath + Constants.PRO_ROOT_DIR_PATH)) {
@@ -256,6 +265,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
         BoreholeInfoTable boreholeInfoTable = new BoreholeInfoTable();
         boreholeInfoTable.setConstructionSite(edtConstructionSite.getText().toString());
         boreholeInfoTable.setHoleName(FileUtils.fetchHoleName(edtHoleNumber.getText().toString()));
+        //保存到孔号那些
         boreholeInfoTable.setA0Des(edtAoDes.getText().toString());
         boreholeInfoTable.setTopValue(topValue);
         boreholeInfoTable.setBottomValue(bottomValue);
@@ -268,6 +278,11 @@ public class BoreholeInfoActivity extends AppCompatActivity {
 
         if (edtConstructionSite.getText().toString().isEmpty()) {
             Toast.makeText(BoreholeInfoActivity.this, "請填寫工地名稱", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        if (edtConstructionSite.getText().toString().startsWith("#")) {
+            Toast.makeText(BoreholeInfoActivity.this, "工地名稱不能以#开头", Toast.LENGTH_SHORT).show();
             return false;
         }
 

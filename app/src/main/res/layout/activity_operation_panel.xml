@@ -81,7 +81,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:width="100dp"
-                    android:text="Digital Inclinometer"
+                    android:text="Inclinometer"
                     android:textAlignment="center"
                     android:textColor="#ffffff"
                     android:textSize="32sp" />
@@ -91,7 +91,6 @@
                 android:id="@+id/LinearLayout3"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginLeft="0dp"
                 android:layout_marginTop="100dp"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -147,7 +146,6 @@
                 android:id="@+id/LinearLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginLeft="0dp"
                 android:layout_marginTop="300dp"
                 android:gravity="center"
                 android:orientation="horizontal"
@@ -167,7 +165,7 @@
                         tools:ignore="MissingConstraints" />
 
                     <TextView
-                        android:layout_width="100dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Setting"
                         android:textAlignment="center"

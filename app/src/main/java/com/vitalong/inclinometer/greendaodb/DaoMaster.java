@@ -21,15 +21,15 @@ public class DaoMaster extends AbstractDaoMaster {
 
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(Database db, boolean ifNotExists) {
-        BoreholeInfoTableDao.createTable(db, ifNotExists);
         RealDataCachedDao.createTable(db, ifNotExists);
+        BoreholeInfoTableDao.createTable(db, ifNotExists);
         SurveyDataTableDao.createTable(db, ifNotExists);
     }
 
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(Database db, boolean ifExists) {
-        BoreholeInfoTableDao.dropTable(db, ifExists);
         RealDataCachedDao.dropTable(db, ifExists);
+        BoreholeInfoTableDao.dropTable(db, ifExists);
         SurveyDataTableDao.dropTable(db, ifExists);
     }
 
@@ -49,8 +49,8 @@ public class DaoMaster extends AbstractDaoMaster {
 
     public DaoMaster(Database db) {
         super(db, SCHEMA_VERSION);
-        registerDaoClass(BoreholeInfoTableDao.class);
         registerDaoClass(RealDataCachedDao.class);
+        registerDaoClass(BoreholeInfoTableDao.class);
         registerDaoClass(SurveyDataTableDao.class);
     }
 

@@ -1,7 +1,11 @@
 package com.vitalong.inclinometer.inclinometer;
 
 import android.app.Activity;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
+import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Vibrator;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,8 +23,7 @@ import com.vitalong.inclinometer.greendaodb.SurveyDataTableDao;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -54,6 +57,9 @@ public class CsvUtil {
     private double dBxisC = 0;
     private double dBxisD = 0;
 
+    private MediaPlayer mMediaPlayer = new MediaPlayer();
+    private Vibrator vibrator;
+
     public CsvUtil(Activity activity) {
         this.activity = activity;
 //        initVerifyData();
@@ -73,6 +79,12 @@ public class CsvUtil {
         snValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
         surveyDataTableDao = ((MyApplication) activity.getApplication()).surveyDataTableDao;
         easyCsv = new EasyCsvCopy(activity);
+        try {
+            playRd("Default.mp3");
+            vibrator = (Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void initVerifyData() {
@@ -109,6 +121,9 @@ public class CsvUtil {
 
 
                     Log.d("chenliang", "存储成功file:" + file.getPath());
+
+                    //存储成功进行震动和播放提示声音
+                    toPlayAndVibrator();
                 }
 
                 @Override
@@ -135,7 +150,7 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Type:", "Digital Inclinometer", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Model:", "7000BT", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Serial Number:", snValue, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Range:", "±30 Deg", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Range:", "30 Deg", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Firmware:", "V2.58", "Software:", "V1.37.2", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Units:", "mm / Deg / Raw", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
@@ -146,7 +161,7 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(RADIANS(θ))", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
+        collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(RADIANS(Deg))", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
         collection.add(new TableRowBean2("", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "A0(Deg)", "A180(Deg)", "B0(Deg)", "B180(Deg)", "A0(Raw)", "A180(Raw)", "B0(Raw)", "B180(Raw)", "CheckSumA", "CheckSumB").toSaveString());
 
         List<SurveyDataTable> surveyDatas = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName)).build().list();
@@ -163,11 +178,9 @@ public class CsvUtil {
      * true是0度, false是180度
      * 将实时数据存储到数据库中去
      */
-    public void saveDatasInDB(String csvFileName, String depth, float angleA, float angleB, boolean isZero) {
-        BigDecimal deg1Scale = BigDecimal.valueOf(getDeg(angleA, Constants.SFMODE_1AXIS)).setScale(2, RoundingMode.UP);
-        BigDecimal deg2Scale = BigDecimal.valueOf(getDeg(angleB, Constants.SFMODE_2AXIS)).setScale(2, RoundingMode.UP);
-        double deg1 = deg1Scale.doubleValue();
-        double deg2 = deg2Scale.doubleValue();
+    public String saveDatasInDB(String csvFileName, String depth, float angleA, float angleB, boolean isZero) {
+        double deg1 = getDeg(angleA, Constants.SFMODE_1AXIS);
+        double deg2 = getDeg(angleB, Constants.SFMODE_2AXIS);
         double raw1 = getRaw(deg1);
         double raw2 = getRaw(deg2);
         double radians1 = Math.toRadians(deg1);
@@ -190,6 +203,12 @@ public class CsvUtil {
                 } else {
                     surveyDataTable.setCheckSumA(String.valueOf(mm1 + Double.parseDouble(surveyDataTable.getA180mm())));
                 }
+
+                if (surveyDataTable.getB180mm().equals("")) {
+                    surveyDataTable.setCheckSumB(String.valueOf(mm2));
+                } else {
+                    surveyDataTable.setCheckSumB(String.valueOf(mm2 + Double.parseDouble(surveyDataTable.getB180mm())));
+                }
             } else {
 
                 surveyDataTable.setA180mm(String.valueOf(mm1));
@@ -198,14 +217,21 @@ public class CsvUtil {
                 surveyDataTable.setB180Deg(String.valueOf(deg2));
                 surveyDataTable.setA180Raw(String.valueOf(raw1));
                 surveyDataTable.setB180Raw(String.valueOf(raw2));
+                if (surveyDataTable.getA0mm().equals("")) {
+                    surveyDataTable.setCheckSumA(String.valueOf(mm1));
+                } else {
+                    surveyDataTable.setCheckSumA(String.valueOf(mm1 + Double.parseDouble(surveyDataTable.getA0mm())));
+                }
+
                 if (surveyDataTable.getB0mm().equals("")) {
-                    surveyDataTable.setCheckSumA(String.valueOf(mm2));
+                    surveyDataTable.setCheckSumB(String.valueOf(mm2));
                 } else {
                     surveyDataTable.setCheckSumB(String.valueOf(mm2 + Double.parseDouble(surveyDataTable.getB0mm())));
                 }
             }
         }
         surveyDataTableDao.update(surveyDataTable);
+        return mm1 + "," + mm2;
     }
 
     /**
@@ -258,6 +284,25 @@ public class CsvUtil {
             return raw;
         } catch (Exception err) {
             return 100000.0;
+        }
+    }
+
+    /**
+     * 初始化存储成功声音
+     * @param fileName
+     * @throws IOException
+     */
+    void playRd(String fileName) throws IOException {
+        AssetManager assetManager = activity.getAssets();
+        AssetFileDescriptor fileDescriptor = assetManager.openFd(fileName);
+        mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(), fileDescriptor.getStartOffset(), fileDescriptor.getLength());
+        mMediaPlayer.prepare();
+    }
+
+    private void toPlayAndVibrator() {
+        if (!mMediaPlayer.isPlaying() ) {
+            mMediaPlayer.start();
+            vibrator.vibrate(100);
         }
     }
 }

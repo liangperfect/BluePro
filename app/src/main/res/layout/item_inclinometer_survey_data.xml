@@ -9,13 +9,14 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvDepth"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/bottom_up_line_black"
         android:gravity="center"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tvA0"
         app:layout_constraintEnd_toStartOf="@id/tvA0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvA0"
         tools:text="0.5" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -47,13 +48,14 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvASum"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:background="@drawable/bottom_up_line_black"
         android:gravity="center"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tvB0"
         app:layout_constraintEnd_toStartOf="@id/tvB0"
         app:layout_constraintStart_toEndOf="@id/tvA180"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvB0"
         tools:text="+7.74" />
 
     <androidx.appcompat.widget.AppCompatTextView
@@ -86,12 +88,13 @@
         android:id="@+id/tvBSum"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:background="@drawable/bottom_up_line_black"
         android:gravity="center"
         android:textColor="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tvB180"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvB180"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvB180"
         tools:text="+7.74" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
