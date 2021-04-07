@@ -65,6 +65,7 @@ public class MyApplication extends Application {
         initDB();
         //初始化Bugly
         initBugly();
+
     }
 
     private void initDB() {

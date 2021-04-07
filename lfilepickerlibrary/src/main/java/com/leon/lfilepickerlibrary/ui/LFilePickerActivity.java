@@ -1,5 +1,6 @@
 package com.leon.lfilepickerlibrary.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -205,7 +207,7 @@ public class LFilePickerActivity extends AppCompatActivity {
                                 + " 上以及的Stris:" + mListFiles.get(position).getParent());
                         if (mParamEntity.getSelectormode() == Constant.SELECTOR_MODE_2) {
 //                            if (mListFiles.get(position).getName().startsWith("Namber")) {
-                            if (mListFiles.get(position).getName().startsWith("#")){
+                            if (mListFiles.get(position).getName().startsWith("#")) {
                                 //进行弹框
                                 new BottomMenuFragment(LFilePickerActivity.this)
                                         .addMenuItems(new sakura.bottommenulibrary.bottompopfragmentmenu.MenuItem("開始測量"))
@@ -219,9 +221,9 @@ public class LFilePickerActivity extends AppCompatActivity {
                                                     Intent intent = new Intent();
                                                     intent.putExtra("selectModel", Constant.SELECTOR_MODE_2_1);
                                                     intent.putExtra("siteName", mListFiles.get(position).getParentFile().getName());
-                                                    Log.d("chenliang","mListFiles.get(position).getName():"+mListFiles.get(position).getName());
+                                                    Log.d("chenliang", "mListFiles.get(position).getName():" + mListFiles.get(position).getName());
 //                                                    intent.putExtra("holeName", mListFiles.get(position).getName().split("_")[1]);
-                                                    intent.putExtra("holeName",mListFiles.get(position).getName().replace("#",""));
+                                                    intent.putExtra("holeName", mListFiles.get(position).getName().replace("#", ""));
                                                     setResult(RESULT_OK, intent);
                                                     LFilePickerActivity.this.finish();
                                                 } else {
@@ -277,14 +279,34 @@ public class LFilePickerActivity extends AppCompatActivity {
                 mListNumbers.forEach(new Consumer<String>() {
                     @Override
                     public void accept(String path) {
-                        Log.d("chenliang","分享文件地址"+path);
-                        files.add(Uri.fromFile(new File(path)));
+//                        Log.d("chenliang", "分享文件地址" + path);
+                        if (new File(path).length() >0){
+                            files.add(Uri.fromFile(new File(path)));
+                        }
                     }
                 });
-                Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
-                intent.setType("*/*");//多个文件格式
-                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
-                startActivity(intent);
+
+                new AlertDialog.Builder(LFilePickerActivity.this)
+                        .setTitle("提示")
+                        .setMessage("大小为0文件不能进行分享!\n分享文件数量: "+files.size())
+                        .setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (files.size() >0){
+                                    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+                                    intent.setType("*/*");//多个文件格式
+                                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
+                                    startActivity(intent);
+                                }else{
+                                    Toast.makeText(LFilePickerActivity.this,"没有分享的文件",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                    }
+                }).show();
             }
         });
     }

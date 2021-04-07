@@ -182,7 +182,7 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(RADIANS(Deg))", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
+        collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(Deg*PI()/180)", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
         collection.add(new TableRowBean2("", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "A0(Deg)", "A180(Deg)", "B0(Deg)", "B180(Deg)", "A0(Raw)", "A180(Raw)", "B0(Raw)", "B180(Raw)", "CheckSumA", "CheckSumB").toSaveString());
 
         List<SurveyDataTable> surveyDatas = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName)).build().list();
