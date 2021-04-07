@@ -71,8 +71,8 @@ public class EasyCsvCopy {
                     String dataWithLineBreak = (String) o;
 
                     try {
-                        finalFo.write(dataWithLineBreak.getBytes("GBK"));
-//                        finalFo.write(dataWithLineBreak.getBytes("UTF-8"));
+//                        finalFo.write(dataWithLineBreak.getBytes("GBK"));
+                        finalFo.write(dataWithLineBreak.getBytes("UTF-8"));
                     } catch (IOException var4) {
                         fileCallback.onFail(var4.getMessage());
                     }

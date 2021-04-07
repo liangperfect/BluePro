@@ -277,6 +277,7 @@ public class LFilePickerActivity extends AppCompatActivity {
                 mListNumbers.forEach(new Consumer<String>() {
                     @Override
                     public void accept(String path) {
+                        Log.d("chenliang","分享文件地址"+path);
                         files.add(Uri.fromFile(new File(path)));
                     }
                 });

@@ -291,10 +291,10 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             return false;
         }
 
-        if (edtAoDes.getText().toString().isEmpty()) {
-            Toast.makeText(BoreholeInfoActivity.this, "請填寫A0描述", Toast.LENGTH_SHORT).show();
-            return false;
-        }
+//        if (edtAoDes.getText().toString().isEmpty()) {
+//            Toast.makeText(BoreholeInfoActivity.this, "請填寫A0描述", Toast.LENGTH_SHORT).show();
+//            return false;
+//        }
 
         if (tvMeasurePoints.getText().toString().isEmpty()) {
             Toast.makeText(BoreholeInfoActivity.this, "請計算測量點數", Toast.LENGTH_SHORT).show();

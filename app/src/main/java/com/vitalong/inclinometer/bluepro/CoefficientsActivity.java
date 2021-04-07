@@ -489,6 +489,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
         String d6 = Utils.getVerifyDatas(BaxisBStr);
         String d7 = Utils.getVerifyDatas(BaxisCStr);
         String d8 = Utils.getVerifyDatas(BaxisDStr);
+        Log.d("chenliang", "展示的数据的是->" + d1 + "   " + d2 + "   " + d3);
         orginal1Str = AaxisAStr;
         edtAxiasA.setText(d1);
         verifyDataBean.setAaxisA(d1);

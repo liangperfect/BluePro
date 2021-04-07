@@ -12,7 +12,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:padding="12dp"
-        android:text="暂无数据"
+        android:text="Empty"
         android:textColor="@color/lfile_gray"
         android:textSize="18sp"/>
 

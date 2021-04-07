@@ -68,6 +68,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -933,5 +934,16 @@ public class Utils {
     public static int dip2px(Context context, double dpValue) {
         float density = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * density + 0.5);
+    }
+
+    public static String formatDouble(double value) {
+        String retValue = null;
+        NumberFormat format = NumberFormat.getInstance();
+        format.setMinimumFractionDigits(0);
+        format.setMaximumFractionDigits(2);
+        format.setGroupingUsed(false);
+        retValue = format.format(value);
+        retValue = retValue.replaceAll(",", "");
+        return retValue;
     }
 }

@@ -425,6 +425,7 @@ public class Survey2Activity extends MyBaseActivity2 {
         i.putExtra("csvFileName", csvFileName);
         i.putExtra("csvFilePath", csvFilePath);
         startActivity(i);
+        Survey2Activity.this.finish();
     }
 
     private void showRevertDegree() {

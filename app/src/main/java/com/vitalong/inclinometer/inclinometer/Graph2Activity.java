@@ -149,7 +149,7 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initChartData(List<SurveyDataTable> list) {
         XAxis xl = chart.getXAxis();
-        xl.setLabelRotationAngle(270);
+//        xl.setLabelRotationAngle(270);
         xl.setAvoidFirstLastClipping(true);
 //        xl.setAxisMinimum(0);
 //        xl.setAxisMaximum(100);

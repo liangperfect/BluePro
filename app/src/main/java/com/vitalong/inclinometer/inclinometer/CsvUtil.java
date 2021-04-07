@@ -15,6 +15,7 @@ import com.vitalong.inclinometer.MyApplication;
 import com.vitalong.inclinometer.Utils.Constants;
 import com.vitalong.inclinometer.Utils.EasyCsvCopy;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
+import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.bean.SurveyDataTable;
 import com.vitalong.inclinometer.bean.TableRowBean2;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
@@ -56,6 +57,15 @@ public class CsvUtil {
     private double dBxisB = 0;
     private double dBxisC = 0;
     private double dBxisD = 0;
+    //原始科学技术法对string
+    private String dAxisAStr = "";
+    private String dAxisBStr = "";
+    private String dAxisCStr = "";
+    private String dAxisDStr = "";
+    private String dBxisAStr = "";
+    private String dBxisBStr = "";
+    private String dBxisCStr = "";
+    private String dBxisDStr = "";
 
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     private Vibrator vibrator;
@@ -99,6 +109,14 @@ public class CsvUtil {
             dBxisB = Double.parseDouble(verifyDataBean.getBaxisB());
             dBxisC = Double.parseDouble(verifyDataBean.getBaxisC());
             dBxisD = Double.parseDouble(verifyDataBean.getBaxisD());
+            dAxisAStr = verifyDataBean.getAaxisA();
+            dAxisBStr = verifyDataBean.getAaxisB();
+            dAxisCStr = verifyDataBean.getAaxisC();
+            dAxisDStr = verifyDataBean.getAaxisD();
+            dBxisAStr = verifyDataBean.getBaxisA();
+            dBxisBStr = verifyDataBean.getBaxisB();
+            dBxisCStr = verifyDataBean.getBaxisC();
+            dBxisDStr = verifyDataBean.getBaxisD();
         } catch (Exception e) {
             Toast.makeText(activity, "verify data is error,please update verify data", Toast.LENGTH_SHORT).show();
         }
@@ -147,6 +165,7 @@ public class CsvUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 //        String currTime = sdf.format(d);
         final List<String> collection = new ArrayList<>();
+        //将Factory参数采用科学技术法去表示
         collection.add(new TableRowBean2("Type:", "Digital Inclinometer", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Model:", "7000BT", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Serial Number:", snValue, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
@@ -154,8 +173,10 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Communication:", "Bluetooth 4.2", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Firmware:", "V2.58", "Software:", "V1.37.2", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Units:", "mm / Deg / Raw", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Gage Factor(A):", "A1=" + dAxisA, "A2=" + dAxisB, "A3=" + dAxisC, "A4=" + dAxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + dBxisA, "B2=" + dBxisB, "B3=" + dBxisC, "B4=" + dBxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
+//        collection.add(new TableRowBean2("Gage Factor(A):", "A1=" + dAxisA, "A2=" + dAxisB, "A3=" + dAxisC, "A4=" + dAxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
+//        collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + dBxisA, "B2=" + dBxisB, "B3=" + dBxisC, "B4=" + dBxisD, "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Gage Factor(A):", "A1=" + dAxisAStr, "A2=" + dAxisBStr, "A3=" + dAxisCStr, "A4=" + dAxisDStr, "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + dBxisAStr, "B2=" + dBxisBStr, "B3=" + dBxisCStr, "B4=" + dBxisDStr, "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Site#:", siteStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Hole#:", holeStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
@@ -167,6 +188,9 @@ public class CsvUtil {
         List<SurveyDataTable> surveyDatas = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName)).build().list();
         for (SurveyDataTable item : surveyDatas
         ) {
+
+            //将小数点位数做处理
+//            handleDecimalPoint(item);
             collection.add(new TableRowBean2(item.getDepth(), item.getA0mm(), item.getA180mm(), item.getB0mm(), item.getB180mm(), item.getA0Deg()
                     , item.getA180Deg(), item.getB0Deg(), item.getB180Deg(), item.getA0Raw(), item.getA180Raw(), item.getB0Raw(), item.getB180Raw(),
                     item.getCheckSumA(), item.getCheckSumB()).toSaveString());
@@ -174,6 +198,23 @@ public class CsvUtil {
         return collection;
     }
 
+    /**
+     * 对double进行格式化,默认是保留2位
+     * @param number 格式化对数字
+     * @param num 小数点后面保留几位
+     */
+    private String handleDecimalPoint(double number,int num){
+
+//        java.text.DecimalFormat   df4   =new   java.text.DecimalFormat("#.0000");
+        java.text.DecimalFormat   df;
+        if (num == 2){
+            df   =new   java.text.DecimalFormat("#.00");
+        }else {
+            df   =new   java.text.DecimalFormat("#.0000");
+        }
+
+        return df.format(number);
+    }
     /**
      * true是0度, false是180度
      * 将实时数据存储到数据库中去
@@ -192,6 +233,13 @@ public class CsvUtil {
         if (surveyDataTable != null) {
             if (isZero) {
                 //值要重新计算
+//                surveyDataTable.setA0mm(String.valueOf(mm1));
+//                surveyDataTable.setB0mm(String.valueOf(mm2));
+//                surveyDataTable.setA0Deg(String.valueOf(deg1));
+//                surveyDataTable.setB0Deg(String.valueOf(deg2));
+//                surveyDataTable.setA0Raw(String.valueOf(raw1));
+//                surveyDataTable.setB0Raw(String.valueOf(raw2));
+
                 surveyDataTable.setA0mm(String.valueOf(mm1));
                 surveyDataTable.setB0mm(String.valueOf(mm2));
                 surveyDataTable.setA0Deg(String.valueOf(deg1));
