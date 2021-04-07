@@ -226,8 +226,8 @@ public class CsvUtil {
         double raw2 = getRaw(deg2);
         double radians1 = Math.toRadians(deg1);
         double radians2 = Math.toRadians(deg2);
-        double mm1 = Math.sin(radians1) * 500;
-        double mm2 = Math.sin(radians2) * 500;
+        double mm1 =  (Math.sin(radians1) * 500);
+        double mm2 = (Math.sin(radians2) * 500);
         SurveyDataTable surveyDataTable = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName), SurveyDataTableDao.Properties.Depth.eq(depth)).build().list().get(0);
 
         if (surveyDataTable != null) {
@@ -240,41 +240,44 @@ public class CsvUtil {
 //                surveyDataTable.setA0Raw(String.valueOf(raw1));
 //                surveyDataTable.setB0Raw(String.valueOf(raw2));
 
-                surveyDataTable.setA0mm(String.valueOf(mm1));
-                surveyDataTable.setB0mm(String.valueOf(mm2));
-                surveyDataTable.setA0Deg(String.valueOf(deg1));
-                surveyDataTable.setB0Deg(String.valueOf(deg2));
-                surveyDataTable.setA0Raw(String.valueOf(raw1));
-                surveyDataTable.setB0Raw(String.valueOf(raw2));
+                surveyDataTable.setA0mm(handleDecimalPoint(mm1,2));
+                surveyDataTable.setB0mm(handleDecimalPoint(mm2,2));
+                surveyDataTable.setA0Deg(handleDecimalPoint(deg1,4));
+                surveyDataTable.setB0Deg(handleDecimalPoint(deg2,4));
+                surveyDataTable.setA0Raw(String.valueOf((int)raw1));
+                surveyDataTable.setB0Raw(String.valueOf((int) raw2));
+//                Log.d("chenliang","数据验证" + handleDecimalPoint(mm1,2));
+//                Log.d("chenliang","数据验证" + handleDecimalPoint(deg1,4));
+//                Log.d("chenliang","数据验证" + (int) raw1);
                 if (surveyDataTable.getA180mm().equals("")) {
-                    surveyDataTable.setCheckSumA(String.valueOf(mm1));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint(mm1,2));
                 } else {
-                    surveyDataTable.setCheckSumA(String.valueOf(mm1 + Double.parseDouble(surveyDataTable.getA180mm())));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint((mm1 + Double.parseDouble(surveyDataTable.getA180mm())),2));
                 }
 
                 if (surveyDataTable.getB180mm().equals("")) {
-                    surveyDataTable.setCheckSumB(String.valueOf(mm2));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint(mm2,2));
                 } else {
-                    surveyDataTable.setCheckSumB(String.valueOf(mm2 + Double.parseDouble(surveyDataTable.getB180mm())));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint((mm2 + Double.parseDouble(surveyDataTable.getB180mm())),2));
                 }
             } else {
 
-                surveyDataTable.setA180mm(String.valueOf(mm1));
-                surveyDataTable.setB180mm(String.valueOf(mm2));
-                surveyDataTable.setA180Deg(String.valueOf(deg1));
-                surveyDataTable.setB180Deg(String.valueOf(deg2));
-                surveyDataTable.setA180Raw(String.valueOf(raw1));
-                surveyDataTable.setB180Raw(String.valueOf(raw2));
+                surveyDataTable.setA180mm(handleDecimalPoint(mm1,2));
+                surveyDataTable.setB180mm(handleDecimalPoint(mm2,2));
+                surveyDataTable.setA180Deg(handleDecimalPoint(deg1,4));
+                surveyDataTable.setB180Deg(handleDecimalPoint(deg2,4));
+                surveyDataTable.setA180Raw(String.valueOf((int) raw1));
+                surveyDataTable.setB180Raw(String.valueOf((int) raw2));
                 if (surveyDataTable.getA0mm().equals("")) {
-                    surveyDataTable.setCheckSumA(String.valueOf(mm1));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint(mm1,2));
                 } else {
-                    surveyDataTable.setCheckSumA(String.valueOf(mm1 + Double.parseDouble(surveyDataTable.getA0mm())));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint((mm1 + Double.parseDouble(surveyDataTable.getA0mm())),2));
                 }
 
                 if (surveyDataTable.getB0mm().equals("")) {
-                    surveyDataTable.setCheckSumB(String.valueOf(mm2));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint(mm2,2));
                 } else {
-                    surveyDataTable.setCheckSumB(String.valueOf(mm2 + Double.parseDouble(surveyDataTable.getB0mm())));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint((mm2 + Double.parseDouble(surveyDataTable.getB0mm())),2));
                 }
             }
         }
