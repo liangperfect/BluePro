@@ -2,6 +2,7 @@ package com.vitalong.inclinometer.Utils;
 
 import android.app.Activity;
 import android.os.Environment;
+import android.util.Log;
 
 import net.ozaydin.serkan.easy_csv.FileCallback;
 import net.ozaydin.serkan.easy_csv.Utility.PermissionUtility;
@@ -61,6 +62,12 @@ public class EasyCsvCopy {
             }
 
             final OutputStream finalFo = this.outputStream;
+            byte [] bs = { (byte)0xEF, (byte)0xBB, (byte)0xBF};  //UTF-8编码
+            try {
+                finalFo.write(bs);//excel打开csv文件必须添加bom的一个头部信息，打开才不会乱码
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             String[] headerArray = new String[dataList.size() - 1];
             headerArray = (String[]) dataList.toArray(headerArray);
             Observable.fromArray(headerArray).subscribe(new Observer() {
@@ -71,8 +78,15 @@ public class EasyCsvCopy {
                     String dataWithLineBreak = (String) o;
 
                     try {
-//                        finalFo.write(dataWithLineBreak.getBytes("GBK"));
-                        finalFo.write(dataWithLineBreak.getBytes("UTF-8"));
+                        //UnicodeBigUnmarked    UTF-8   ISO8859-1
+//                        dataWithLineBreak = new String(dataWithLineBreak.getBytes("ISO-8859-1"), "GBK");
+//                        Log.d("chenliang","datawithline数据->"+dataWithLineBreak);
+//                        finalFo.write(dataWithLineBreak.getBytes("gb2312"));
+                        finalFo.write(dataWithLineBreak.getBytes());
+//                        finalFo.write(dataWithLineBreak.getBytes("UTF-8"));
+//                        finalFo.write(dataWithLineBreak.getBytes("UnicodeBigUnmarked"));
+//                        finalFo.write(dataWithLineBreak.getBytes("unicode"));//   uo
+//                        finalFo.write(dataWithLineBreak.getBytes("ISO8859-1"));//iso
                     } catch (IOException var4) {
                         fileCallback.onFail(var4.getMessage());
                     }

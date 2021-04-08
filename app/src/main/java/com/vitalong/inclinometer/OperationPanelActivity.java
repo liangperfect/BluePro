@@ -48,7 +48,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     private int delayTime = 400;
     private OperationPanelHandler operationPanelHandler;
     private int count = 0;
-
+    private boolean parseVerify = true; //true解析矫正系数  false是解析sn的值
     private VerifyDataBean verifyDataBean;
     private MaterialDialog verifyLoadDialog;
     private int FILE_SELECTOR_SHARE = 111;//选择文件进行分享
@@ -90,7 +90,11 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         if (!isPause) {
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
             Log.d("chenliang", "获取到的矫正系数" + hexStr);
-            parseAllVerifyData(hexStr);
+            if (parseVerify){
+                parseAllVerifyData(hexStr);
+            }else{
+                parseSnValue(hexStr);
+            }
 //        if (hexStr.length() == 24) {
             //加判断是为了避免其它命令接收数据造成这里解析出错
 //            parseVerifyData(hexStr.substring(6, 20));
@@ -209,6 +213,25 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         }
     }
 
+    /**
+     * 解析sn的数值
+     * @param codeStr
+     */
+    private void parseSnValue(String codeStr){
+        try {
+            String snValueStr = String.valueOf(Integer.parseInt(codeStr.substring(6, 14), 16));
+            Log.d("chenliang", "获取到的sn:" + snValueStr);
+            SharedPreferencesUtil.putData("SNVaule", snValueStr);
+        } catch (Exception ex) {
+            Log.e("chenliang", "解析sn出错");
+            Toast.makeText(OperationPanelActivity.this, "SN解析出错", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * 解析所有的矫正系数
+     * @param codeStr
+     */
     private void parseAllVerifyData(String codeStr) {
         String AaxisAStr = codeStr.substring(6, 20);
         String AaxisBStr = codeStr.substring(20, 34);
@@ -239,6 +262,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         verifyDataBean.setBaxisD(d8);
         Log.d("chenliang", "数据结果是->d1:" + d1 + "  d2:" + d2 + "  d3:" + d3 + "  d4:" + d4 + "  d5:" + d5 + "   d6:" + d6 + "  d7:" + d7 + "  d8:" + d8);
         myApplication.setVerifyDataBean(verifyDataBean);
+        //发送sn参数
+        parseVerify = false;
+        sendCmdCodeByHex("01 03 00 05 00 02 d4 0a");
     }
 
     private void parseVerifyData(String codeStr) {
