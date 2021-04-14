@@ -31,7 +31,8 @@
         android:requestLegacyExternalStorage="true"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".inclinometer.TestMainActivity"></activity>
+        <activity android:name=".StartActivity"></activity>
+        <activity android:name=".inclinometer.TestMainActivity" />
         <activity android:name=".inclinometer.InclinometerSurveyListActivity" />
         <activity android:name=".inclinometer.Graph3Activity" />
         <activity

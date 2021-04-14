@@ -90,7 +90,7 @@ public class CsvUtil {
         surveyDataTableDao = ((MyApplication) activity.getApplication()).surveyDataTableDao;
         easyCsv = new EasyCsvCopy(activity);
         try {
-            playRd("Default.mp3");
+            playRd("Default.wav");
             vibrator = (Vibrator) activity.getSystemService(activity.VIBRATOR_SERVICE);
         } catch (IOException e) {
             e.printStackTrace();
@@ -208,9 +208,9 @@ public class CsvUtil {
 //        java.text.DecimalFormat   df4   =new   java.text.DecimalFormat("#.0000");
         java.text.DecimalFormat   df;
         if (num == 2){
-            df   =new   java.text.DecimalFormat("#.00");
+            df   =new   java.text.DecimalFormat("#0.00");
         }else {
-            df   =new   java.text.DecimalFormat("#.0000");
+            df   =new   java.text.DecimalFormat("#0.0000");
         }
 
         return df.format(number);

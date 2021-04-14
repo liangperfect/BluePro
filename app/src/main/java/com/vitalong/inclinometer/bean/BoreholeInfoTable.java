@@ -6,7 +6,7 @@ import org.greenrobot.greendao.annotation.Id;
 
 /**
  * @Package: com.vitalong.bluetest2.bean
- * @Description:
+ * @Description: 工地信息的表
  * @Author: 亮
  * @CreateDate: 2020/12/12 13:47
  * @UpdateUser: 更新者
@@ -16,7 +16,7 @@ public class BoreholeInfoTable {
     @Id
     private Long id; //自增id
     private String constructionSite; //工地名称
-    private String holeName; //孔号
+    private String holeName; //孔号   工地名称和孔号名称共同组成主键
     private String a0Des; //A0方向描述
     private float topValue;//顶部深度
     private float bottomValue;//底部深度

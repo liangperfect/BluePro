@@ -24,6 +24,10 @@ import com.vitalong.inclinometer.bluepro.SettingActivity;
 import com.vitalong.inclinometer.inclinometer.AboutUsActivity;
 import com.vitalong.inclinometer.inclinometer.SelectModeActivity;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -52,6 +56,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     private VerifyDataBean verifyDataBean;
     private MaterialDialog verifyLoadDialog;
     private int FILE_SELECTOR_SHARE = 111;//选择文件进行分享
+    private ClearHandler clearHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +66,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         //发送数据
         makeStatusBar(R.color.red);
         operationPanelHandler = new OperationPanelHandler();
+        clearHandler = new ClearHandler();
         operationPanelHandler.sendEmptyMessageDelayed(1, delayTime);
         initListener();
         myApplication = (MyApplication) getApplication();
@@ -90,9 +96,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         if (!isPause) {
             String hexStr = Utils.ByteArraytoHex(array).replace(" ", "");
             Log.d("chenliang", "获取到的矫正系数" + hexStr);
-            if (parseVerify){
+            if (parseVerify) {
                 parseAllVerifyData(hexStr);
-            }else{
+            } else {
                 parseSnValue(hexStr);
             }
 //        if (hexStr.length() == 24) {
@@ -215,9 +221,10 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
     /**
      * 解析sn的数值
+     *
      * @param codeStr
      */
-    private void parseSnValue(String codeStr){
+    private void parseSnValue(String codeStr) {
         try {
             String snValueStr = String.valueOf(Integer.parseInt(codeStr.substring(6, 14), 16));
             Log.d("chenliang", "获取到的sn:" + snValueStr);
@@ -230,6 +237,7 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
 
     /**
      * 解析所有的矫正系数
+     *
      * @param codeStr
      */
     private void parseAllVerifyData(String codeStr) {
@@ -340,7 +348,44 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         verifyLoadDialog.setTitle("Load verify data,Please wait for 3s")
                 .setContentView(progressBar);
         verifyLoadDialog.show();
+        judgeFirstLaunch(); //第一次启动进行文件处理
         operationPanelHandler.sendEmptyMessageDelayed(10, 4000);
+    }
+
+    /**
+     * 判断应用是否是第一次启动
+     */
+    private void judgeFirstLaunch() {
+
+        boolean isFirst = (boolean) SharedPreferencesUtil.getData(Constants.IS_FIRST_START, false);
+        Log.d("chenliang", "isFirst:" + isFirst);
+        if (!isFirst) {
+            //第一次启动
+//            showClearDialog();
+            clearHandler.sendEmptyMessage(0);
+            SharedPreferencesUtil.putData(Constants.IS_FIRST_START, true);
+        }
+    }
+
+    /**
+     * 将之前的inclionmeter文件夹里面的文件转存到inclionmeter_日期的文件夹里面去
+     */
+    class ClearHandler extends Handler {
+
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            super.handleMessage(msg);
+
+            //文件进行重命名
+            File oldFile = new File(Constants.PRO_ROOT_PATH);
+            //根据当前时间来
+            Date d = new Date();
+            SimpleDateFormat simpleData = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
+            String newFileName = Constants.PRO_ROOT_PATH+"_"+simpleData.format(d);
+            File newFile = new File(newFileName);
+            newFile.mkdir();
+            boolean b = oldFile.renameTo(newFile);
+        }
     }
 
     @Override

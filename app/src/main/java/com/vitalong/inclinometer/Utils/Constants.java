@@ -267,6 +267,7 @@ public class Constants {
     public static String DECIMAL = "decimal"; //只用于记录Deg的类型，Raw默认就是0
     public static String SURVEY_DURATION = "survey_duration";
     public static String TIME_OUT = "auto_time_out";//用于计算菱形稳定的时间间隔
+    public static String IS_FIRST_START = "isFirstStart";
     //各模式参数
     public static int SFMODE_1AXIS = 0; //"1 Axis"
     public static int SFMODE_2AXIS = 1; //"2 Axis"
@@ -302,6 +303,7 @@ public class Constants {
 
     //tilemeter的根目录
     public static String PRO_ROOT_PATH = "/storage/emulated/0/inclinometer";
+    public static String PRO_ROOT_PATH123 = "/storage/emulated/0/inclinometer123";
     //sd卡根目录的名称是
     public static String PRO_ROOT_DIR_PATH = "/inclinometer";
     //从哪里跳转到实时界面的Survey

@@ -25,7 +25,8 @@ import com.leon.lfilepickerlibrary.utils.FileUtils;
 import com.vitalong.inclinometer.MyApplication;
 import com.vitalong.inclinometer.R;
 import com.vitalong.inclinometer.Utils.Constants;
-import com.vitalong.inclinometer.greendaodb.RealDataCachedDao;
+import com.vitalong.inclinometer.greendaodb.BoreholeInfoTableDao;
+import com.vitalong.inclinometer.greendaodb.SurveyDataTableDao;
 import com.vitalong.inclinometer.inclinometer.Graph2Activity;
 import com.vitalong.inclinometer.inclinometer.InclinometerSurveyListActivity;
 import com.vitalong.inclinometer.views.CompanySelectDialog;
@@ -61,6 +62,12 @@ public class CompareActivity extends AppCompatActivity {
     TextView tvHoleName;
     @Bind(R.id.tvFileName)
     TextView tvFileName;
+    @Bind(R.id.textView1)
+    TextView textView1;
+    @Bind(R.id.textView2)
+    TextView textView2;
+    @Bind(R.id.textView4)
+    TextView textView4;
 
     String[] ctype1 = new String[]{"A001", "A002", "A003", "A004", "A005", "A006", "A007", "A008", "A009", "A010", "A011", "A012", "A013", "A014", "A015", "A016", "A017", "A018", "A019"
             , "A020", "A021", "A022", "A023", "A024", "A025", "A026", "A027", "A028", "A029", "A030", "A031", "A032", "A033", "A034", "A035", "A036", "A037", "A038", "A039"
@@ -91,6 +98,8 @@ public class CompareActivity extends AppCompatActivity {
     private List<File> holeFiles;//孔号文件列表
     private List<File> csvFiles;//csv文件名臣
     private String selectCsvPath = "";
+    private BoreholeInfoTableDao boreholeInfoTableDao;
+    private SurveyDataTableDao surveyDataTableDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,9 +116,21 @@ public class CompareActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
+        surveyDataTableDao = ((MyApplication) getApplication()).surveyDataTableDao;
         ConstructionSiteFiles = new ArrayList<File>();
         holeFiles = new ArrayList<File>();
         csvFiles = new ArrayList<File>();
+        fetchSiteDir();
+    }
+
+    /**
+     * 获取已有的工地号
+     */
+    private void fetchSiteDir() {
+        ConstructionSiteFiles.clear();
+        holeFiles.clear();
+        csvFiles.clear();
         List<File> list = FileUtils.getFileListByDirPath(Constants.PRO_ROOT_PATH, new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -144,9 +165,11 @@ public class CompareActivity extends AppCompatActivity {
         });
 
         button.setOnClickListener(v -> {
-            String tableName = selectDirName + "_" + selectFileName;
-            String nums = selectNums;
-            String direction = selectDirection;
+            if (tvFileName.getText().toString().isEmpty()) {
+
+                Toast.makeText(CompareActivity.this, "請選擇File", Toast.LENGTH_SHORT).show();
+                return;
+            }
             Intent i;
             if (selectShowMode.equals("Disable")) {
                 i = new Intent(CompareActivity.this, InclinometerSurveyListActivity.class);
@@ -163,15 +186,25 @@ public class CompareActivity extends AppCompatActivity {
 
             final EditText et = new EditText(CompareActivity.this);
             et.setHint("請輸入確認密碼");
-            new AlertDialog.Builder(CompareActivity.this).setTitle(selectDirName + "_" + selectFileName + "文檔清除后無法恢復!")
+//            String totalTitle = "";
+//            if (!tvSiteName.getText().toString().isEmpty()) {
+//                totalTitle = tvSiteName.getText().toString() + "\n";
+//            }
+//
+//            if (!tvHoleName.getText().toString().isEmpty()) {
+//                totalTitle = tvHoleName.getText().toString() + "\n";
+//            }
+//
+//            if (!tvFileName.getText().toString().isEmpty()) {
+//                totalTitle = tvFileName.getText().toString() + "\n";
+//            }
+            new AlertDialog.Builder(CompareActivity.this).setTitle("文檔清除后無法恢復!")
                     .setIcon(R.mipmap.logo)
                     .setView(et)
                     .setPositiveButton("确定", (dialogInterface, i) -> {
-                        //按下确定键后的事件
                         String inputPwd = et.getText().toString();
                         if ("111222".equals(inputPwd)) {
-                            application.realDataCachedDao.queryBuilder().where(RealDataCachedDao.Properties.FormName.eq(selectDirName + "_" + selectFileName)).buildDelete().executeDeleteWithoutDetachingEntities();
-                            Toast.makeText(CompareActivity.this, "刪除成功", Toast.LENGTH_SHORT).show();
+                            clearData();
                         }
                     }).setNegativeButton("取消", null).show();
         });
@@ -179,18 +212,20 @@ public class CompareActivity extends AppCompatActivity {
         tvSiteName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (companySelectDialog == null) {
-                    companySelectDialog = new CompanySelectDialog(CompareActivity.this, ConstructionSiteFiles, new CompanySelectDialog.ChangeComapngeListener() {
-                        @Override
-                        public void changeComapny(File file) {
+//                if (companySelectDialog == null) {
+                CompanySelectDialog companySelectDialog = new CompanySelectDialog(CompareActivity.this, ConstructionSiteFiles, new CompanySelectDialog.ChangeComapngeListener() {
+                    @Override
+                    public void changeComapny(File file) {
 
-                            tvSiteName.setText(file.getName());
-                            holeFiles.clear();
-                            List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), File::isDirectory);
-                            holeFiles.addAll(tempList);
-                        }
-                    });
-                }
+                        tvSiteName.setText(file.getName());
+                        holeFiles.clear();
+                        List<File> tempList = FileUtils.getFileListByDirPath(file.getPath(), File::isDirectory);
+                        holeFiles.addAll(tempList);
+                        tvHoleName.setText("");
+                        tvFileName.setText("");
+                    }
+                });
+//                }
                 companySelectDialog.show();
             }
         });
@@ -215,6 +250,7 @@ public class CompareActivity extends AppCompatActivity {
                                 }
                             });
                             csvFiles.addAll(tempList);
+                            tvFileName.setText("");
                         }
                     });
                     holeSelectDialog.show();
@@ -237,6 +273,96 @@ public class CompareActivity extends AppCompatActivity {
                 csvSelectDialog.show();
             }
         });
+//        textView1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//
+//                tvSiteName.setText("");
+//            }
+//        });
+//
+//        textView2.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                tvHoleName.setText("");
+//            }
+//        });
+//
+//        textView4.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                tvFileName.setText("");
+//            }
+//        });
+    }
+
+
+    /**
+     * 根据选择的工地名称，清除下面的孔号文件夹及孔号下面的csv文件
+     * 根据选择的孔号名称，清除下面的所有csv文件
+     * 根据选择的csv文件，清除下面的对应csv文件
+     * <p>
+     * 如上的清除文件后，还要清除对应数据库里面的数据
+     */
+    private void clearData() {
+
+        try {
+            if (tvSiteName.getText().equals("")) {
+                //nothing to do
+
+            } else if (tvHoleName.getText().equals("")) {
+                //清除工地号及其下面的文件夹和csv
+                String siteStr = tvSiteName.getText().toString();
+                //清除下面对应的文件夹
+                String siteFilePath = Constants.PRO_ROOT_PATH + "/" + siteStr;
+                File file = new File(siteFilePath);
+                if (file.exists() && file.isDirectory()) {
+                    //删除工地目录
+                    com.vitalong.inclinometer.Utils.FileUtils.deleteDir(file);
+                    //删除工地号加孔号的配置数据库信息
+                    boreholeInfoTableDao.queryBuilder().where(BoreholeInfoTableDao.Properties.ConstructionSite.eq(siteStr)).buildDelete().executeDeleteWithoutDetachingEntities();
+                    //删除已保存的数据, 根据文件名的模糊匹配工地号来进行删除
+                    surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.like(siteStr)).buildDelete().executeDeleteWithoutDetachingEntities();
+                }
+            } else if (tvFileName.getText().equals("")) {
+                //清除孔号下面的文件夹和csv
+                String siteStr = tvSiteName.getText().toString();
+                String holdStr = tvHoleName.getText().toString();
+                String holdPath = Constants.PRO_ROOT_PATH + "/" + siteStr + "/" + holdStr;
+                File file = new File(holdPath);
+                if (file.exists() && file.isDirectory()) {
+                    com.vitalong.inclinometer.Utils.FileUtils.deleteDir(file);
+                    //删除工地号加孔号的配置数据库信息
+                    boreholeInfoTableDao.queryBuilder().where(BoreholeInfoTableDao.Properties.ConstructionSite.eq(siteStr), BoreholeInfoTableDao.Properties.HoleName.eq(holdStr))
+                            .buildDelete().executeDeleteWithoutDetachingEntities();
+                    //删除已保存的数据, 根据文件名的模糊匹配工地号来进行删除
+                    surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.like(siteStr), SurveyDataTableDao.Properties.CsvFileName.like(holdStr)).buildDelete().executeDeleteWithoutDetachingEntities();
+                }
+            } else {
+                //清除对应的csv文件
+                String siteStr = tvSiteName.getText().toString();
+                String holdStr = tvHoleName.getText().toString();
+                String csvFileStr = tvFileName.getText().toString();
+                String csvFilePath = Constants.PRO_ROOT_PATH + "/" + siteStr + "/" + holdStr + "/" + csvFileStr;
+                File file = new File(csvFilePath);
+                if (file.exists()) {
+                    boolean b = file.delete();
+                }
+                surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileStr)).buildDelete().executeDeleteWithoutDetachingEntities();
+            }
+        } catch (Exception ex) {
+            Toast.makeText(CompareActivity.this, "清除失败", Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(CompareActivity.this, "清除成功", Toast.LENGTH_SHORT).show();
+        //界面展示重置
+        tvSiteName.setText("");
+        tvHoleName.setText("");
+        tvFileName.setText("");
+        //列表数据重置
+        fetchSiteDir();
     }
 
     private void itemSelected(AdapterView<?> parent, View view, int position, long id) {

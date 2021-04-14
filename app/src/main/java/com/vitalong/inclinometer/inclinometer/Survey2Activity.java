@@ -83,7 +83,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     //    private int unitValue = 0;//单位
 //    private int decimalValue = 3;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
-    String[] beeps = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
+    String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     private int sendDuration = 200;//循环发送命令间隔时间
 
     private float currOneChannelAngle;//记录轴1的原始角度值
@@ -116,6 +116,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     private int autoNums = 3;//自动模式下稳定的次数，由时间转换过来
     private int currAutoIndex = 0;//用于技术当前自动模式下再稳定后又稳定的次数
     private long lastClickTime = 0;//防止按钮被连续点击造成存储问题
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -264,7 +265,7 @@ public class Survey2Activity extends MyBaseActivity2 {
 //                    }, 200);
 //                  将数据存储起来
                     long now = System.currentTimeMillis();
-                    if(now - lastClickTime >1200){
+                    if (now - lastClickTime > 1200) {
                         lastClickTime = now;
                         String preAB = saveCsvData();
                         changeLogicUI(preAB);
@@ -293,6 +294,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
+
                     isZero = true;
                 }
             }
@@ -351,8 +353,17 @@ public class Survey2Activity extends MyBaseActivity2 {
         tvPreDepth.setText(preDepth + "m");
         double preADouble = Double.parseDouble(preA);
         double preBDouble = Double.parseDouble(preB);
-        tvPreAValue.setText("A: " + deg2Format.format(preADouble));
-        tvPreBValue.setText("B: " + deg2Format.format(preBDouble));
+        String prefixA = "A0: ";
+        String prefixB = "B0: ";
+        if (isZero) {
+            prefixA = "A0: ";
+            prefixB = "B0: ";
+        } else {
+            prefixA = "A180: ";
+            prefixB = "B180: ";
+        }
+        tvPreAValue.setText(prefixA + deg2Format.format(preADouble));
+        tvPreBValue.setText(prefixB + deg2Format.format(preBDouble));
     }
 
     /**
@@ -533,6 +544,8 @@ public class Survey2Activity extends MyBaseActivity2 {
 
     void initPlay(String beep) {
         try {
+            if (beep.equals("Default"))
+                playRd("save_csv.mp3");
             if (beep.equals("TypeA"))
                 playRd("TypeA.mp3");
             else if (beep.equals("TypeB"))
@@ -554,7 +567,7 @@ public class Survey2Activity extends MyBaseActivity2 {
         mMediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(), fileDescriptor.getStartOffset(), fileDescriptor.getLength());
         mMediaPlayer.prepare();
         //mMediaPlayer.setVolume(1,1);
-        //mMediaPlayer.setLooping(false);
+        //mMediaPlayer.setLooping(false)
     }
 
     /**
@@ -586,7 +599,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             currtwoChannelAngle = twoChannelAngle;
             //获取电量
             float battValue = Utils.getBattValue(voltage);
-            tvTitle2.setText(battValue + "%");
+            tvTitle2.setText((int) battValue + "%");
             isSave = showAxisValue(oneChannelAngle, oneAxisLink);
             isSave = showAxisValue(twoChannelAngle, twoAxisLink) && isSave;
             //显示mm的值
@@ -608,7 +621,7 @@ public class Survey2Activity extends MyBaseActivity2 {
                     //在自动模式稳定情况下，在该点没有存储过数据就进行存储
                     ++currAutoIndex;
                     if (currAutoIndex == autoNums) {
-                        String preAB =  saveCsvData();
+                        String preAB = saveCsvData();
                         changeLogicUI(preAB);
                         isAutoSaveData = true;
                     }

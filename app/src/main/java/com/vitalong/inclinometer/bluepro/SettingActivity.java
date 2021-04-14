@@ -71,7 +71,7 @@ public class SettingActivity extends MyBaseActivity2 {
     String filePath = "/geostar/tiltmeter/";
     //    String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)", "4(Degree)", "5(Degree)", "6(Degree)", "7(Degree)", "8(Degree)", "9(Degree)"};
     String[] ctype = new String[]{"1(Faster)", "2(Default)", "3(Slower)"};
-    String[] ctype2 = new String[]{"Mute", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
+    String[] ctype2 = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
     String[] ctype3 = new String[]{"Deg", "Raw"};
     //    String[] ctype4ByDeg = new String[]{"3", "4"};
 //    String[] ctype4ByRaw = new String[]{"0"};

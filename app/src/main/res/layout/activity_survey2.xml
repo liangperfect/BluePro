@@ -191,7 +191,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
                 android:checked="true"
-                android:text="A0°"
+                android:text="0°"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
 
@@ -200,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:text="A180°"
+                android:text="180°"
                 android:textColor="@color/black"
                 android:textSize="24sp" />
         </RadioGroup>
@@ -329,7 +329,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:text="A:+ 12"
+            android:text="A0:+ 12"
             android:textColor="#0000CD"
             android:textSize="16sp"
             android:textStyle="bold"
@@ -342,7 +342,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="6dp"
-            android:text="B:+ 12"
+            android:text="B0:+ 12"
             android:textColor="#0000CD"
             android:textSize="16sp"
             android:textStyle="bold"

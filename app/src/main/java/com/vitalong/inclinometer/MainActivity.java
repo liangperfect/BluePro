@@ -17,11 +17,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -44,6 +46,7 @@ import com.vitalong.inclinometer.BlueToothLeService.BluetoothLeService;
 import com.vitalong.inclinometer.Utils.AnimateUtils;
 import com.vitalong.inclinometer.Utils.Constants;
 import com.vitalong.inclinometer.Utils.GattAttributes;
+import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.adapter.DevicesAdapter;
 import com.vitalong.inclinometer.bean.MDevice;
@@ -53,8 +56,12 @@ import com.vitalong.inclinometer.fragments.SppFragment;
 import com.vitalong.inclinometer.views.RevealBackgroundView;
 import com.vitalong.inclinometer.views.RevealSearchView;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -112,7 +119,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
     private String currentDevName;
     private MaterialDialog alarmDialog;
     private String KEEP_CMD_CODE = "123456"; //与板子保持连接的命令
-
+    private MaterialDialog verifyLoadDialog;
     //停止扫描
     private Runnable stopScanRunnable = new Runnable() {
         @Override
@@ -168,6 +175,7 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         //标题栏
         myApplication = (MyApplication) getApplication();
         msgHandler = new MessageHandler();
+
         toolbar.setNavigationIcon(R.mipmap.ic_more_vertical_white_18dp);
         collapsingToolbarLayout.setTitle(getString(R.string.devices));
         //设置一个监听，否则会报错，support library design的bug
@@ -180,12 +188,12 @@ public class MainActivity extends MyBaseActivity implements BleFragment.OnRunnin
         //检查蓝牙
         checkBleSupportAndInitialize();
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
+//        judgeFirstLaunch();
         initPermissions();
         initView(); //初始化视图
         initComponents(); //初始化view pager; 默认选中的为0
         initCartoon();//初始化动画
     }
-
 
     @Override
     public void onClick(View view) {

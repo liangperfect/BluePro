@@ -127,6 +127,8 @@ public class InclinometerSurveyListActivity extends AppCompatActivity {
 //            }
             if (Double.valueOf(str) >0){
                 temp = ("+" + str);
+            }else{
+                return str;
             }
             return temp;
         }
