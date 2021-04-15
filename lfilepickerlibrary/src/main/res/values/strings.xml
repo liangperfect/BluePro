@@ -8,7 +8,7 @@
     <string name="lfile_Detail">detail</string>
     <string name="lfile_FileSize">size : </string>
     <string name="lfile_OutSize">Has reached the maximum number</string>
-    <string name="lfile_SelectAll">SelectAll</string>
+    <string name="lfile_SelectAll">Select All</string>
     <string name="lfile_Cancel">Cancel</string>
     <string name="lfile_OK">OK</string>
     <string name="lfile_ChooseTip">Please select folders path</string>

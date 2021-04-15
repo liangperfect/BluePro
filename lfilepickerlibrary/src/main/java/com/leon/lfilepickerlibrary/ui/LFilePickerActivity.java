@@ -288,7 +288,7 @@ public class LFilePickerActivity extends AppCompatActivity {
 
                 new AlertDialog.Builder(LFilePickerActivity.this)
                         .setTitle("提示")
-                        .setMessage("大小为0文件不能进行分享!\n分享文件数量: "+files.size())
+                        .setMessage("分享文件数量: "+files.size())
                         .setPositiveButton("Sure", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {

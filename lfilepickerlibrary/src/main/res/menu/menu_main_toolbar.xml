@@ -4,6 +4,6 @@
 
     <item
         android:id="@+id/action_selecteall_cancel"
-        android:title="SELECTALL"
+        android:title="Select All"
         app:showAsAction="always"/>
 </menu>

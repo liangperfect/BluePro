@@ -9,7 +9,7 @@
     <string name="lfile_Detail">詳情</string>
     <string name="lfile_FileSize">文件大小 : </string>
     <string name="lfile_OutSize">以達到最大選擇數量</string>
-    <string name="lfile_SelectAll">SELECTALL</string>
+    <string name="lfile_SelectAll">Select All</string>
     <string name="lfile_Cancel">取消全選</string>
     <string name="lfile_OK">確定</string>
     <string name="lfile_ChooseTip">請選擇文件夾</string>
