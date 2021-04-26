@@ -69,6 +69,8 @@ public class Survey2Activity extends MyBaseActivity2 {
     private TextView tvPreDepth;
     private TextView tvPreAValue;
     private TextView tvPreBValue;
+    private TextView tvCompareA0;//当是180模式当时候
+    private TextView tvCompareB0;
     private double dAxisA = 0;
     private double dAxisB = 0;
     private double dAxisC = 0;
@@ -83,7 +85,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     //    private int unitValue = 0;//单位
 //    private int decimalValue = 3;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
-    String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE"};
+    String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE","TypeF"};
     private int sendDuration = 200;//循环发送命令间隔时间
 
     private float currOneChannelAngle;//记录轴1的原始角度值
@@ -225,6 +227,8 @@ public class Survey2Activity extends MyBaseActivity2 {
         tvPreDepth = findViewById(R.id.tvPreDepth);
         tvPreAValue = findViewById(R.id.tvPreAValue);
         tvPreBValue = findViewById(R.id.tvPreBValue);
+        tvCompareA0 = findViewById(R.id.tvCompareA);
+        tvCompareB0 = findViewById(R.id.tvCompareB);
         initListener();
     }
 
@@ -296,6 +300,7 @@ public class Survey2Activity extends MyBaseActivity2 {
                 if (isChecked) {
 
                     isZero = true;
+                    isShowCompareTv(isZero);
                 }
             }
         });
@@ -305,6 +310,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     isZero = false;
+                    isShowCompareTv(isZero);
                 }
             }
         });
@@ -329,6 +335,20 @@ public class Survey2Activity extends MyBaseActivity2 {
                 selectDialog.show();
             }
         });
+    }
+
+    /**
+     * 是否展示A0 B0的值，当模式是180会展示，模式是0当时候隐藏掉
+     * @param isZero
+     */
+    private void isShowCompareTv(boolean isZero) {
+
+        int v = isZero?View.GONE:View.VISIBLE;
+        tvCompareA0.setVisibility(v);
+        tvCompareB0.setVisibility(v);
+        String depStr = String.valueOf(tvDepthNum.getText());
+        if (!isZero)
+            showCompareMMValue(depStr);
     }
 
     /**
@@ -397,7 +417,8 @@ public class Survey2Activity extends MyBaseActivity2 {
         } else {
             String depStr = String.valueOf(depthValue);
             tvDepthNum.setText(depStr);
-            showOldMMValue(depStr, isZero);
+//            showOldMMValue(depStr, isZero);
+            showCompareMMValue(depStr);
         }
         return returnValue;
     }
@@ -424,6 +445,37 @@ public class Survey2Activity extends MyBaseActivity2 {
         }
         tvAOldmm.setText(oldAmm);
         tvBOldmm.setText(oldBmm);
+    }
+
+    /**
+     * 当模式180的时候，展示对应深度0模式的值
+     * @param depthStr
+     */
+    private void showCompareMMValue(String depthStr) {
+
+        //获取对应坐标的mm值进行展示
+        SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
+//        String oldAmm = "";
+//        String oldBmm = "";
+//        oldAmm = isZero ? surveyDataTable.getA0mm() : surveyDataTable.getA180mm();
+//        oldBmm = isZero ? surveyDataTable.getB0mm() : surveyDataTable.getB180mm();
+        String compareA0mm = "";
+        String compareB0mm = "";
+        compareA0mm = surveyDataTable.getA0mm();
+        compareB0mm = surveyDataTable.getB0mm();
+        if (compareA0mm.length() > 7) {
+            int endIndex = compareA0mm.contains("-") ? 7 : 6;
+            compareA0mm = compareA0mm.substring(0, endIndex);
+        }
+
+        if (compareB0mm.length() > 7) {
+            int endIndex = compareB0mm.contains("-") ? 7 : 6;
+            compareB0mm = compareB0mm.substring(0, endIndex);
+        }
+//        tvAOldmm.setText(oldAmm);
+//        tvBOldmm.setText(oldBmm);
+        tvCompareA0.setText(compareA0mm);
+        tvCompareB0.setText(compareB0mm);
     }
 
     /**
@@ -547,15 +599,18 @@ public class Survey2Activity extends MyBaseActivity2 {
             if (beep.equals("Default"))
                 playRd("save_csv.mp3");
             if (beep.equals("TypeA"))
-                playRd("TypeA.mp3");
+                playRd("TypeA.wav");
             else if (beep.equals("TypeB"))
-                playRd("TypeB.mp3");
+                playRd("TypeB.wav");
             else if (beep.equals("TypeC"))
-                playRd("TypeC.mp3");
+                playRd("TypeC.wav");
             else if (beep.equals("TypeD"))
-                playRd("TypeD.mp3");
+                playRd("TypeD.wav");
             else if (beep.equals("TypeE"))
-                playRd("TypeE.mp3");
+                playRd("TypeE.wav");
+            else if (beep.equals("TypeF")){
+                playRd("TypeF.wav");
+            }
         } catch (IOException err) {
             Toast.makeText(Survey2Activity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
         }

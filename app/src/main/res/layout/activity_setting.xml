@@ -186,13 +186,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="/geostar/tiltmeter/"
+            android:text="/sdcard/inclinometer"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSaveTo"
             app:layout_constraintStart_toEndOf="@id/tvSaveTo"
             app:layout_constraintTop_toTopOf="@id/tvSaveTo"
-            tools:text="/asfa/asfas/fas" />
+            tools:text="/sdcard/inclinometer" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvConnection"

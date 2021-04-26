@@ -83,8 +83,8 @@
             android:textColor="@color/black"
             android:textSize="36sp"
             android:textStyle="bold"
-            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
             app:layout_constraintStart_toEndOf="@id/tvA"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -94,6 +94,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="xxx"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvATitle"
+            app:layout_constraintStart_toEndOf="@id/tvATitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCompareA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xxx"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/tvATitle"
             app:layout_constraintStart_toEndOf="@id/tvATitle" />
 
@@ -138,6 +149,17 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="xxx"
+            android:visibility="gone"
+            app:layout_constraintBaseline_toBaselineOf="@id/tvBTitle"
+            app:layout_constraintStart_toEndOf="@id/tvATitle" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvCompareB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="xxx"
+            android:layout_marginStart="8dp"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/tvBTitle"
             app:layout_constraintStart_toEndOf="@id/tvATitle" />
 
