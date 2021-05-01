@@ -84,7 +84,7 @@
             android:textSize="36sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintHorizontal_bias="0.35"
             app:layout_constraintStart_toEndOf="@id/tvA"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -105,6 +105,8 @@
             android:text="xxx"
             android:layout_marginStart="8dp"
             android:visibility="gone"
+            android:textColor="@color/red"
+            android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tvATitle"
             app:layout_constraintStart_toEndOf="@id/tvATitle" />
 
@@ -160,6 +162,8 @@
             android:text="xxx"
             android:layout_marginStart="8dp"
             android:visibility="gone"
+            android:textColor="@color/red"
+            android:textSize="16sp"
             app:layout_constraintBaseline_toBaselineOf="@id/tvBTitle"
             app:layout_constraintStart_toEndOf="@id/tvATitle" />
 

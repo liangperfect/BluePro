@@ -85,7 +85,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     //    private int unitValue = 0;//单位
 //    private int decimalValue = 3;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
-    String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE","TypeF"};
+    String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE", "TypeF"};
     private int sendDuration = 200;//循环发送命令间隔时间
 
     private float currOneChannelAngle;//记录轴1的原始角度值
@@ -339,11 +339,12 @@ public class Survey2Activity extends MyBaseActivity2 {
 
     /**
      * 是否展示A0 B0的值，当模式是180会展示，模式是0当时候隐藏掉
+     *
      * @param isZero
      */
     private void isShowCompareTv(boolean isZero) {
 
-        int v = isZero?View.GONE:View.VISIBLE;
+        int v = isZero ? View.GONE : View.VISIBLE;
         tvCompareA0.setVisibility(v);
         tvCompareB0.setVisibility(v);
         String depStr = String.valueOf(tvDepthNum.getText());
@@ -449,10 +450,11 @@ public class Survey2Activity extends MyBaseActivity2 {
 
     /**
      * 当模式180的时候，展示对应深度0模式的值
+     *
      * @param depthStr
      */
     private void showCompareMMValue(String depthStr) {
-
+        Log.d("chenliang", "depthStr->" + depthStr);
         //获取对应坐标的mm值进行展示
         SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
 //        String oldAmm = "";
@@ -474,6 +476,8 @@ public class Survey2Activity extends MyBaseActivity2 {
         }
 //        tvAOldmm.setText(oldAmm);
 //        tvBOldmm.setText(oldBmm);
+        compareA0mm = "A0:" + compareA0mm;
+        compareB0mm = "B0:" + compareB0mm;
         tvCompareA0.setText(compareA0mm);
         tvCompareB0.setText(compareB0mm);
     }
@@ -501,8 +505,9 @@ public class Survey2Activity extends MyBaseActivity2 {
                 }).setPositiveButton("確定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                rb180degree.setChecked(true);
+                //顺序不能变，不然显示赌赢的A0值会取到之前没修改的值，显示是top的值获取的却是bottom的值
                 tvDepthNum.setText(String.valueOf(bottomValue));
+                rb180degree.setChecked(true);
             }
         }).show();
     }
@@ -608,7 +613,7 @@ public class Survey2Activity extends MyBaseActivity2 {
                 playRd("TypeD.wav");
             else if (beep.equals("TypeE"))
                 playRd("TypeE.wav");
-            else if (beep.equals("TypeF")){
+            else if (beep.equals("TypeF")) {
                 playRd("TypeF.wav");
             }
         } catch (IOException err) {

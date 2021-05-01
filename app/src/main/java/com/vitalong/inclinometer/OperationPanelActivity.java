@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.vitalong.inclinometer.Utils.Constants;
+import com.vitalong.inclinometer.Utils.FileUtils;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.Utils.Utils;
 import com.vitalong.inclinometer.bean.VerifyDataBean;
@@ -370,21 +371,29 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     /**
      * 将之前的inclionmeter文件夹里面的文件转存到inclionmeter_日期的文件夹里面去
      */
-    class ClearHandler extends Handler {
+   private static class ClearHandler extends Handler {
 
         @Override
         public void handleMessage(@NonNull Message msg) {
             super.handleMessage(msg);
 
-            //文件进行重命名
-            File oldFile = new File(Constants.PRO_ROOT_PATH);
+//          File oldFile = new File(Constants.PRO_ROOT_PATH);
             //根据当前时间来
             Date d = new Date();
             SimpleDateFormat simpleData = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
             String newFileName = Constants.PRO_ROOT_PATH+"_"+simpleData.format(d);
-            File newFile = new File(newFileName);
-            newFile.mkdir();
-            boolean b = oldFile.renameTo(newFile);
+            try {
+                FileUtils.copyFolder(Constants.PRO_ROOT_PATH,newFileName);//复制文件夹
+                FileUtils.deleteFile(new File(Constants.PRO_ROOT_PATH)); //删除原来的文件夹
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+//            File newFile = new File(newFileName);
+//            if (!newFile.exists()){
+//                newFile.mkdir();
+//            }
+//            boolean b = oldFile.renameTo(newFile);
+//            Log.d("chenliang","重命名->"+b);
         }
     }
 

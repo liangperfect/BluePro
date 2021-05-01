@@ -200,21 +200,23 @@ public class CsvUtil {
 
     /**
      * 对double进行格式化,默认是保留2位
+     *
      * @param number 格式化对数字
-     * @param num 小数点后面保留几位
+     * @param num    小数点后面保留几位
      */
-    private String handleDecimalPoint(double number,int num){
+    private String handleDecimalPoint(double number, int num) {
 
 //        java.text.DecimalFormat   df4   =new   java.text.DecimalFormat("#.0000");
-        java.text.DecimalFormat   df;
-        if (num == 2){
-            df   =new   java.text.DecimalFormat("#0.00");
-        }else {
-            df   =new   java.text.DecimalFormat("#0.0000");
+        java.text.DecimalFormat df;
+        if (num == 2) {
+            df = new java.text.DecimalFormat("#0.00");
+        } else {
+            df = new java.text.DecimalFormat("#0.0000");
         }
 
         return df.format(number);
     }
+
     /**
      * true是0度, false是180度
      * 将实时数据存储到数据库中去
@@ -226,7 +228,7 @@ public class CsvUtil {
         double raw2 = getRaw(deg2);
         double radians1 = Math.toRadians(deg1);
         double radians2 = Math.toRadians(deg2);
-        double mm1 =  (Math.sin(radians1) * 500);
+        double mm1 = (Math.sin(radians1) * 500);
         double mm2 = (Math.sin(radians2) * 500);
         SurveyDataTable surveyDataTable = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName), SurveyDataTableDao.Properties.Depth.eq(depth)).build().list().get(0);
 
@@ -240,44 +242,44 @@ public class CsvUtil {
 //                surveyDataTable.setA0Raw(String.valueOf(raw1));
 //                surveyDataTable.setB0Raw(String.valueOf(raw2));
 
-                surveyDataTable.setA0mm(handleDecimalPoint(mm1,2));
-                surveyDataTable.setB0mm(handleDecimalPoint(mm2,2));
-                surveyDataTable.setA0Deg(handleDecimalPoint(deg1,4));
-                surveyDataTable.setB0Deg(handleDecimalPoint(deg2,4));
-                surveyDataTable.setA0Raw(String.valueOf((int)raw1));
+                surveyDataTable.setA0mm(handleDecimalPoint(mm1, 2));
+                surveyDataTable.setB0mm(handleDecimalPoint(mm2, 2));
+                surveyDataTable.setA0Deg(handleDecimalPoint(deg1, 4));
+                surveyDataTable.setB0Deg(handleDecimalPoint(deg2, 4));
+                surveyDataTable.setA0Raw(String.valueOf((int) raw1));
                 surveyDataTable.setB0Raw(String.valueOf((int) raw2));
 //                Log.d("chenliang","数据验证" + handleDecimalPoint(mm1,2));
 //                Log.d("chenliang","数据验证" + handleDecimalPoint(deg1,4));
 //                Log.d("chenliang","数据验证" + (int) raw1);
                 if (surveyDataTable.getA180mm().equals("")) {
-                    surveyDataTable.setCheckSumA(handleDecimalPoint(mm1,2));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint(mm1, 2));
                 } else {
-                    surveyDataTable.setCheckSumA(handleDecimalPoint((mm1 + Double.parseDouble(surveyDataTable.getA180mm())),2));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint((mm1 + Double.parseDouble(surveyDataTable.getA180mm())), 2));
                 }
 
                 if (surveyDataTable.getB180mm().equals("")) {
-                    surveyDataTable.setCheckSumB(handleDecimalPoint(mm2,2));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint(mm2, 2));
                 } else {
-                    surveyDataTable.setCheckSumB(handleDecimalPoint((mm2 + Double.parseDouble(surveyDataTable.getB180mm())),2));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint((mm2 + Double.parseDouble(surveyDataTable.getB180mm())), 2));
                 }
             } else {
 
-                surveyDataTable.setA180mm(handleDecimalPoint(mm1,2));
-                surveyDataTable.setB180mm(handleDecimalPoint(mm2,2));
-                surveyDataTable.setA180Deg(handleDecimalPoint(deg1,4));
-                surveyDataTable.setB180Deg(handleDecimalPoint(deg2,4));
+                surveyDataTable.setA180mm(handleDecimalPoint(mm1, 2));
+                surveyDataTable.setB180mm(handleDecimalPoint(mm2, 2));
+                surveyDataTable.setA180Deg(handleDecimalPoint(deg1, 4));
+                surveyDataTable.setB180Deg(handleDecimalPoint(deg2, 4));
                 surveyDataTable.setA180Raw(String.valueOf((int) raw1));
                 surveyDataTable.setB180Raw(String.valueOf((int) raw2));
                 if (surveyDataTable.getA0mm().equals("")) {
-                    surveyDataTable.setCheckSumA(handleDecimalPoint(mm1,2));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint(mm1, 2));
                 } else {
-                    surveyDataTable.setCheckSumA(handleDecimalPoint((mm1 + Double.parseDouble(surveyDataTable.getA0mm())),2));
+                    surveyDataTable.setCheckSumA(handleDecimalPoint((mm1 + Double.parseDouble(surveyDataTable.getA0mm())), 2));
                 }
 
                 if (surveyDataTable.getB0mm().equals("")) {
-                    surveyDataTable.setCheckSumB(handleDecimalPoint(mm2,2));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint(mm2, 2));
                 } else {
-                    surveyDataTable.setCheckSumB(handleDecimalPoint((mm2 + Double.parseDouble(surveyDataTable.getB0mm())),2));
+                    surveyDataTable.setCheckSumB(handleDecimalPoint((mm2 + Double.parseDouble(surveyDataTable.getB0mm())), 2));
                 }
             }
         }
@@ -340,6 +342,7 @@ public class CsvUtil {
 
     /**
      * 初始化存储成功声音
+     *
      * @param fileName
      * @throws IOException
      */
@@ -351,7 +354,7 @@ public class CsvUtil {
     }
 
     private void toPlayAndVibrator() {
-        if (!mMediaPlayer.isPlaying() ) {
+        if (!mMediaPlayer.isPlaying()) {
             mMediaPlayer.start();
             vibrator.vibrate(100);
         }
