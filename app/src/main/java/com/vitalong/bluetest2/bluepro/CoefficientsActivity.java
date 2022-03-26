@@ -80,8 +80,8 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     private int singleCount = 0;
     private long sendTime = 0;
     private long receiveTime = 0;
-    private long DELAYTIME = 500; //设置矫正参数超时时间
-    private long SEND_DURATION = 500;//发送设置命令的时间间隔为500ms
+    private long DELAYTIME = 3000; //设置矫正参数超时时间
+    private long SEND_DURATION = 3000;//发送设置命令的时间间隔为500ms
     int delayTime = 400;
     private RefreshHandler refreshHandler;
     private int isRefresh = 0; //0是刷新 1是全部重新設置  2是单个设置
@@ -390,7 +390,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 break;
         }
         cmd = cmdAnalyze.getParamToCmd(cmd);
-        Log.d("chenliang111", "String.valueOf(No - 1):" + String.valueOf(No - 1));
+//        Log.d("chenliang111", "String.valueOf(No - 1):" + String.valueOf(No - 1));
         cmd = cmdClass.getParamsCmd(cmd, String.valueOf(No - 1));//getParamsCmd
         sendCmdCodeByHex(cmd);
         coefficientsHandler.getDelaySendHandler().sendEmptyMessageDelayed(No + 1, DELAYTIME);

@@ -59,7 +59,7 @@ public class SettingActivity extends MyBaseActivity2 {
     public Button btnSite;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
-    private int beepValue = 1;
+    private int beepValue = 0;
     private int unitValue = 0;
     private int decimalValue = 0;
 
@@ -93,7 +93,7 @@ public class SettingActivity extends MyBaseActivity2 {
         initSpiners(spUnitValue, ctype3);
         sensorModeValue = (int) SharedPreferencesUtil.getData(Constants.SENSORMODE_KEY, 0);
         sensitivityValue = (int) SharedPreferencesUtil.getData(Constants.SENSITIVITY_KEY, 0);
-        beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 1);
+        beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
         int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);

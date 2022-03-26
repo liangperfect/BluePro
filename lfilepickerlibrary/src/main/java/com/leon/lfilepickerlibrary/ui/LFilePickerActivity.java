@@ -1,5 +1,6 @@
 package com.leon.lfilepickerlibrary.ui;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -8,16 +9,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,8 +30,13 @@ import com.leon.lfilepickerlibrary.R;
 import com.leon.lfilepickerlibrary.adapter.PathAdapter;
 import com.leon.lfilepickerlibrary.filter.LFileFilter;
 import com.leon.lfilepickerlibrary.model.ParamEntity;
+import com.leon.lfilepickerlibrary.utils.BaseResponse;
 import com.leon.lfilepickerlibrary.utils.Constant;
 import com.leon.lfilepickerlibrary.utils.FileUtils;
+import com.leon.lfilepickerlibrary.utils.FileuploadService;
+import com.leon.lfilepickerlibrary.utils.LoadingDialog;
+import com.leon.lfilepickerlibrary.utils.RetrofitHelper;
+import com.leon.lfilepickerlibrary.utils.SharedPreferencesUtil;
 import com.leon.lfilepickerlibrary.utils.StringUtils;
 import com.leon.lfilepickerlibrary.widget.EmptyRecyclerView;
 
@@ -36,6 +45,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sakura.bottommenulibrary.bottompopfragmentmenu.BottomMenuFragment;
 
 public class LFilePickerActivity extends AppCompatActivity {
@@ -60,6 +75,7 @@ public class LFilePickerActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        SharedPreferencesUtil.getInstance(LFilePickerActivity.this, "tfsmkjy");
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
         mParamEntity = (ParamEntity) getIntent().getExtras().getSerializable("param");
@@ -262,36 +278,111 @@ public class LFilePickerActivity extends AppCompatActivity {
             }
         });
 
+        //原本手机分享文件
+//        mBtnShared.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onClick(View v) {
+//
+//                //进行文件分享
+//                final ArrayList<Uri> files = new ArrayList<Uri>();
+//                mListNumbers.forEach(new Consumer<String>() {
+//                    @Override
+//                    public void accept(String path) {
+//                        files.add(Uri.fromFile(new File(path)));
+//                    }
+//                });
+//                Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+//                intent.setType("*/*");//多个文件格式
+//                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
+//                startActivity(intent);
+//            }
+//        });
         mBtnShared.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-
-                //进行文件分享
-                final ArrayList<Uri> files = new ArrayList<Uri>();
-                mListNumbers.forEach(new Consumer<String>() {
-                    @Override
-                    public void accept(String path) {
-                        files.add(Uri.fromFile(new File(path)));
+                final EditText inputServer = new EditText(LFilePickerActivity.this);
+                String email = (String) SharedPreferencesUtil.getData("email","");
+                inputServer.setText(email);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LFilePickerActivity.this);
+                builder.setTitle("發送郵箱地址").setView(inputServer)
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.setPositiveButton("發送", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        String email = inputServer.getText().toString();
+                        SendFielsToEmail(email);
                     }
                 });
-                Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
-                intent.setType("*/*");//多个文件格式
-                intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
-                startActivity(intent);
-//                if (mParamEntity.isChooseMode() && mListNumbers.size() < 1) {
-//                    String info = mParamEntity.getNotFoundFiles();
-//                    if (TextUtils.isEmpty(info)) {
-//                        Toast.makeText(LFilePickerActivity.this, R.string.lfile_NotFoundBooks, Toast.LENGTH_SHORT).show();
-//                    } else {
-//                        Toast.makeText(LFilePickerActivity.this, info, Toast.LENGTH_SHORT).show();
-//                    }
-//                } else {
-//                    //返回
-//                    chooseDone();
-//                }
+                builder.show();
             }
         });
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void SendFielsToEmail(final String email) {
+        final ArrayList<File> files = new ArrayList<File>();
+        mListNumbers.forEach(new Consumer<String>() {
+            @Override
+            public void accept(String path) {
+                files.add(new File(path));
+            }
+        });
+        FileuploadService fileuploadService = RetrofitHelper.buildRetrofit().create(FileuploadService.class);
+        Log.d("chenliang","发送的邮件地址->"+email);
+        Call<BaseResponse<String>> uploadCall = fileuploadService.uploadFilesWithParts(filesToMultipartBodyParts(files), email);
+
+        LoadingDialog.getInstance(LFilePickerActivity.this).show();
+        uploadCall.enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
+
+                if (response.isSuccessful()){
+                    SharedPreferencesUtil.putData("email",email);
+                    LoadingDialog.getInstance(LFilePickerActivity.this).hide();
+                    assert response.body() != null;
+                    Toast.makeText(LFilePickerActivity.this, response.body().msg, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+
+                Toast.makeText(LFilePickerActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                LoadingDialog.getInstance(LFilePickerActivity.this).hide();
+            }
+        });
+    }
+
+    public MultipartBody filesToMultipartBody(List<File> files) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+
+        for (File file : files) {
+            // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
+            RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
+            builder.addFormDataPart("file", file.getName(), requestBody);
+        }
+
+        builder.setType(MultipartBody.FORM);
+        MultipartBody multipartBody = builder.build();
+        return multipartBody;
+    }
+
+    public List<MultipartBody.Part> filesToMultipartBodyParts(List<File> files) {
+        List<MultipartBody.Part> parts = new ArrayList<>(files.size());
+        for (File file : files) {
+            // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), file);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            parts.add(part);
+        }
+        return parts;
     }
 
     /**

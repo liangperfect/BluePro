@@ -448,6 +448,7 @@
             android:layout_below="@id/LinearLayout8"
             android:layout_marginTop="40dp"
             android:gravity="center"
+            android:visibility="gone"
             android:orientation="vertical">
 
             <Button
@@ -458,7 +459,7 @@
                 android:background="@drawable/blue"
                 android:text="SET"
                 android:textColor="#fff"
-                android:visibility="gone" />
+                />
 
         </LinearLayout>
 

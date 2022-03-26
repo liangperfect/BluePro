@@ -147,13 +147,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="2.13"
+            android:text="2.16"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
             app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
             app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
-            tools:text="2.13" />
+            tools:text="2.16" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSite"
