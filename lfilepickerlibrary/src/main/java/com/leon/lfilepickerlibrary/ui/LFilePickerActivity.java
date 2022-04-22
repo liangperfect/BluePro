@@ -41,6 +41,8 @@ import com.leon.lfilepickerlibrary.utils.StringUtils;
 import com.leon.lfilepickerlibrary.widget.EmptyRecyclerView;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -303,7 +305,8 @@ public class LFilePickerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final EditText inputServer = new EditText(LFilePickerActivity.this);
-                String email = (String) SharedPreferencesUtil.getData("email","");
+                inputServer.setBackgroundResource(R.drawable.edittext_border);
+                String email = (String) SharedPreferencesUtil.getData("email", "");
                 inputServer.setText(email);
                 AlertDialog.Builder builder = new AlertDialog.Builder(LFilePickerActivity.this);
                 builder.setTitle("發送郵箱地址").setView(inputServer)
@@ -335,7 +338,6 @@ public class LFilePickerActivity extends AppCompatActivity {
             }
         });
         FileuploadService fileuploadService = RetrofitHelper.buildRetrofit().create(FileuploadService.class);
-        Log.d("chenliang","发送的邮件地址->"+email);
         Call<BaseResponse<String>> uploadCall = fileuploadService.uploadFilesWithParts(filesToMultipartBodyParts(files), email);
 
         LoadingDialog.getInstance(LFilePickerActivity.this).show();
@@ -343,8 +345,8 @@ public class LFilePickerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
 
-                if (response.isSuccessful()){
-                    SharedPreferencesUtil.putData("email",email);
+                if (response.isSuccessful()) {
+                    SharedPreferencesUtil.putData("email", email);
                     LoadingDialog.getInstance(LFilePickerActivity.this).hide();
                     assert response.body() != null;
                     Toast.makeText(LFilePickerActivity.this, response.body().msg, Toast.LENGTH_SHORT).show();
@@ -354,7 +356,7 @@ public class LFilePickerActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
 
-                Toast.makeText(LFilePickerActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(LFilePickerActivity.this, "郵件發送失敗", Toast.LENGTH_SHORT).show();
                 LoadingDialog.getInstance(LFilePickerActivity.this).hide();
             }
         });
@@ -378,8 +380,14 @@ public class LFilePickerActivity extends AppCompatActivity {
         List<MultipartBody.Part> parts = new ArrayList<>(files.size());
         for (File file : files) {
             // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
-            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), file);
-            MultipartBody.Part part = MultipartBody.Part.createFormData("file", file.getName(), requestBody);
+            RequestBody requestBody = RequestBody.create(MediaType.parse("*/*"), file);
+            String tempFileName = "";
+            try {
+                tempFileName = URLEncoder.encode(file.getName(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file", tempFileName, requestBody);
             parts.add(part);
         }
         return parts;
