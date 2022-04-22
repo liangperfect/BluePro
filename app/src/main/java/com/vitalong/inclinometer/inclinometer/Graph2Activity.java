@@ -37,6 +37,7 @@ import java.io.File;
 import java.io.FileFilter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -44,14 +45,15 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
         OnChartValueSelectedListener {
     private LineChart chart;
     private SeekBar seekBarX, seekBarY;
-    private TextView tvX, tvY, tvDis, tvSum,t;
+    private TextView tvX, tvY, tvDis, tvSum, t;
     private Spinner spinner;
     private String csvFileName;
     private String csvFilePath;
     private CsvUtil csvUtil;
-    private boolean whichMode = true; //false 是Sum   true是Dis
+    private boolean whichMode = false; //false 是Sum   true是Dis
     List<SurveyDataTable> list;
     List<SurveyDataTable> earlyTableList;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +71,7 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
         csvUtil = new CsvUtil(Graph2Activity.this);
         list = new ArrayList<>();
         earlyTableList = new ArrayList<>();
-//        list = csvUtil.getSurveyListByCsvName(csvFileName);
-//        List<SurveyDataTable> selectTableList = csvUtil.getSurveyListByCsvName(csvFileName);
         File csvFile = new File(csvFilePath);
-//      String earlyFileName = getEarlyFileName(csvFile);
         List<File> containFiles = FileUtils.getFileListByDirPath(csvFile.getParentFile().getPath(), new FileFilter() {
             @Override
             public boolean accept(File pathname) {
@@ -83,44 +82,23 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
         assert containFiles.get(0) == null;
         File earlyFile = containFiles.get(0);
         for (int i = 0; i < containFiles.size(); i++) {
-            String earlyTime = earlyFile.getName().split("_")[2].replace(".csv","");
+            String earlyTime = earlyFile.getName().split("_")[2].replace(".csv", "");
             double earlyDouble = Double.parseDouble(earlyTime);
 
-            String curr =  containFiles.get(i).getName().split("_")[2].replace(".csv","");
+            String curr = containFiles.get(i).getName().split("_")[2].replace(".csv", "");
             double currDouble = Double.parseDouble(curr);
 
-            if (earlyDouble >= currDouble){
+            if (earlyDouble >= currDouble) {
                 earlyFile = containFiles.get(i);
             }
         }
         initView(containFiles);//初始化spinner的列表及其它View
-//        List<SurveyDataTable> earlyTableList = csvUtil.getSurveyListByCsvName(earlyFile.getName());
         //获取最老的测量数据
         earlyTableList.addAll(csvUtil.getSurveyListByCsvName(earlyFile.getName()));
-
-//        list.addAll(csvUtil.getSurveyListByCsvName(csvFileName));//装填选中的原始数据
-//        List<SurveyDataTable> useList = new ArrayList<>(list);
-//        for (int i = 0; i < useList.size(); i++) {
-//            double selectA0mm = Double.parseDouble(list.get(i).getA0mm());
-//            double earlyA0mm = Double.parseDouble(earlyTableList.get(i).getA0mm());
-//            double selectA180mm = Double.parseDouble(list.get(i).getA180mm());
-//            double earlyA180mm = Double.parseDouble(earlyTableList.get(i).getA180mm());
-//            double selectB0mm = Double.parseDouble(list.get(i).getB0mm());
-//            double earlyB0mm = Double.parseDouble(earlyTableList.get(i).getB0mm());
-//            double selectB180mm = Double.parseDouble(list.get(i).getB180mm());
-//            double earlyB180mm = Double.parseDouble(earlyTableList.get(i).getB180mm());
-//
-//            useList.get(i).setA0mm(String.valueOf(selectA0mm - earlyA0mm));
-//            useList.get(i).setA180mm(String.valueOf(selectA180mm - earlyA180mm));
-//            useList.get(i).setB0mm(String.valueOf(selectB0mm - earlyB0mm));
-//            useList.get(i).setB180mm(String.valueOf(selectB180mm - earlyB180mm));
-//        }
-
-//        initChartData(list);
         initChartData(getDrawTableList());
     }
 
-    private List<SurveyDataTable> getDrawTableList(){
+    private List<SurveyDataTable> getDrawTableList() {
         list.clear();
         list.addAll(csvUtil.getSurveyListByCsvName(csvFileName));//装填选中的原始数据
         List<SurveyDataTable> useList = new ArrayList<>(list);
@@ -139,8 +117,8 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
             useList.get(i).setB0mm(String.valueOf(selectB0mm - earlyB0mm));
             useList.get(i).setB180mm(String.valueOf(selectB180mm - earlyB180mm));
         }
-        if (list.size() != earlyTableList.size()){
-            Toast.makeText(Graph2Activity.this,"與最舊csv文档的数据量不匹配",Toast.LENGTH_SHORT).show();
+        if (list.size() != earlyTableList.size()) {
+            Toast.makeText(Graph2Activity.this, "與最舊csv文档的数据量不匹配", Toast.LENGTH_SHORT).show();
         }
         return useList;
     }
@@ -148,28 +126,18 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void initChartData(List<SurveyDataTable> list) {
-        XAxis xl = chart.getXAxis();
-//        xl.setLabelRotationAngle(270);
-        xl.setAvoidFirstLastClipping(true);
-//        xl.setAxisMinimum(0);
-//        xl.setAxisMaximum(100);
+//        XAxis xl = chart.getXAxis();
 //        xl.setPosition(XAxis.XAxisPosition.TOP);
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setInverted(true);
-//        leftAxis.setAxisMinimum(-300); // this replaces setStartAtZero(true)
-//        leftAxis.setAxisMaximum(300);
+//        YAxis leftAxis = chart.getAxisLeft();
+//        leftAxis.setInverted(true);
         YAxis rightAxis = chart.getAxisRight();
         rightAxis.setEnabled(false);
         // add data
-        seekBarX.setProgress(25);
-        seekBarY.setProgress(50);
         Legend l = chart.getLegend();
         // modify the legend ...
         l.setForm(Legend.LegendForm.LINE);
         l.setEnabled(false);
         //装载数据
-//        setData(0, 0);
         if (whichMode) {
             setDisData(list);
         } else {
@@ -200,9 +168,10 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
         chart.getDescription().setEnabled(false);
         // enable touch gestures
         chart.setTouchEnabled(true);
-        // enable scaling and dragging
-        chart.setDragEnabled(true);
-        chart.setScaleEnabled(true);
+        chart.setDragYEnabled(true);
+        chart.setScaleYEnabled(true);
+        chart.setDragXEnabled(true);
+        chart.setScaleXEnabled(true);
         // ************** init chartListener end **************
 //        spinner.setAdapter(new Ada);
         List<String> csvNames = new ArrayList<>();
@@ -223,8 +192,6 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-//                list.clear();
-//                list.addAll(csvUtil.getSurveyListByCsvName(csvNames.get(position)));
                 csvFileName = csvNames.get(position);
                 initChartData(getDrawTableList());
             }
@@ -267,40 +234,32 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
         try {
             ArrayList<Entry> entries = new ArrayList<>();
             ArrayList<Entry> entriesB = new ArrayList<>();
-            float maxX = Float.parseFloat(list.get(0).getDepth());
-            float minX = Float.parseFloat(list.get(0).getDepth());
-            float maxY = Float.parseFloat(list.get(0).getCheckSumA());
-            float minY = Float.parseFloat(list.get(0).getCheckSumA());
+            float maxX = Float.parseFloat(list.get(0).getCheckSumA());
+            float minX = Float.parseFloat(list.get(0).getCheckSumA());
             for (int i = 0; i < list.size(); i++) {
 
                 float aSum = Float.parseFloat(list.get(i).getCheckSumA());
                 float bSum = Float.parseFloat(list.get(i).getCheckSumB());
                 float aYVal = Float.parseFloat(list.get(i).getDepth());
-                entries.add(new Entry(aYVal, aSum));
-                entriesB.add(new Entry(aYVal, bSum));
-                maxX = Math.max(maxX, aYVal);
-                minX = Math.min(minX, aYVal);
-                maxY = Math.max(maxY, aSum);
-                maxY = Math.max(maxY, bSum);
-                minY = Math.min(minY, aSum);
-                minY = Math.min(minY, bSum);
+                entries.add(new Entry(aSum, aYVal));
+                entriesB.add(new Entry(bSum, aYVal));
+                maxX = Math.max(maxX, aSum);
+                maxX = Math.max(maxX, bSum);
+                minX = Math.min(minX, aSum);
+                minX = Math.min(minX, bSum);
             }
-            int YDuration = (int) Math.max(Math.abs(maxY), Math.abs(minY)) + 10;
-
             XAxis xl = chart.getXAxis();
-            xl.setAxisMinimum((int) minX);
-            xl.setAxisMaximum((int) maxX);
-
+            xl.setPosition(XAxis.XAxisPosition.TOP);
+            xl.setAxisMinimum((int)(minX - 1));
+            xl.setAxisMaximum((int)(maxX + 1));
             YAxis leftAxis = chart.getAxisLeft();
             leftAxis.setInverted(true);
-            leftAxis.setAxisMinimum(-YDuration); // this replaces setStartAtZero(true)
-            leftAxis.setAxisMaximum(YDuration);
-            Collections.sort(entries, new EntryXComparator());
+            Collections.sort(entries, new EntryXComparator1());
             // create a dataset and give it a type
             LineDataSet set1 = new LineDataSet(entries, "A");
-//        set1.setColor(Color.RED);
             set1.setColor(Color.RED);
             set1.setCircleColor(Color.RED);
+            Collections.sort(entriesB, new EntryXComparator1());
             LineDataSet setB = new LineDataSet(entriesB, "B");
             setB.setColor(Color.BLUE);
             setB.setCircleColor(Color.BLUE);
@@ -326,40 +285,33 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
         try {
             ArrayList<Entry> entries = new ArrayList<>();
             ArrayList<Entry> entriesB = new ArrayList<>();
-            float maxX = Float.parseFloat(list.get(0).getDepth());
-            float minX = Float.parseFloat(list.get(0).getDepth());
-            float maxY = (Float.parseFloat(list.get(0).getA0mm()) - Float.parseFloat(list.get(0).getA180mm())) / 2;
-            float minY = (Float.parseFloat(list.get(0).getA0mm()) - Float.parseFloat(list.get(0).getA180mm())) / 2;
+            float maxX =  (Float.parseFloat(list.get(0).getA0mm()) - Float.parseFloat(list.get(0).getA180mm())) / 2;
+            float minX =  (Float.parseFloat(list.get(0).getA0mm()) - Float.parseFloat(list.get(0).getA180mm())) / 2;
             for (int i = 0; i < list.size(); i++) {
 
                 float aDisSum = (Float.parseFloat(list.get(i).getA0mm()) - Float.parseFloat(list.get(i).getA180mm())) / 2;
                 float bDisSum = (Float.parseFloat(list.get(i).getB0mm()) - Float.parseFloat(list.get(i).getB180mm())) / 2;
                 float aYVal = Float.parseFloat(list.get(i).getDepth());
-                entries.add(new Entry(aYVal, aDisSum));
-                entriesB.add(new Entry(aYVal, bDisSum));
-                maxX = Math.max(maxX, aYVal);
-                minX = Math.min(minX, aYVal);
-                maxY = Math.max(maxY, aDisSum);
-                maxY = Math.max(maxY, bDisSum);
-                minY = Math.min(minY, aDisSum);
-                minY = Math.min(minY, bDisSum);
+                entries.add(new Entry(aDisSum, aYVal));
+                entriesB.add(new Entry(bDisSum, aYVal));
+                maxX = Math.max(maxX, aDisSum);
+                maxX = Math.max(maxX, bDisSum);
+                minX = Math.min(minX, aDisSum);
+                minX = Math.min(minX, bDisSum);
             }
-            int YDuration = (int) Math.max(Math.abs(maxY), Math.abs(minY)) + 10;
 
             XAxis xl = chart.getXAxis();
-            xl.setAxisMinimum((int) minX);
-            xl.setAxisMaximum((int) maxX);
-
+            xl.setPosition(XAxis.XAxisPosition.TOP);
+            xl.setAxisMinimum((int)(minX - 1));
+            xl.setAxisMaximum((int)(maxX + 1));
             YAxis leftAxis = chart.getAxisLeft();
             leftAxis.setInverted(true);
-            leftAxis.setAxisMinimum(-YDuration); // this replaces setStartAtZero(true)
-            leftAxis.setAxisMaximum(YDuration);
-            Collections.sort(entries, new EntryXComparator());
+            Collections.sort(entries, new EntryXComparator1());
             // create a dataset and give it a type
             LineDataSet set1 = new LineDataSet(entries, "A");
-//        set1.setColor(Color.RED);
             set1.setColor(Color.RED);
             set1.setCircleColor(Color.RED);
+            Collections.sort(entriesB, new EntryXComparator1());
             LineDataSet setB = new LineDataSet(entriesB, "B");
             setB.setColor(Color.BLUE);
             setB.setCircleColor(Color.BLUE);
@@ -414,5 +366,14 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
+    }
+
+    public class EntryXComparator1 implements Comparator<Entry> {
+        @Override
+        public int compare(Entry entry1, Entry entry2) {
+            float diff = entry1.getY() - entry2.getY();
+//            float diff = entry2.getY() - entry1.getY();
+            return Float.compare(diff, 0f);
+        }
     }
 }

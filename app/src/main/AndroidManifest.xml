@@ -34,7 +34,9 @@
         <activity android:name=".StartActivity"></activity>
         <activity android:name=".inclinometer.TestMainActivity" />
         <activity android:name=".inclinometer.InclinometerSurveyListActivity" />
-        <activity android:name=".inclinometer.Graph3Activity" />
+        <activity android:name=".inclinometer.Graph3Activity" >
+
+        </activity>
         <activity
             android:name=".inclinometer.Graph2Activity"
             android:screenOrientation="portrait"

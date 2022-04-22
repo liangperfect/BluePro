@@ -114,7 +114,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     private CsvUtil csvUtil;
     private boolean isZero = true; //当前模式是不是0模式
     private boolean isAuto = false;//true:自动  false:手动  记录当前是什么模式
-    private int autoTimeOut = 3;//自动模式下稳定的时间
+    private int autoTimeOut = 1;//自动模式下稳定的时间单位秒
     private int autoNums = 3;//自动模式下稳定的次数，由时间转换过来
     private int currAutoIndex = 0;//用于技术当前自动模式下再稳定后又稳定的次数
     private long lastClickTime = 0;//防止按钮被连续点击造成存储问题
@@ -557,7 +557,7 @@ public class Survey2Activity extends MyBaseActivity2 {
 //        decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 0);
 //        sendDuration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
         currSnValue = (String) SharedPreferencesUtil.getData("SNVaule", "");
-        autoTimeOut = (int) SharedPreferencesUtil.getData(Constants.TIME_OUT, 3);
+        autoTimeOut = (int) SharedPreferencesUtil.getData(Constants.TIME_OUT, autoTimeOut);
         autoNums = autoTimeOut * 1000 / sendDuration;
 //        if (unitValue == Constants.UNIT_DEG) {
 //
@@ -567,25 +567,25 @@ public class Survey2Activity extends MyBaseActivity2 {
 //            image1.setImageResource(R.drawable.new_raw1);
 ////            image2.setImageResource(R.mipmap.b1);
 //        }
-        int sensitivityMode = 3;
+        int sensitivityMode = 2;
         if (sensitivityValue == Constants.SENSITVITY_1_FASTER) {
-            sensitivityMode = 3;
+            sensitivityMode = 2;
         } else if (sensitivityValue == Constants.SENSITVITY_2_DEFAULT) {
-            sensitivityMode = 4;
+            sensitivityMode = 3;
         } else if (sensitivityValue == Constants.SENSITVITY_3_SLOWER) {
-            sensitivityMode = 5;
+            sensitivityMode = 4;
         } else if (sensitivityValue == Constants.SENSITVITY_4_DEGREE) {
-            sensitivityMode = 6;
+            sensitivityMode = 5;
         } else if (sensitivityValue == Constants.SENSITVITY_5_DEGREE) {
-            sensitivityMode = 7;
+            sensitivityMode = 6;
         } else if (sensitivityValue == Constants.SENSITVITY_6_DEGREE) {
-            sensitivityMode = 8;
+            sensitivityMode = 7;
         } else if (sensitivityValue == Constants.SENSITVITY_7_DEGREE) {
-            sensitivityMode = 9;
+            sensitivityMode = 8;
         } else if (sensitivityValue == Constants.SENSITVITY_8_DEGREE) {
-            sensitivityMode = 10;
+            sensitivityMode = 9;
         } else if (sensitivityValue == Constants.SENSITVITY_9_DEGREE) {
-            sensitivityMode = 11;
+            sensitivityMode = 10;
         }
         oneAxisLink = new AxisLink2(sensitivityMode);
         twoAxisLink = new AxisLink2(sensitivityMode);
