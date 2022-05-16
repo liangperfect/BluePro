@@ -173,7 +173,7 @@ public class SelectModeActivity extends AppCompatActivity {
                     startActivity(intent2);
                 } catch (Exception e) {
 
-                    Toast.makeText(SelectModeActivity.this, "SelectModeActivity:文件解析错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SelectModeActivity.this, "SelectModeActivity:文件解析錯誤", Toast.LENGTH_SHORT).show();
                 }
             }
         }
@@ -198,7 +198,7 @@ public class SelectModeActivity extends AppCompatActivity {
 //            csvUtil = new CsvUtil(SelectModeActivity.this, siteName, holeName, topValue, bottomValue);
         } catch (Exception exception) {
 
-            Toast.makeText(SelectModeActivity.this, "沒找到孔的信息", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SelectModeActivity.this, "沒找到孔信息", Toast.LENGTH_SHORT).show();
         }
 
         while (bottomValue >= topValue) {

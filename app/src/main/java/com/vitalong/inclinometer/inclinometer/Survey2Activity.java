@@ -454,7 +454,6 @@ public class Survey2Activity extends MyBaseActivity2 {
      * @param depthStr
      */
     private void showCompareMMValue(String depthStr) {
-        Log.d("chenliang", "depthStr->" + depthStr);
         //获取对应坐标的mm值进行展示
         SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
 //        String oldAmm = "";
@@ -486,7 +485,7 @@ public class Survey2Activity extends MyBaseActivity2 {
      * 完成测量
      */
     private void completeSurvey() {
-        Toast.makeText(Survey2Activity.this, "测量完成", Toast.LENGTH_SHORT).show();
+        Toast.makeText(Survey2Activity.this, "測量完成", Toast.LENGTH_SHORT).show();
         Intent i;
         i = new Intent(Survey2Activity.this, InclinometerSurveyListActivity.class);
         i.putExtra("csvFileName", csvFileName);
@@ -698,7 +697,7 @@ public class Survey2Activity extends MyBaseActivity2 {
             }
         } catch (Exception e) {
 //            e.printStackTrace();
-            Log.e("chenliang", "数据解析出问题:" + formatMsgContent(data));
+            Log.e("chenliang", "數據解析出問題:" + formatMsgContent(data));
         }
     }
 
