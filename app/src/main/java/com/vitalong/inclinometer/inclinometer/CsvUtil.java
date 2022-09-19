@@ -162,8 +162,10 @@ public class CsvUtil {
      */
     private List<String> createTableData(String csvFileName) {
         Date d = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        String currTime = sdf.format(d);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+        String yMd = sdf.format(d);
+        String Hms = sdf2.format(d);
         final List<String> collection = new ArrayList<>();
         //将Factory参数采用科学技术法去表示
         collection.add(new TableRowBean2("Type:", "Digital Inclinometer", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
@@ -179,9 +181,11 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Gage Factor(B):", "B1=" + dBxisAStr, "B2=" + dBxisBStr, "B3=" + dBxisCStr, "B4=" + dBxisDStr, "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Site#:", siteStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Hole#:", holeStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+//      scollection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Depth(m):", ""+ topValue,  ""+bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+//        collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Date/Time:", yMd, Hms, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(Deg*PI()/180)", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
         collection.add(new TableRowBean2("", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "A0(Deg)", "A180(Deg)", "B0(Deg)", "B180(Deg)", "A0(Raw)", "A180(Raw)", "B0(Raw)", "B180(Raw)", "CheckSumA", "CheckSumB").toSaveString());
 

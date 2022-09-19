@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 import com.github.mikephil.charting.animation.ChartAnimator;
 import com.github.mikephil.charting.charts.LineChart;
@@ -539,7 +540,7 @@ public class LineChartRenderer extends LineRadarRenderer {
         if (isDrawingValuesAllowed(mChart)) {
 
             List<ILineDataSet> dataSets = mChart.getLineData().getDataSets();
-
+//            dataSets.get(0).getEntryCount();
             for (int i = 0; i < dataSets.size(); i++) {
 
                 ILineDataSet dataSet = dataSets.get(i);
@@ -567,39 +568,43 @@ public class LineChartRenderer extends LineRadarRenderer {
                 MPPointF iconsOffset = MPPointF.getInstance(dataSet.getIconsOffset());
                 iconsOffset.x = Utils.convertDpToPixel(iconsOffset.x);
                 iconsOffset.y = Utils.convertDpToPixel(iconsOffset.y);
+                try {
 
-                for (int j = 0; j < positions.length; j += 2) {
+                    for (int j = 0; j < positions.length; j += 2) {
 
-                    float x = positions[j];
-                    float y = positions[j + 1];
+                        float x = positions[j];
+                        float y = positions[j + 1];
 
-                    if (!mViewPortHandler.isInBoundsRight(x))
-                        break;
+                        if (!mViewPortHandler.isInBoundsRight(x))
+                            break;
 
-                    if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
-                        continue;
+                        if (!mViewPortHandler.isInBoundsLeft(x) || !mViewPortHandler.isInBoundsY(y))
+                            continue;
 
-                    Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
+                        Entry entry = dataSet.getEntryForIndex(j / 2 + mXBounds.min);
 
-                    if (dataSet.isDrawValuesEnabled()) {
-                        drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2));
+                        if (dataSet.isDrawValuesEnabled()) {
+                            drawValue(c, formatter.getPointLabel(entry), x, y - valOffset, dataSet.getValueTextColor(j / 2));
+                        }
+
+                        if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
+
+                            Drawable icon = entry.getIcon();
+
+                            Utils.drawImage(
+                                    c,
+                                    icon,
+                                    (int) (x + iconsOffset.x),
+                                    (int) (y + iconsOffset.y),
+                                    icon.getIntrinsicWidth(),
+                                    icon.getIntrinsicHeight());
+                        }
                     }
 
-                    if (entry.getIcon() != null && dataSet.isDrawIconsEnabled()) {
-
-                        Drawable icon = entry.getIcon();
-
-                        Utils.drawImage(
-                                c,
-                                icon,
-                                (int)(x + iconsOffset.x),
-                                (int)(y + iconsOffset.y),
-                                icon.getIntrinsicWidth(),
-                                icon.getIntrinsicHeight());
-                    }
+                    MPPointF.recycleInstance(iconsOffset);
+                } catch (Exception ex) {
+                    Log.d("chenliang", "drawValues: nothing");
                 }
-
-                MPPointF.recycleInstance(iconsOffset);
             }
         }
     }
