@@ -259,7 +259,6 @@ public class SurveyActivity extends MyBaseActivity2 {
 
     @Override
     protected void disconnectBlue() {
-        System.out.println("蓝牙断开了连接");
         isShowingDialog = true;
         showStateDialog(getString(R.string.conn_disconnected_home), SurveyActivity.this);
     }
@@ -379,7 +378,7 @@ public class SurveyActivity extends MyBaseActivity2 {
                         i.putExtra("canSave", true);
                         startActivity(i);
                         SurveyActivity.this.finish();
-                        Toast.makeText(SurveyActivity.this, "进行数据保存", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SurveyActivity.this, "進行數據保存", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     //双轴模式
@@ -408,7 +407,7 @@ public class SurveyActivity extends MyBaseActivity2 {
                         startActivity(i);
                         SurveyActivity.this.finish();
                     }
-                    Toast.makeText(SurveyActivity.this, "进行数据保存", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SurveyActivity.this, "進行數據保存", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -510,7 +509,6 @@ public class SurveyActivity extends MyBaseActivity2 {
             else if (beep.equals("TypeE"))
                 playRd("TypeE.wav");
         } catch (IOException err) {
-            Log.d("chenliang", "错误信息->" + err.getMessage());
             Toast.makeText(SurveyActivity.this, err.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }

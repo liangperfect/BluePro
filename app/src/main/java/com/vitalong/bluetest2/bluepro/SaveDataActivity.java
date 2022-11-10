@@ -2,6 +2,7 @@ package com.vitalong.bluetest2.bluepro;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -26,6 +27,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.leon.lfilepickerlibrary.utils.Constant;
 import com.leon.lfilepickerlibrary.utils.FileUtils;
 import com.vitalong.bluetest2.MyApplication;
 import com.vitalong.bluetest2.R;
@@ -39,7 +41,6 @@ import com.vitalong.bluetest2.bean.VerifyDataBean;
 import com.vitalong.bluetest2.greendaodb.RealDataCachedDao;
 import com.vitalong.bluetest2.views.CompanySelectDialog;
 
-import net.ozaydin.serkan.easy_csv.EasyCsv;
 import net.ozaydin.serkan.easy_csv.FileCallback;
 
 import java.io.File;
@@ -87,6 +88,7 @@ public class SaveDataActivity extends AppCompatActivity {
     private String snValue = "";
     private String selectDir = "";
     private String selectFileName = "T01";
+    private int selectFileNameIndex = 0;
     private VerifyDataBean verifyDataBean;//矫正参数
     private boolean isSingleAxis = false; //判断数据是单轴还是双轴的 true:单轴   false:双轴
 
@@ -108,6 +110,9 @@ public class SaveDataActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_save_data);
+        //回显上次选择的文件夹和点位
+        String s1 = (String) SharedPreferencesUtil.getData(Constant.SAVE_SELECTDIR,"");
+        Integer s2 = (Integer) SharedPreferencesUtil.getData(Constant.SAVE_SELECTFILENAME,0);
         verifyDataBean = ((MyApplication) getApplication()).getVerifyDataBean();
         saveSuerveyBean = (SaveSuerveyBean) Objects.requireNonNull(getIntent().getExtras()).get("saveData");
         isSingleAxis = (boolean) getIntent().getExtras().get("isSingleAxis");
@@ -117,6 +122,8 @@ public class SaveDataActivity extends AppCompatActivity {
         makeStatusBar(R.color.white);
         initVerifyData();
         initView();
+        tvSiteValue.setText(s1);
+        spTiltmeter.setSelection(s2);
         easyCsv = new EasyCsvCopy(SaveDataActivity.this);
     }
 
@@ -182,19 +189,40 @@ public class SaveDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tvSelectStr = tvSiteValue.getText().toString();
                 if (!tvSelectStr.isEmpty()) {
-                    if (canSave) {
-                        selectDir = tvSelectStr;
-                        saveData();
-                        //保存了数据就前往列表展示页面
-                        Intent i = new Intent(SaveDataActivity.this, SurveyListActivity.class);
-                        i.putExtra("tableName", selectDir + "_" + selectFileName);
-                        i.putExtra("fromWhich", true);
-                        startActivity(i);
-                    }
-                    setResult(Activity.RESULT_OK);
-                    SaveDataActivity.this.finish();
+
+                    AlertDialog dialog = new AlertDialog.Builder(SaveDataActivity.this)
+                            .setTitle("請確定日期檔及儲存點號")
+                            .setMessage(tvSelectStr + " _ " + selectFileName)
+                            .setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (canSave) {
+                                        selectDir = tvSelectStr;
+                                        saveData();
+                                        //保存了数据就前往列表展示页面
+                                        Intent i = new Intent(SaveDataActivity.this, SurveyListActivity.class);
+                                        i.putExtra("tableName", selectDir + "_" + selectFileName);
+                                        i.putExtra("fromWhich", true);
+                                        startActivity(i);
+                                    }
+
+                                    SharedPreferencesUtil.putData(Constant.SAVE_SELECTDIR,selectDir);
+
+                                    SharedPreferencesUtil.putData(Constant.SAVE_SELECTFILENAME,selectFileNameIndex);
+                                    setResult(Activity.RESULT_OK);
+                                    SaveDataActivity.this.finish();
+                                }
+                            }).create();
+                    dialog.show();
                 } else {
-                    Toast.makeText(SaveDataActivity.this, "请先选择工地号", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveDataActivity.this, "請先選擇工地號", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -255,11 +283,11 @@ public class SaveDataActivity extends AppCompatActivity {
             List<String> headerList = new ArrayList<>();
             List<String> dataList = createTableData2();
             File file = new File(Environment.getExternalStorageDirectory() + File.separator + saveFileStr + ".csv");
-            if (file.exists()) {
-                Log.d("chenliang", "文件存在" + file.getPath());
-            } else {
-                Log.d("chenliang", "文件不存在" + file.getPath());
-            }
+//            if (file.exists()) {
+//                Log.d("chenliang", "文件存在" + file.getPath());
+//            } else {
+//                Log.d("chenliang", "文件不存在" + file.getPath());
+//            }
             easyCsv.createCsvFile(saveFileStr, headerList, dataList, 1, new FileCallback() {
 
                 @Override
@@ -271,7 +299,7 @@ public class SaveDataActivity extends AppCompatActivity {
 
                 @Override
                 public void onFail(String s) {
-                    Toast.makeText(SaveDataActivity.this, "保存失敗:" + s, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SaveDataActivity.this, "保存失敗" + s, Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (IOException e) {
@@ -399,6 +427,7 @@ public class SaveDataActivity extends AppCompatActivity {
             case R.id.spTiltmeter:
 
                 selectFileName = fileNames[position];
+                selectFileNameIndex= position;
                 break;
             default:
                 break;

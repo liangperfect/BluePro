@@ -387,10 +387,23 @@ public class LFilePickerActivity extends AppCompatActivity {
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
-            MultipartBody.Part part = MultipartBody.Part.createFormData("file", tempFileName, requestBody);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file",tempFileName, requestBody);
             parts.add(part);
         }
         return parts;
+    }
+
+    private static String encodeHeadInfo( String headInfo ) {
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int i = 0, length = headInfo.length(); i < length; i++) {
+            char c = headInfo.charAt(i);
+            if (c <= '\u001f' || c >= '\u007f') {
+                stringBuffer.append( String.format ("\\u%04x", (int)c) );
+            } else {
+                stringBuffer.append(c);
+            }
+        }
+        return stringBuffer.toString();
     }
 
     /**

@@ -386,7 +386,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 cmd = edtBxiasD.getText().toString().trim();
                 break;
             default:
-                System.out.println("设置矫正参数完毕");
+                System.out.println("設置矯正參數完畢");
                 break;
         }
         cmd = cmdAnalyze.getParamToCmd(cmd);
@@ -400,42 +400,42 @@ public class CoefficientsActivity extends MyBaseActivity2 {
 
         if (edtAxiasA.getText().toString().trim().isEmpty()) {
 
-            Toast.makeText(CoefficientsActivity.this, "AxiasA不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "AxiasA不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtAxiasB.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "AxiasB不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "AxiasB不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtAxiasC.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "AxiasC不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "AxiasC不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtAxiasD.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "AxiasD不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "AxiasD不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtBxiasA.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "BxiasA不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "BxiasA不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtBxiasB.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "BxiasB不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "BxiasB不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtBxiasC.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "BxiasC不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "BxiasC不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
         if (edtBxiasD.getText().toString().trim().isEmpty()) {
-            Toast.makeText(CoefficientsActivity.this, "BxiasC不能为空", Toast.LENGTH_SHORT).show();
+            Toast.makeText(CoefficientsActivity.this, "BxiasC不能為空", Toast.LENGTH_SHORT).show();
             return false;
         }
 
@@ -451,7 +451,6 @@ public class CoefficientsActivity extends MyBaseActivity2 {
     @Override
     protected void receiveDataFromBlue(byte[] array) {
 
-        System.out.println("CoefficientsActivity接收到的数据:" + formatMsgContent(array));
         //返回的数据就删除延迟handle里面的消息
         if (isRefresh == 1) {
             //设置
@@ -736,7 +735,7 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 count = 0;
                 btnSet.setEnabled(true);
                 btnRefresh.setEnabled(true);
-                Toast.makeText(CoefficientsActivity.this, "参数设置完毕", Toast.LENGTH_SHORT).show();
+                Toast.makeText(CoefficientsActivity.this, "參數設置完畢", Toast.LENGTH_SHORT).show();
                 break;
             default:
 
@@ -834,7 +833,6 @@ public class CoefficientsActivity extends MyBaseActivity2 {
                 refreshHandler.sendEmptyMessageDelayed(3, delayTime);
                 break;
             default:
-                Log.d("chenliang", "获取矫正参数命令发送完成");
                 break;
         }
     }

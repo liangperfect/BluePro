@@ -437,7 +437,7 @@ public class MeregParametersActivity extends AppCompatActivity {
 
     public void showShareDialog(File file) {
         new AlertDialog.Builder(MeregParametersActivity.this)
-                .setTitle("Csv合并成功")
+                .setTitle("Csv合併成功")
                 .setMessage("是否分享該" + file.getName())
                 .setPositiveButton("分享", new DialogInterface.OnClickListener() {
                     @Override

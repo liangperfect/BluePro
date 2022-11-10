@@ -24,4 +24,9 @@ public class Constant {
     //工地选择模式后
     public static int SELECTOR_MODE_2_1 = 1;//开始测量
     public static int SELECTOR_MODE_2_2 = 2;//修改记录，进入到下一步
+
+    //SharePreference Save Data
+    public static String SAVE_SELECTDIR = "Tiltmeter_dir";
+    public static String SAVE_SELECTFILENAME = "Tiltmeter_filename";
+
 }

@@ -115,7 +115,7 @@ public class SettingActivity extends MyBaseActivity2 {
                 SharedPreferencesUtil.putData(Constants.DECIMAL, decimalValue);
                 SharedPreferencesUtil.putData(Constants.SURVEY_DURATION, Integer.valueOf(duration));
                 SettingActivity.this.finish();
-                Toast.makeText(SettingActivity.this, "Setting success", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "設置成功", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -241,7 +241,6 @@ public class SettingActivity extends MyBaseActivity2 {
 
     @Override
     protected void disconnectBlue() {
-        System.out.println("蓝牙断开了连接");
         isShowingDialog = true;
         showStateDialog(getString(R.string.conn_disconnected_home), SettingActivity.this);
     }
