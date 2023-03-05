@@ -11,8 +11,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +49,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
     private TextView tvInterval;
     private EditText edtTopDepth;
     private EditText edtBottomDepth;
+    private RadioButton radioButton1;
+    private RadioButton radioButton2;
     private Toolbar toolbar;
     private TextView tvTopHit;
     private ImageButton imgbConstructionSite;
@@ -55,6 +59,7 @@ public class BoreholeInfoActivity extends AppCompatActivity {
     private List<File> ConstructionSiteFiles;//工地文件夹名称
     private BoreholeInfoTableDao boreholeInfoTableDao;
     private SurveyDataTableDao surveyDataTableDao;
+    private float interval = 0.5f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +87,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
         imgbConstructionSite = findViewById(R.id.imgbConstructionSite);
         edtConstructionSite = findViewById(R.id.edtConstructionSite);
         edtHoleNumber = findViewById(R.id.edtHoleNumber);
+        radioButton1 = findViewById(R.id.radioButton1);
+        radioButton2 = findViewById(R.id.radioButton2);
         edtAoDes = findViewById(R.id.edtAoDes);
         toolbar = findViewById(R.id.toolbar);
         tvMeasurePoints = findViewById(R.id.tvMeasurePoints);
@@ -153,8 +160,10 @@ public class BoreholeInfoActivity extends AppCompatActivity {
                         } else {
                             float bottomValue = Float.parseFloat(s.toString());
                             //计算点数
-                            float pointsValue = (bottomValue - topValue) * 2;
-                            int pointsNums = (int) pointsValue + 1;
+//                            float pointsValue = (bottomValue - topValue) * 2;
+//                            float pointsValue = (bottomValue - topValue) / interval;
+//                            int pointsNums = (int) pointsValue + 2;
+                            int pointsNums = (int) (bottomValue / interval * 2);
                             tvMeasurePoints.setText(String.valueOf(pointsNums));
                         }
                     }
@@ -166,14 +175,62 @@ public class BoreholeInfoActivity extends AppCompatActivity {
             }
         });
 
+        //0.5m
+        radioButton1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    interval = 0.5f;
+                    edtTopDepth.setText("" + interval);
+                    if (!edtTopDepth.getText().toString().trim().isEmpty() && !edtBottomDepth.getText().toString().trim().isEmpty()) {
+                        float topValue = Float.parseFloat(edtTopDepth.getText().toString());
+                        float bottomValue = Float.parseFloat(edtBottomDepth.getText().toString());
+                        float pointsValue = (bottomValue - topValue) / interval;
+                        Log.d("chenliang", "bottomValue - topValue1111->" + (bottomValue - topValue) + "   " + interval);
+//                        int pointsNums = (int) pointsValue + 2;
+                        int pointsNums = (int) (bottomValue / interval * 2);
+                        tvMeasurePoints.setText(String.valueOf(pointsNums));
+                    }
+                }
+            }
+        });
+
+        //1.0m
+        radioButton2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    interval = 1.0f;
+                    edtTopDepth.setText("" + interval);
+                    if (!edtTopDepth.getText().toString().trim().isEmpty() && !edtBottomDepth.getText().toString().trim().isEmpty()) {
+                        float topValue = Float.parseFloat(edtTopDepth.getText().toString().trim());
+                        float bottomValue = Float.parseFloat(edtBottomDepth.getText().toString().trim());
+                        float pointsValue = (bottomValue - topValue) / interval;
+//                        int pointsNums = (int) pointsValue + 2;
+                        int pointsNums = (int) (bottomValue / interval * 2);
+                        tvMeasurePoints.setText(String.valueOf(pointsNums));
+                    }
+                }
+            }
+        });
+
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (edtTopDepth.getText().toString().trim().isEmpty()) {
 
-                float topValue = Float.parseFloat(edtTopDepth.getText().toString());
-                if (topValue < 0.5f) {
-                    edtTopDepth.setText("0.5");
+                    Toast.makeText(BoreholeInfoActivity.this, "頂部距離不能為空", Toast.LENGTH_SHORT).show();
+                    return;
                 }
+                float topValue = Float.parseFloat(edtTopDepth.getText().toString());
+//                if (topValue < 0.5f) {
+//                    edtTopDepth.setText("0.5");
+//                }
+                if (topValue < interval) {
+                    edtTopDepth.setText("" + interval);
+                }
+
 
                 if (verify()) {
                     //将新建的工地，孔的属性添加到数据库当中去
@@ -252,7 +309,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
         while (bottom >= top) {
             String topStr = String.valueOf(top);
             surveyDataTableDao.insert(new SurveyDataTable(csvFileName, topStr, "", "", "", "", "", "", "", "", "", "", "", "", "", ""));
-            top += 0.5f;
+//            top += 0.5f;
+            top += interval;
         }
     }
 
@@ -270,7 +328,8 @@ public class BoreholeInfoActivity extends AppCompatActivity {
         boreholeInfoTable.setTopValue(topValue);
         boreholeInfoTable.setBottomValue(bottomValue);
         boreholeInfoTable.setPointsNumber(pointsNumbers);
-        boreholeInfoTable.setDuration(0.5f);
+//        boreholeInfoTable.setDuration(0.5f);
+        boreholeInfoTable.setDuration(interval);
         boreholeInfoTableDao.insert(boreholeInfoTable);
     }
 

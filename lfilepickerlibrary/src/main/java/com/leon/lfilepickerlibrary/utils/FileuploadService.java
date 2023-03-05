@@ -26,5 +26,5 @@ public interface FileuploadService {
      * @return 状态信息
      */
     @POST("SendEmail")
-    Call<BaseResponse<String>> uploadFileWithRequestBody(@Body MultipartBody multipartBody,@Field("email") String email);
+    Call<BaseResponse<String>> uploadFileWithRequestBody(@Body MultipartBody multipartBody, @Field("email") String email);
 }

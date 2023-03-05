@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../../../layout/custom_preview.xml" value="0.12596703666330306" />
+        <entry key="app/src/main/res/layout/activity_borehole_info.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_coefficients.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_graph2.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_inclinometer_survey_list.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_operation_panel.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_save_data.xml" value="0.2509057971014493" />
+        <entry key="app/src/main/res/layout/activity_setting.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_survey2.xml" value="0.3428442028985507" />
+        <entry key="app/src/main/res/layout/activity_survey_list.xml" value="0.3428442028985507" />
+      </map>
+    </option>
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>

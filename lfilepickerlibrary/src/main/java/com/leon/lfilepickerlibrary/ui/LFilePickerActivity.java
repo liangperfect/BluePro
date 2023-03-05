@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,16 +28,29 @@ import com.leon.lfilepickerlibrary.R;
 import com.leon.lfilepickerlibrary.adapter.PathAdapter;
 import com.leon.lfilepickerlibrary.filter.LFileFilter;
 import com.leon.lfilepickerlibrary.model.ParamEntity;
+import com.leon.lfilepickerlibrary.utils.BaseResponse;
 import com.leon.lfilepickerlibrary.utils.Constant;
 import com.leon.lfilepickerlibrary.utils.FileUtils;
+import com.leon.lfilepickerlibrary.utils.FileuploadService;
+import com.leon.lfilepickerlibrary.utils.LoadingDialog;
+import com.leon.lfilepickerlibrary.utils.RetrofitHelper;
+import com.leon.lfilepickerlibrary.utils.SharedPreferencesUtil;
 import com.leon.lfilepickerlibrary.utils.StringUtils;
 import com.leon.lfilepickerlibrary.widget.EmptyRecyclerView;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import sakura.bottommenulibrary.bottompopfragmentmenu.BottomMenuFragment;
 
 public class LFilePickerActivity extends AppCompatActivity {
@@ -63,6 +77,7 @@ public class LFilePickerActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
+        SharedPreferencesUtil.getInstance(LFilePickerActivity.this, "inclinometer");
         mParamEntity = (ParamEntity) getIntent().getExtras().getSerializable("param");
         setTheme(mParamEntity.getTheme());
         super.onCreate(savedInstanceState);
@@ -269,48 +284,136 @@ public class LFilePickerActivity extends AppCompatActivity {
             }
         });
 
+//        mBtnShared.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onClick(View v) {
+//
+//                //进行文件分享
+//                final ArrayList<Uri> files = new ArrayList<Uri>();
+//                mListNumbers.forEach(new Consumer<String>() {
+//                    @Override
+//                    public void accept(String path) {
+////                        Log.d("chenliang", "分享文件地址" + path);
+//                        if (new File(path).length() >0){
+//                            files.add(Uri.fromFile(new File(path)));
+//                        }
+//                    }
+//                });
+//
+//                new AlertDialog.Builder(LFilePickerActivity.this)
+//                        .setTitle("提示")
+//                        .setMessage("分享文件数量: "+files.size())
+//                        .setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+//                            @Override
+//                            public void onClick(DialogInterface dialog, int which) {
+//                                if (files.size() >0){
+//                                    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
+//                                    intent.setType("*/*");//多个文件格式
+//                                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
+//                                    startActivity(intent);
+//                                }else{
+//                                    Toast.makeText(LFilePickerActivity.this,"没有分享的文件",Toast.LENGTH_SHORT).show();
+//                                }
+//                            }
+//                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int which) {
+//
+//                    }
+//                }).show();
+//            }
+//        });
         mBtnShared.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
-
-                //进行文件分享
-                final ArrayList<Uri> files = new ArrayList<Uri>();
-                mListNumbers.forEach(new Consumer<String>() {
-                    @Override
-                    public void accept(String path) {
-//                        Log.d("chenliang", "分享文件地址" + path);
-                        if (new File(path).length() >0){
-                            files.add(Uri.fromFile(new File(path)));
-                        }
-                    }
-                });
-
-                new AlertDialog.Builder(LFilePickerActivity.this)
-                        .setTitle("提示")
-                        .setMessage("分享文件数量: "+files.size())
-                        .setPositiveButton("Sure", new DialogInterface.OnClickListener() {
+                final EditText inputServer = new EditText(LFilePickerActivity.this);
+                inputServer.setBackgroundResource(R.drawable.edittext_border);
+                String email = (String) SharedPreferencesUtil.getData("email","");
+                inputServer.setText(email);
+                AlertDialog.Builder builder = new AlertDialog.Builder(LFilePickerActivity.this);
+                builder.setTitle("發送郵箱地址").setView(inputServer)
+                        .setNegativeButton("取消", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                if (files.size() >0){
-                                    Intent intent = new Intent(Intent.ACTION_SEND_MULTIPLE);//发送多个文件
-                                    intent.setType("*/*");//多个文件格式
-                                    intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, files);//Intent.EXTRA_STREAM同于传输文件流
-                                    startActivity(intent);
-                                }else{
-                                    Toast.makeText(LFilePickerActivity.this,"没有分享的文件",Toast.LENGTH_SHORT).show();
-                                }
+                                dialog.dismiss();
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
+                        });
+                builder.setPositiveButton("發送", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-
+                        String email = inputServer.getText().toString();
+                        SendFielsToEmail(email);
                     }
-                }).show();
+                });
+                builder.show();
+            }
+        });
+    }
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void SendFielsToEmail(final String email) {
+        final ArrayList<File> files = new ArrayList<File>();
+        mListNumbers.forEach(new Consumer<String>() {
+            @Override
+            public void accept(String path) {
+                files.add(new File(path));
+            }
+        });
+        FileuploadService fileuploadService = RetrofitHelper.buildRetrofit().create(FileuploadService.class);
+        Call<BaseResponse<String>> uploadCall = fileuploadService.uploadFilesWithParts(filesToMultipartBodyParts(files), email);
+
+        LoadingDialog.getInstance(LFilePickerActivity.this).show();
+        uploadCall.enqueue(new Callback<BaseResponse<String>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
+
+                if (response.isSuccessful()){
+                    SharedPreferencesUtil.putData("email",email);
+                    LoadingDialog.getInstance(LFilePickerActivity.this).hide();
+                    assert response.body() != null;
+                    Toast.makeText(LFilePickerActivity.this, response.body().msg, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<String>> call, Throwable t) {
+
+                Toast.makeText(LFilePickerActivity.this, "郵件發送失敗", Toast.LENGTH_SHORT).show();
+                LoadingDialog.getInstance(LFilePickerActivity.this).hide();
             }
         });
     }
 
+    public MultipartBody filesToMultipartBody(List<File> files) {
+        MultipartBody.Builder builder = new MultipartBody.Builder();
+
+        for (File file : files) {
+            // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
+            RequestBody requestBody = RequestBody.create(MediaType.parse(""), file);
+            builder.addFormDataPart("file", file.getName(), requestBody);
+        }
+
+        builder.setType(MultipartBody.FORM);
+        MultipartBody multipartBody = builder.build();
+        return multipartBody;
+    }
+
+    public List<MultipartBody.Part> filesToMultipartBodyParts(List<File> files) {
+        List<MultipartBody.Part> parts = new ArrayList<>(files.size());
+        for (File file : files) {
+            // TODO: 16-4-2  这里为了简单起见，没有判断file的类型
+            String tempFileName = "";
+            try {
+                tempFileName = URLEncoder.encode(file.getName(), "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+            RequestBody requestBody = RequestBody.create(MediaType.parse("image/png"), file);
+            MultipartBody.Part part = MultipartBody.Part.createFormData("file", tempFileName, requestBody);
+            parts.add(part);
+        }
+        return parts;
+    }
     /**
      * 点击进入目录
      *

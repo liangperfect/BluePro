@@ -123,13 +123,13 @@ public class CsvUtil {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void saveData(String csvFilePath, String csvFileName) {
+    public void saveData(String csvFilePath, String csvFileName, float interval) {
         try {
             easyCsv.setSeparatorColumn(",");//列分隔符
             easyCsv.setSeperatorLine("/n");//行分隔符
             List<String> headerList = new ArrayList<>();//为空的
             //生成需要存储的数据
-            List<String> dataList = createTableData(csvFileName);
+            List<String> dataList = createTableData(csvFileName, interval);
             //截取文件适配csv存储器的文件名称
             String csvAdapterPath = csvFilePath.substring(20, csvFilePath.length() - 4);
             easyCsv.createCsvFile(csvAdapterPath, headerList, dataList, 1, new FileCallback() {
@@ -160,10 +160,10 @@ public class CsvUtil {
      * @param csvFileName
      * @return
      */
-    private List<String> createTableData(String csvFileName) {
+    private List<String> createTableData(String csvFileName, float interval) {
         Date d = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("HH:mm");
         String yMd = sdf.format(d);
         String Hms = sdf2.format(d);
         final List<String> collection = new ArrayList<>();
@@ -182,11 +182,11 @@ public class CsvUtil {
         collection.add(new TableRowBean2("Site#:", siteStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Hole#:", holeStr, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
 //      scollection.add(new TableRowBean2("Depth(m):", "Top=" + topValue, "End=" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Depth(m):", ""+ topValue,  ""+bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("Interval(mm):", "500", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Depth(m):", "" + topValue, "" + bottomValue, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
+        collection.add(new TableRowBean2("Interval(mm):", "" + interval * 1000, "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
 //        collection.add(new TableRowBean2("Date/Time:", "2020/10/25  22:29:03", "", "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
         collection.add(new TableRowBean2("Date/Time:", yMd, Hms, "", "", "", "", "", "", "", "", "", "", "", "").toSaveString());
-        collection.add(new TableRowBean2("", "Displacement(mm)=500*SIN(Deg*PI()/180)", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
+        collection.add(new TableRowBean2("", "Displacement(mm)=" + interval * 1000 + "*SIN(Deg*PI()/180)", "", "", "", "", "", "", "", "", "", "", "", "A0(mm)+A180(mm)", "B0(mm)+B180(mm)").toSaveString());
         collection.add(new TableRowBean2("", "A0(mm)", "A180(mm)", "B0(mm)", "B180(mm)", "A0(Deg)", "A180(Deg)", "B0(Deg)", "B180(Deg)", "A0(Raw)", "A180(Raw)", "B0(Raw)", "B180(Raw)", "CheckSumA", "CheckSumB").toSaveString());
 
         List<SurveyDataTable> surveyDatas = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName)).build().list();
@@ -225,15 +225,15 @@ public class CsvUtil {
      * true是0度, false是180度
      * 将实时数据存储到数据库中去
      */
-    public String saveDatasInDB(String csvFileName, String depth, float angleA, float angleB, boolean isZero) {
+    public String saveDatasInDB(String csvFileName, String depth, float angleA, float angleB, float interval, boolean isZero) {
         double deg1 = getDeg(angleA, Constants.SFMODE_1AXIS);
         double deg2 = getDeg(angleB, Constants.SFMODE_2AXIS);
         double raw1 = getRaw(deg1);
         double raw2 = getRaw(deg2);
         double radians1 = Math.toRadians(deg1);
         double radians2 = Math.toRadians(deg2);
-        double mm1 = (Math.sin(radians1) * 500);
-        double mm2 = (Math.sin(radians2) * 500);
+        double mm1 = (Math.sin(radians1) * interval * 1000);
+        double mm2 = (Math.sin(radians2) * interval * 1000);
         SurveyDataTable surveyDataTable = surveyDataTableDao.queryBuilder().where(SurveyDataTableDao.Properties.CsvFileName.eq(csvFileName), SurveyDataTableDao.Properties.Depth.eq(depth)).build().list().get(0);
 
         if (surveyDataTable != null) {

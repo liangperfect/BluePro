@@ -111,6 +111,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     private BoreholeInfoTableDao boreholeInfoTableDao;
     private float topValue;
     private float bottomValue;
+    private float interval = 0.5f;
     private CsvUtil csvUtil;
     private boolean isZero = true; //当前模式是不是0模式
     private boolean isAuto = false;//true:自动  false:手动  记录当前是什么模式
@@ -182,6 +183,7 @@ public class Survey2Activity extends MyBaseActivity2 {
                             BoreholeInfoTableDao.Properties.HoleName.eq(holeName)).build().list().get(0); //只可能匹配一个
             topValue = boreholeInfoTable.getTopValue();
             bottomValue = boreholeInfoTable.getBottomValue();
+            interval = boreholeInfoTable.getDuration();
             //初始化相关view
             tvDepthNum.setText(String.valueOf(bottomValue));
             tvBottom.setText("Bottom:" + bottomValue + "m");
@@ -323,7 +325,8 @@ public class Survey2Activity extends MyBaseActivity2 {
                 float bottomTemp = bottomValue;
                 while (topTemp <= bottomTemp) {
                     numbers.add(String.valueOf(topTemp));
-                    topTemp += 0.5;
+//                    topTemp += 0.5;
+                    topTemp += interval;
                 }
                 NumberSelectDialog selectDialog = new NumberSelectDialog(Survey2Activity.this, numbers, new NumberSelectDialog.ChangeNumberListener() {
                     @Override
@@ -401,13 +404,16 @@ public class Survey2Activity extends MyBaseActivity2 {
             if (depthValue > bottomValue)
                 depthValue = bottomValue;
             else
-                depthValue = depthValue + 0.5f;
+                depthValue = depthValue + interval;
+//                depthValue = depthValue + 0.5f;
+
         } else {
 
             if (depthValue < topValue)
                 depthValue = topValue;
             else
-                depthValue = depthValue - 0.5f;
+                depthValue = depthValue - interval;
+//                depthValue = depthValue - 0.5f;
         }
         if (depthValue < topValue || depthValue > bottomValue) {
             if (isZero) {
@@ -502,13 +508,13 @@ public class Survey2Activity extends MyBaseActivity2 {
 //                        Survey2Activity.this.finish();
                     }
                 }).setPositiveButton("確定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                //顺序不能变，不然显示赌赢的A0值会取到之前没修改的值，显示是top的值获取的却是bottom的值
-                tvDepthNum.setText(String.valueOf(bottomValue));
-                rb180degree.setChecked(true);
-            }
-        }).show();
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        //顺序不能变，不然显示赌赢的A0值会取到之前没修改的值，显示是top的值获取的却是bottom的值
+                        tvDepthNum.setText(String.valueOf(bottomValue));
+                        rb180degree.setChecked(true);
+                    }
+                }).show();
     }
 
     /**
@@ -521,9 +527,9 @@ public class Survey2Activity extends MyBaseActivity2 {
         //哪种模式下
         String saveAB = "";
 //      if (csvUtil !=null){
-        saveAB = csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, isZero);
+        saveAB = csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, interval,isZero);
         //将数据存入到csv文件中去
-        csvUtil.saveData(csvFilePath, csvFileName);
+        csvUtil.saveData(csvFilePath, csvFileName,interval);
 //        }
         return saveAB;
     }

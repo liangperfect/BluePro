@@ -313,4 +313,5 @@ public class Constants {
     //倾度管测量装填
     public static int SURVEY_PLAY_MANUAL = 0; //手动测量
     public static int SURVEY_PLAY_AUTO = 1; //自动测量
+
 }

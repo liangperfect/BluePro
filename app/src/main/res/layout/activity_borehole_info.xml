@@ -202,9 +202,35 @@
             android:text="0.5"
             android:textColor="@color/black"
             android:textSize="20sp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/tv5"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv5" />
+
+        <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="14dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="@id/tv5"
+            app:layout_constraintStart_toStartOf="@id/tvMeasurePoints"
+            app:layout_constraintTop_toTopOf="@id/tv5">
+
+            <RadioButton
+                android:id="@+id/radioButton1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="0.5m" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="1.0m" />
+        </RadioGroup>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv6"
@@ -231,6 +257,7 @@
             android:text="0.5"
             android:textColor="@color/black"
             android:textSize="20sp"
+            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="@id/tv6"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv6" />
