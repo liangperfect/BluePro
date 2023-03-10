@@ -142,6 +142,7 @@ public class SelectModeActivity extends AppCompatActivity {
                 //进行测试
                 FileUtils.createFile(csvPath);
                 //根据间隔点位来初实话数据库表，根据csv的文件名为唯一键值对
+
                 initTableByCsvName(siteName, FileUtils.fetchHoleName(holeName), csvFileName);
                 //需要传递的参数
                 Intent intent1 = new Intent(SelectModeActivity.this, Survey2Activity.class);
@@ -185,12 +186,14 @@ public class SelectModeActivity extends AppCompatActivity {
     private void initTableByCsvName(String siteName, String holeName, String csvFileName) {
         float topValue = 0;
         float bottomValue = 0;
+        float interval = 0.5f;
         try {
             BoreholeInfoTable boreholeInfoTable = boreholeInfoTableDao.queryBuilder()
                     .where(BoreholeInfoTableDao.Properties.ConstructionSite.eq(siteName),
                             BoreholeInfoTableDao.Properties.HoleName.eq(holeName)).build().list().get(0); //只可能匹配一个
             topValue = boreholeInfoTable.getTopValue();
             bottomValue = boreholeInfoTable.getBottomValue();
+            interval = boreholeInfoTable.getDuration();
 //            //初始化相关view
 //            tvDepthNum.setText(String.valueOf(bottomValue));
 //            tvBottom.setText("Bottom:" + bottomValue + "m");
@@ -204,7 +207,7 @@ public class SelectModeActivity extends AppCompatActivity {
         while (bottomValue >= topValue) {
             String topStr = String.valueOf(topValue);
             surveyDataTableDao.insert(new SurveyDataTable(csvFileName, topStr, "", "", "", "", "", "", "", "", "", "", "", "", "", ""));
-            topValue += 0.5f;
+            topValue += interval;
         }
     }
 }

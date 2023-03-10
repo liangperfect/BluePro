@@ -114,17 +114,6 @@ public class InclinometerSurveyListActivity extends AppCompatActivity {
 
         private String convertStr(String str) {
             String temp = "";
-//            if (str.length() > 7) {
-//                if (str.contains("-")) {
-//                    temp = str.substring(0, 7);
-//                } else {
-//                    temp = ("+" + str).substring(0, 7);
-//                }
-//            } else {
-//                if (str.contains("-")) {
-//                    temp = "+" + str;
-//                }
-//            }
             if (Double.valueOf(str) >0){
                 temp = ("+" + str);
             }else{
