@@ -86,11 +86,12 @@ public class Survey2Activity extends MyBaseActivity2 {
 //    private int decimalValue = 3;
     private MediaPlayer mMediaPlayer = new MediaPlayer();
     String[] beeps = new String[]{"Default", "TypeA", "TypeB", "TypeC", "TypeD", "TypeE", "TypeF"};
+    double[] stabityTimeFloats = new double[]{0.02, 0.019, 0.018, 0.017, 0.016, 0.015, 0.014, 0.013, 0.012, 0.011, 0.01, 0.009, 0.008, 0.007, 0.006, 0.005, 0.004, 0.003, 0.002, 0.001};
     private int sendDuration = 200;//循环发送命令间隔时间
 
     private float currOneChannelAngle;//记录轴1的原始角度值
     private float currtwoChannelAngle;//记录轴2的原始角度值
-    private double THRESHOLD = 0.02;//阈值
+    private double THRESHOLD = 0.01;//阈值
     private DecimalFormat deg2Format = new DecimalFormat("0.00");
     private DecimalFormat deg3Format = new DecimalFormat("0.000");
     private DecimalFormat deg4Format = new DecimalFormat("0.0000");
@@ -527,9 +528,9 @@ public class Survey2Activity extends MyBaseActivity2 {
         //哪种模式下
         String saveAB = "";
 //      if (csvUtil !=null){
-        saveAB = csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, interval,isZero);
+        saveAB = csvUtil.saveDatasInDB(csvFileName, depthStr, currOneChannelAngle, currtwoChannelAngle, interval, isZero);
         //将数据存入到csv文件中去
-        csvUtil.saveData(csvFilePath, csvFileName,interval);
+        csvUtil.saveData(csvFilePath, csvFileName, interval);
 //        }
         return saveAB;
     }
@@ -595,6 +596,9 @@ public class Survey2Activity extends MyBaseActivity2 {
         oneAxisLink = new AxisLink2(sensitivityMode);
         twoAxisLink = new AxisLink2(sensitivityMode);
         tvBottomTitle.setText(csvFileName);
+        //稳定阀值
+        int stabltyTimeIndex = (int) SharedPreferencesUtil.getData(Constants.STABLITY_TIME, 10);
+        THRESHOLD = stabityTimeFloats[stabltyTimeIndex];
     }
 
     @Override

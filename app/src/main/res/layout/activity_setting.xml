@@ -147,13 +147,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="1.08"
+            android:text="1.09"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
             app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
             app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
-            tools:text="1.08" />
+            tools:text="1.09" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSite"
@@ -262,6 +262,29 @@
             tools:text="1.46" />
 
         <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvStabilityTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="StabilityTime:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBeep" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spStabilityTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvStabilityTime"
+            app:layout_constraintStart_toEndOf="@id/tvStabilityTime"
+            app:layout_constraintTop_toTopOf="@id/tvStabilityTime"
+            tools:text="1.46" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUnit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -269,7 +292,7 @@
             android:text="Unit:"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvBeep" />
+            app:layout_constraintTop_toBottomOf="@id/tvStabilityTime" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spUnitValue"
