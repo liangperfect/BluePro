@@ -63,12 +63,17 @@ public class SettingActivity extends MyBaseActivity2 {
     public TextView tvStabilityTime;
     @Bind(R.id.spStabilityTime)
     public Spinner spStabilityTime;
+    @Bind(R.id.tvSurveySelectMode)
+    public TextView tvSurveyMode;
+    @Bind(R.id.spSurveySelectMode)
+    public Spinner spSurveyMode;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
     private int beepValue = 0;
     private int unitValue = 0;
     private int decimalValue = 0;
     private int stabilityTimeValue = 0;
+    private int surveyModeValue = 0;//默认是0:mm  1:raw
     private int currTimeOut = 3;//自动模式下菱形稳定的最小时间区间
 
     private SettingHandler settingHandler;
@@ -80,6 +85,7 @@ public class SettingActivity extends MyBaseActivity2 {
     String[] ctype3 = new String[]{"Deg", "Raw"};
     String[] times = new String[]{"level 1", "level 2", "level 3", "level 4", "level 5", "level 6", "level 7", "level 8", "level 9", "level 10",
             "level 11", "level 12", "level 13", "level 14", "level 15", "level 16", "level 17", "level 18", "level 19", "level 20"};//稳定的时间数组
+    String[] surveyModes = new String[]{"mm","raw"};
     //    String[] ctype4ByDeg = new String[]{"3", "4"};
 //    String[] ctype4ByRaw = new String[]{"0"};
     boolean isPause = false;
@@ -102,12 +108,14 @@ public class SettingActivity extends MyBaseActivity2 {
         initSpiners(spBeepValue, ctype2);
         initSpiners(spUnitValue, ctype3);
         initSpiners(spStabilityTime, times);
+        initSpiners(spSurveyMode,surveyModes);
         sensorModeValue = (int) SharedPreferencesUtil.getData(Constants.SENSORMODE_KEY, 0);
         sensitivityValue = (int) SharedPreferencesUtil.getData(Constants.SENSITIVITY_KEY, 0);
         beepValue = (int) SharedPreferencesUtil.getData(Constants.BEEP_KEY, 0);
         unitValue = (int) SharedPreferencesUtil.getData(Constants.UNIT_KEY, 0);
         decimalValue = (int) SharedPreferencesUtil.getData(Constants.DECIMAL, 3);
         stabilityTimeValue = (int) SharedPreferencesUtil.getData(Constants.STABLITY_TIME, 9);
+        surveyModeValue = (int) SharedPreferencesUtil.getData(Constants.SURVEY_SELECT_MODE,0);
         currTimeOut = (int) SharedPreferencesUtil.getData(Constants.TIME_OUT, 3);
         int duration = (int) SharedPreferencesUtil.getData(Constants.SURVEY_DURATION, 150);
         edtSurveyDuration.setText(String.valueOf(duration));
@@ -116,6 +124,7 @@ public class SettingActivity extends MyBaseActivity2 {
         spBeepValue.setSelection(beepValue);
         spUnitValue.setSelection(unitValue);
         spStabilityTime.setSelection(stabilityTimeValue);
+        spSurveyMode.setSelection(surveyModeValue);
 
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +136,7 @@ public class SettingActivity extends MyBaseActivity2 {
                 SharedPreferencesUtil.putData(Constants.BEEP_KEY, beepValue);
                 SharedPreferencesUtil.putData(Constants.UNIT_KEY, unitValue);
                 SharedPreferencesUtil.putData(Constants.STABLITY_TIME, stabilityTimeValue);
+                SharedPreferencesUtil.putData(Constants.SURVEY_SELECT_MODE,surveyModeValue);
                 SharedPreferencesUtil.putData(Constants.DECIMAL, decimalValue);
                 SharedPreferencesUtil.putData(Constants.SURVEY_DURATION, Integer.valueOf(duration));
                 SharedPreferencesUtil.putData(Constants.TIME_OUT, currTimeOut);
@@ -205,6 +215,9 @@ public class SettingActivity extends MyBaseActivity2 {
                     radioGroup.setVisibility(View.GONE);
                     spDecimalValue.setVisibility(View.VISIBLE);
                 }
+                break;
+            case R.id.spSurveySelectMode:
+                surveyModeValue = mode;
                 break;
             default:
                 //nothing to do

@@ -54,7 +54,7 @@
         android:id="@+id/btn_addbook"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/recylerview"
         android:background="@drawable/lfile_btn_bg"
         android:text="@string/lfile_Selected"
         android:textColor="@color/lfile_white"
@@ -86,7 +86,7 @@
         android:id="@+id/recylerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/btn_addbook"
+        android:layout_above="@id/btn_shared"
         android:layout_below="@id/layout_path" />
 
     <include

@@ -265,6 +265,7 @@ public class Constants {
     public static String BEEP_KEY = "beep";
     public static String UNIT_KEY = "unit";
     public static String STABLITY_TIME = "stablityTime";
+    public static String SURVEY_SELECT_MODE = "surveySelectMode";
     public static String DECIMAL = "decimal"; //只用于记录Deg的类型，Raw默认就是0
     public static String SURVEY_DURATION = "survey_duration";
     public static String TIME_OUT = "auto_time_out";//用于计算菱形稳定的时间间隔

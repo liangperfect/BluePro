@@ -57,6 +57,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     private TextView tvA;
     private TextView tvB;
     private TextView tvDepthNum;
+    private TextView tvRaw;
     private ImageView imgUp;
     private ImageView imgDown;
     private RadioButton rb0degree;
@@ -120,6 +121,7 @@ public class Survey2Activity extends MyBaseActivity2 {
     private int autoNums = 3;//自动模式下稳定的次数，由时间转换过来
     private int currAutoIndex = 0;//用于技术当前自动模式下再稳定后又稳定的次数
     private long lastClickTime = 0;//防止按钮被连续点击造成存储问题
+    private int surveySelectModeValue = 0;//0:mm 1:raw
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -218,6 +220,7 @@ public class Survey2Activity extends MyBaseActivity2 {
         tvA = findViewById(R.id.tvA);
         tvB = findViewById(R.id.tvB);
         tvDepthNum = findViewById(R.id.tvDepthNum);
+        tvRaw = findViewById(R.id.tvRaw);
         imgUp = findViewById(R.id.imgUp);
         imgDown = findViewById(R.id.imgDown);
         rb0degree = findViewById(R.id.rb0degree);
@@ -593,12 +596,17 @@ public class Survey2Activity extends MyBaseActivity2 {
         } else if (sensitivityValue == Constants.SENSITVITY_9_DEGREE) {
             sensitivityMode = 10;
         }
-        oneAxisLink = new AxisLink2(sensitivityMode);
-        twoAxisLink = new AxisLink2(sensitivityMode);
+        oneAxisLink = new AxisLink2(sensitivityMode, "AAAAA");
+        twoAxisLink = new AxisLink2(sensitivityMode, "BBBBB");
         tvBottomTitle.setText(csvFileName);
         //稳定阀值
         int stabltyTimeIndex = (int) SharedPreferencesUtil.getData(Constants.STABLITY_TIME, 10);
         THRESHOLD = stabityTimeFloats[stabltyTimeIndex];
+        //数据展示模式
+        surveySelectModeValue = (int) SharedPreferencesUtil.getData(Constants.SURVEY_SELECT_MODE, 0);
+        if (surveySelectModeValue == 1){
+            tvRaw.setText("raw");
+        }
     }
 
     @Override
@@ -669,19 +677,38 @@ public class Survey2Activity extends MyBaseActivity2 {
             //获取电量
             float battValue = Utils.getBattValue(voltage);
             tvTitle2.setText((int) battValue + "%");
-            isSave = showAxisValue(oneChannelAngle, oneAxisLink);
-            isSave = showAxisValue(twoChannelAngle, twoAxisLink) && isSave;
+            boolean isSave1 = showAxisValue(oneChannelAngle, oneAxisLink);
+            boolean isSave2 = showAxisValue(twoChannelAngle, twoAxisLink);
+            boolean isSave3 = isSave1 && isSave2;
+//            Log.d("chenliang", "isSave1->" + isSave1 + "   isSave2->" + isSave2 + "   isSave3->" + isSave3);
+//            isSave = showAxisValue(oneChannelAngle, oneAxisLink);
+//            isSave = showAxisValue(twoChannelAngle, twoAxisLink)&& isSave;
+//            boolean isSave3 = isSave1 && isSave2;
             //显示mm的值
             double deg1 = getDeg(oneChannelAngle, Constants.SFMODE_1AXIS);
             double deg2 = getDeg(twoChannelAngle, Constants.SFMODE_2AXIS);
-
+            //获取mm数据
             double radians1 = Math.toRadians(deg1);
             double radians2 = Math.toRadians(deg2);
-            double mm1 = Math.sin(radians1) * 500;
-            double mm2 = Math.sin(radians2) * 500;
-            tvA.setText(deg2Format.format(mm1));
-            tvB.setText(deg2Format.format(mm2));
-            if (isSave) {
+//            double mm1 = Math.sin(radians1) * 500;
+//            double mm2 = Math.sin(radians2) * 500;
+            double mm1 = (Math.sin(radians1) * interval * 1000);
+            double mm2 = (Math.sin(radians2) * interval * 1000);
+
+            //展示数据
+            double showA = mm1;
+            double showB = mm2;
+            if (surveySelectModeValue == 1){
+                //raw数据展示且获取raw数据
+                showA= getRaw(deg1);
+                showB = getRaw(deg2);
+            }
+
+            tvA.setText(deg2Format.format(showA));
+            tvB.setText(deg2Format.format(showB));
+//            tvA.setText(currOneChannelAngle + "");
+//            tvB.setText(currtwoChannelAngle + "");
+            if (isSave3) {
                 btnSave.setText("Stable");
 //                btnSave.setBackgroundResource(R.drawable.btn_start_bg);
                 btnSave.setBackgroundResource(R.drawable.btn_save_selector);
@@ -760,9 +787,12 @@ public class Survey2Activity extends MyBaseActivity2 {
      */
     class AxisLink2 {
 
-        public AxisLink2(int sersitivity) {
+        public AxisLink2(int sersitivity, String axis) {
             this.sersitivityMode = sersitivity;
+            this.axis = axis;
         }
+
+        private String axis;
 
         private int sersitivityMode; //精度
 
@@ -779,7 +809,6 @@ public class Survey2Activity extends MyBaseActivity2 {
                 }
                 return count == sersitivityMode;
             }
-            Log.d(TAG, "Math.abs(changeValue - preValue):" + Math.abs(changeValue - preValue));
             if (count == sersitivityMode) {
                 if (Math.abs(changeValue - preValue) > THRESHOLD) {
                     count = 0;
@@ -788,6 +817,7 @@ public class Survey2Activity extends MyBaseActivity2 {
                 }
                 return true;
             }
+
             preValue = changeValue;
             count = 0; //当在sersitivityMode次数内没有连续，则重新计算
             return false;

@@ -147,13 +147,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="1.09"
+            android:text="1.13"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
             app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
             app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
-            tools:text="1.09" />
+            tools:text="1.13" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSite"
@@ -283,6 +283,26 @@
             app:layout_constraintTop_toTopOf="@id/tvStabilityTime"
             tools:text="1.46" />
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvSurveySelectMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="SurveyValueMode:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvStabilityTime" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spSurveySelectMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvSurveySelectMode"
+            app:layout_constraintStart_toEndOf="@id/tvSurveySelectMode"
+            app:layout_constraintTop_toTopOf="@id/tvSurveySelectMode" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvUnit"
@@ -292,7 +312,7 @@
             android:text="Unit:"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvStabilityTime" />
+            app:layout_constraintTop_toBottomOf="@id/tvSurveySelectMode" />
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/spUnitValue"
