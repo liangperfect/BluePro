@@ -448,7 +448,7 @@
             android:layout_below="@id/LinearLayout8"
             android:layout_marginTop="40dp"
             android:gravity="center"
-            android:visibility="gone"
+            android:visibility="visible"
             android:orientation="vertical">
 
             <Button

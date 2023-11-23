@@ -122,6 +122,8 @@ public class Survey2Activity extends MyBaseActivity2 {
     private int currAutoIndex = 0;//用于技术当前自动模式下再稳定后又稳定的次数
     private long lastClickTime = 0;//防止按钮被连续点击造成存储问题
     private int surveySelectModeValue = 0;//0:mm 1:raw
+    private final int SURVEY_MODE_MM = 0;
+    private final int SURVEY_MODE_RAW = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -367,20 +369,21 @@ public class Survey2Activity extends MyBaseActivity2 {
         try {
             //数字先减去0.5
             float pre = changeDepthNumber(false);
-            String preAStr = preAB.split(",")[0];
-            String preBStr = preAB.split(",")[1];
-            showPreABValue(pre, preAStr, preBStr);
+            String preAmmStr = preAB.split(",")[0];
+            String preBmmStr = preAB.split(",")[1];
+            String preARawStr = preAB.split(",")[2];
+            String preBRawStr = preAB.split(",")[3];
+            showPreABValue(pre, preAmmStr, preBmmStr, preARawStr, preBRawStr);
         } catch (Exception e) {
 
-            showPreABValue(0, "0", "0");
+            showPreABValue(0, "0", "0", "0", "0");
         }
     }
 
-    private void showPreABValue(float preDepth, String preA, String preB) {
+    private void showPreABValue(float preDepth, String preA, String preB, String preARaw, String preBRaw) {
 
         tvPreDepth.setText(preDepth + "m");
-        double preADouble = Double.parseDouble(preA);
-        double preBDouble = Double.parseDouble(preB);
+
         String prefixA = "A0: ";
         String prefixB = "B0: ";
         if (isZero) {
@@ -390,8 +393,15 @@ public class Survey2Activity extends MyBaseActivity2 {
             prefixA = "A180: ";
             prefixB = "B180: ";
         }
-        tvPreAValue.setText(prefixA + deg2Format.format(preADouble));
-        tvPreBValue.setText(prefixB + deg2Format.format(preBDouble));
+        if (surveySelectModeValue == SURVEY_MODE_MM) {
+            double preADouble = Double.parseDouble(preA);
+            double preBDouble = Double.parseDouble(preB);
+            tvPreAValue.setText(prefixA + deg2Format.format(preADouble));
+            tvPreBValue.setText(prefixB + deg2Format.format(preBDouble));
+        } else {
+            tvPreAValue.setText(prefixA + preARaw);
+            tvPreBValue.setText(prefixB + preBRaw);
+        }
     }
 
     /**
@@ -440,22 +450,46 @@ public class Survey2Activity extends MyBaseActivity2 {
     private void showOldMMValue(String depthStr, boolean isZero) {
 
         //获取对应坐标的mm值进行展示
-        SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
-        String oldAmm = "";
-        String oldBmm = "";
-        oldAmm = isZero ? surveyDataTable.getA0mm() : surveyDataTable.getA180mm();
-        oldBmm = isZero ? surveyDataTable.getB0mm() : surveyDataTable.getB180mm();
-        if (oldAmm.length() > 7) {
-            int endIndex = oldAmm.contains("-") ? 7 : 6;
-            oldAmm = oldAmm.substring(0, endIndex);
+        //
+        if (surveySelectModeValue == SURVEY_MODE_MM) {
+            SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
+            String oldAmm = "";
+            String oldBmm = "";
+            oldAmm = isZero ? surveyDataTable.getA0mm() : surveyDataTable.getA180mm();
+            oldBmm = isZero ? surveyDataTable.getB0mm() : surveyDataTable.getB180mm();
+            if (oldAmm.length() > 7) {
+                int endIndex = oldAmm.contains("-") ? 7 : 6;
+                oldAmm = oldAmm.substring(0, endIndex);
+            }
+
+            if (oldBmm.length() > 7) {
+                int endIndex = oldBmm.contains("-") ? 7 : 6;
+                oldBmm = oldBmm.substring(0, endIndex);
+            }
+            tvAOldmm.setText(oldAmm);
+            tvBOldmm.setText(oldBmm);
+        } else {
+            //raw模型
+            SurveyDataTable surveyDataTable = csvUtil.getSurveyByDepth(csvFileName, String.valueOf(depthStr));
+            Log.d("chenliang surveyDataTable->", surveyDataTable.getA0Raw() + "," + surveyDataTable.getA180Raw() + "," +
+                    surveyDataTable.getA0mm() + "," + surveyDataTable.getA180mm());
+            String oldARaw = "";
+            String oldBRaw = "";
+            oldARaw = isZero ? surveyDataTable.getA0Raw() : surveyDataTable.getA180Raw();
+            oldBRaw = isZero ? surveyDataTable.getB0Raw() : surveyDataTable.getB180Raw();
+            if (oldARaw.length() > 7) {
+                int endIndex = oldARaw.contains("-") ? 7 : 6;
+                oldARaw = oldARaw.substring(0, endIndex);
+            }
+
+            if (oldBRaw.length() > 7) {
+                int endIndex = oldBRaw.contains("-") ? 7 : 6;
+                oldBRaw = oldBRaw.substring(0, endIndex);
+            }
+            tvAOldmm.setText(oldARaw);
+            tvBOldmm.setText(oldBRaw);
         }
 
-        if (oldBmm.length() > 7) {
-            int endIndex = oldAmm.contains("-") ? 7 : 6;
-            oldBmm = oldBmm.substring(0, endIndex);
-        }
-        tvAOldmm.setText(oldAmm);
-        tvBOldmm.setText(oldBmm);
     }
 
     /**
@@ -470,25 +504,37 @@ public class Survey2Activity extends MyBaseActivity2 {
 //        String oldBmm = "";
 //        oldAmm = isZero ? surveyDataTable.getA0mm() : surveyDataTable.getA180mm();
 //        oldBmm = isZero ? surveyDataTable.getB0mm() : surveyDataTable.getB180mm();
-        String compareA0mm = "";
-        String compareB0mm = "";
-        compareA0mm = surveyDataTable.getA0mm();
-        compareB0mm = surveyDataTable.getB0mm();
-        if (compareA0mm.length() > 7) {
-            int endIndex = compareA0mm.contains("-") ? 7 : 6;
-            compareA0mm = compareA0mm.substring(0, endIndex);
-        }
+        if (surveySelectModeValue == SURVEY_MODE_MM) {
+            String compareA0mm = "";
+            String compareB0mm = "";
+            compareA0mm = surveyDataTable.getA0mm();
+            compareB0mm = surveyDataTable.getB0mm();
+            if (compareA0mm.length() > 7) {
+                int endIndex = compareA0mm.contains("-") ? 7 : 6;
+                compareA0mm = compareA0mm.substring(0, endIndex);
+            }
 
-        if (compareB0mm.length() > 7) {
-            int endIndex = compareB0mm.contains("-") ? 7 : 6;
-            compareB0mm = compareB0mm.substring(0, endIndex);
-        }
+            if (compareB0mm.length() > 7) {
+                int endIndex = compareB0mm.contains("-") ? 7 : 6;
+                compareB0mm = compareB0mm.substring(0, endIndex);
+            }
 //        tvAOldmm.setText(oldAmm);
 //        tvBOldmm.setText(oldBmm);
-        compareA0mm = "A0:" + compareA0mm;
-        compareB0mm = "B0:" + compareB0mm;
-        tvCompareA0.setText(compareA0mm);
-        tvCompareB0.setText(compareB0mm);
+            compareA0mm = "A0:" + compareA0mm;
+            compareB0mm = "B0:" + compareB0mm;
+            tvCompareA0.setText(compareA0mm);
+            tvCompareB0.setText(compareB0mm);
+        } else {
+
+            String compareA0Raw = surveyDataTable.getA0Raw();
+            String compareB0Raw = surveyDataTable.getB0Raw();
+            compareA0Raw = "A0:" + compareA0Raw;
+            compareB0Raw = "B0:" + compareB0Raw;
+            tvCompareA0.setText(compareA0Raw);
+            tvCompareB0.setText(compareB0Raw);
+
+        }
+
     }
 
     /**
@@ -604,7 +650,7 @@ public class Survey2Activity extends MyBaseActivity2 {
         THRESHOLD = stabityTimeFloats[stabltyTimeIndex];
         //数据展示模式
         surveySelectModeValue = (int) SharedPreferencesUtil.getData(Constants.SURVEY_SELECT_MODE, 0);
-        if (surveySelectModeValue == 1){
+        if (surveySelectModeValue == SURVEY_MODE_RAW) {
             tvRaw.setText("raw");
         }
     }
@@ -698,14 +744,25 @@ public class Survey2Activity extends MyBaseActivity2 {
             //展示数据
             double showA = mm1;
             double showB = mm2;
-            if (surveySelectModeValue == 1){
+            if (surveySelectModeValue == SURVEY_MODE_RAW) {
                 //raw数据展示且获取raw数据
-                showA= getRaw(deg1);
+                showA = getRaw(deg1);
                 showB = getRaw(deg2);
+                String showAInt = (int) showA + "";
+                String showBInt = (int) showB + "";
+//                tvA.setText(deg2Format.format(showA));
+//                tvB.setText(deg2Format.format(showB));
+                tvA.setText(showAInt);
+                tvB.setText(showBInt);
+            } else {
+                //mm
+                String showAInt = (int) showA + "";
+                String showBInt = (int) showB + "";
+//                tvA.setText(showAInt);
+//                tvB.setText(showBInt);
+                tvA.setText(deg2Format.format(showA));
+                tvB.setText(deg2Format.format(showB));
             }
-
-            tvA.setText(deg2Format.format(showA));
-            tvB.setText(deg2Format.format(showB));
 //            tvA.setText(currOneChannelAngle + "");
 //            tvB.setText(currtwoChannelAngle + "");
             if (isSave3) {

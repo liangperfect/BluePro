@@ -104,16 +104,25 @@ public class InclinometerSurveyListActivity extends AppCompatActivity {
 
             ItemViewHolder viewHolder = (ItemViewHolder) holder;
             viewHolder.tvDepth.setText(datas.get(position).getDepth());
-            viewHolder.tvA0.setText(convertStr(datas.get(position).getA0mm()));
-            viewHolder.tvA180.setText(convertStr(datas.get(position).getA180mm()));
+//            viewHolder.tvA0.setText(convertStr(datas.get(position).getA0mm()));
+//            viewHolder.tvA180.setText(convertStr(datas.get(position).getA180mm()));
+//            viewHolder.tvASum.setText(convertStr(datas.get(position).getCheckSumA()));
+//            viewHolder.tvB0.setText(convertStr(datas.get(position).getB0mm()));
+//            viewHolder.tvB180.setText(convertStr(datas.get(position).getB180mm()));
+//            viewHolder.tvBSum.setText(convertStr(datas.get(position).getCheckSumB()));
+            viewHolder.tvA0.setText(convertStr(datas.get(position).getA0Raw()));
+            viewHolder.tvA180.setText(convertStr(datas.get(position).getA180Raw()));
             viewHolder.tvASum.setText(convertStr(datas.get(position).getCheckSumA()));
-            viewHolder.tvB0.setText(convertStr(datas.get(position).getB0mm()));
-            viewHolder.tvB180.setText(convertStr(datas.get(position).getB180mm()));
+            viewHolder.tvB0.setText(convertStr(datas.get(position).getB0Raw()));
+            viewHolder.tvB180.setText(convertStr(datas.get(position).getB180Raw()));
             viewHolder.tvBSum.setText(convertStr(datas.get(position).getCheckSumB()));
         }
 
         private String convertStr(String str) {
             String temp = "";
+            if (str.isEmpty()){
+                return "";
+            }
             if (Double.valueOf(str) >0){
                 temp = ("+" + str);
             }else{
