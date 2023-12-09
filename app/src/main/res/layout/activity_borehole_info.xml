@@ -59,26 +59,27 @@
         android:id="@+id/webView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="16dp"
+        android:padding="8dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tv1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
             android:text="工地名稱"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtConstructionSite"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
             android:layout_marginStart="36dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="2dp"
             android:background="@drawable/edt_bg_white"
             android:hint="請輸入"
             android:maxLength="20"
@@ -87,6 +88,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tv1"
+            app:layout_constraintEnd_toStartOf="@id/imgbConstructionSite"
             app:layout_constraintStart_toEndOf="@id/tv1"
             app:layout_constraintTop_toTopOf="@id/tv1" />
 
@@ -99,7 +101,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/add_file"
             app:layout_constraintBottom_toBottomOf="@id/edtConstructionSite"
-            app:layout_constraintStart_toEndOf="@id/edtConstructionSite"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/edtConstructionSite" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -115,8 +117,8 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtHoleNumber"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
             android:background="@drawable/edt_bg_white"
             android:hint="請輸入"
             android:maxLength="20"
@@ -125,6 +127,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tv2"
+            app:layout_constraintEnd_toEndOf="@id/edtConstructionSite"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv2" />
 
@@ -141,8 +144,8 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtAoDes"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
             android:background="@drawable/edt_bg_white"
             android:hint="請輸入"
             android:maxLength="20"
@@ -151,6 +154,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tv3"
+            app:layout_constraintEnd_toEndOf="@id/edtConstructionSite"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv3" />
 
@@ -167,7 +171,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvMeasurePoints"
-            android:layout_width="200dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
             android:background="@drawable/edt_bg"
             android:gravity="center"
@@ -177,6 +181,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tv4"
+            app:layout_constraintEnd_toEndOf="@id/edtConstructionSite"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv4" />
 
@@ -245,9 +250,10 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtTopDepth"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
             android:background="@drawable/edt_bg_white"
+            android:enabled="false"
             android:gravity="center"
             android:hint="請輸入"
             android:inputType="numberDecimal"
@@ -257,8 +263,8 @@
             android:text="0.5"
             android:textColor="@color/black"
             android:textSize="20sp"
-            android:enabled="false"
             app:layout_constraintBottom_toBottomOf="@id/tv6"
+            app:layout_constraintEnd_toEndOf="@id/edtConstructionSite"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv6" />
 
@@ -288,8 +294,8 @@
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/edtBottomDepth"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
+            android:layout_width="0dp"
+            android:layout_height="36dp"
             android:background="@drawable/edt_bg_white"
             android:gravity="center"
             android:hint="請輸入"
@@ -301,6 +307,7 @@
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tv7"
+            app:layout_constraintEnd_toEndOf="@id/edtConstructionSite"
             app:layout_constraintStart_toStartOf="@id/edtConstructionSite"
             app:layout_constraintTop_toTopOf="@id/tv7" />
 

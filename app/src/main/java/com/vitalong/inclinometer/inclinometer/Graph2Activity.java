@@ -118,7 +118,7 @@ public class Graph2Activity extends AppCompatActivity implements SeekBar.OnSeekB
             useList.get(i).setB180mm(String.valueOf(selectB180mm - earlyB180mm));
         }
         if (list.size() != earlyTableList.size()) {
-            Toast.makeText(Graph2Activity.this, "與最舊csv文档的数据量不匹配", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Graph2Activity.this, "與最舊csv文檔的數據量不匹配", Toast.LENGTH_SHORT).show();
         }
         return useList;
     }
