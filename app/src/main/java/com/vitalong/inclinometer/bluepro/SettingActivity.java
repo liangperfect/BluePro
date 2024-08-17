@@ -303,7 +303,7 @@ public class SettingActivity extends MyBaseActivity2 {
             @Override
             public void onClick(View v) {
                 saveHoleConfig();
-                Toast.makeText(SettingActivity.this, "配置保存成功", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SettingActivity.this, "保存路徑：/sdcard/inclinometer_config/conf", Toast.LENGTH_SHORT).show();
             }
         });
 

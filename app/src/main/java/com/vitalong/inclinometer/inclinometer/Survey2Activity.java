@@ -72,6 +72,8 @@ public class Survey2Activity extends MyBaseActivity2 {
     private TextView tvPreBValue;
     private TextView tvCompareA0;//当是180模式当时候
     private TextView tvCompareB0;
+    private TextView tvTemperatureValue;
+    private TextView tvHumidityValue;
     private double dAxisA = 0;
     private double dAxisB = 0;
     private double dAxisC = 0;
@@ -237,6 +239,8 @@ public class Survey2Activity extends MyBaseActivity2 {
         tvPreBValue = findViewById(R.id.tvPreBValue);
         tvCompareA0 = findViewById(R.id.tvCompareA);
         tvCompareB0 = findViewById(R.id.tvCompareB);
+        tvTemperatureValue = findViewById(R.id.tvTemperatureValue);
+        tvHumidityValue = findViewById(R.id.tvHumidityValue);
         initListener();
     }
 
@@ -714,9 +718,9 @@ public class Survey2Activity extends MyBaseActivity2 {
             }
             // 获取板子的原始值
             float oneChannelAngle = ByteTransformUtil.byte2float(new byte[]{data[5], data[6], data[3], data[4]});
-            float oneChannelTemperature = ByteTransformUtil.byte2float(new byte[]{data[9], data[10], data[7], data[8]});
+            float temperature = ByteTransformUtil.byte2float(new byte[]{data[9], data[10], data[7], data[8]});
             float twoChannelAngle = ByteTransformUtil.byte2float(new byte[]{data[13], data[14], data[11], data[12]});
-            float twoChannelTemperature = ByteTransformUtil.byte2float(new byte[]{data[17], data[18], data[15], data[16]});
+            float humidity = ByteTransformUtil.byte2float(new byte[]{data[17], data[18], data[15], data[16]});
             float voltage = ByteTransformUtil.byte2float(new byte[]{data[21], data[22], data[19], data[20]});
             currOneChannelAngle = oneChannelAngle; //记录当前原始角度值，用于保存到表格当中去
             currtwoChannelAngle = twoChannelAngle;
@@ -763,8 +767,8 @@ public class Survey2Activity extends MyBaseActivity2 {
                 tvA.setText(deg2Format.format(showA));
                 tvB.setText(deg2Format.format(showB));
             }
-//            tvA.setText(currOneChannelAngle + "");
-//            tvB.setText(currtwoChannelAngle + "");
+            //展示温湿度
+            showTW(temperature, humidity);
             if (isSave3) {
                 btnSave.setText("Stable");
 //                btnSave.setBackgroundResource(R.drawable.btn_start_bg);
@@ -794,6 +798,33 @@ public class Survey2Activity extends MyBaseActivity2 {
             Log.e("chenliang", "數據解析出問題:" + formatMsgContent(data));
         }
     }
+
+    /**
+     * 展示温湿度
+     *
+     * @param t 温度值
+     * @param w 湿度值
+     */
+    public void showTW(float t, float w) {
+
+        //展示温度和湿度
+        if (t == 99999) {
+            tvTemperatureValue.setText("--" + "℃");
+        } else {
+
+            tvTemperatureValue.setText(deg2Format.format(t) + "℃");
+        }
+
+        if (w == 99999) {
+
+            tvHumidityValue.setText("--" + "%RH");
+        } else {
+
+            tvHumidityValue.setText(deg2Format.format(w) + "%RH");
+        }
+
+    }
+
 
     /**
      * 看值的变动

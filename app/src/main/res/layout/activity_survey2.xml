@@ -102,11 +102,11 @@
             android:id="@+id/tvCompareA"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xxx"
             android:layout_marginStart="8dp"
-            android:visibility="gone"
+            android:text="xxx"
             android:textColor="@color/red"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/tvATitle"
             app:layout_constraintStart_toEndOf="@id/tvATitle" />
 
@@ -159,37 +159,58 @@
             android:id="@+id/tvCompareB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="xxx"
             android:layout_marginStart="8dp"
-            android:visibility="gone"
+            android:text="xxx"
             android:textColor="@color/red"
             android:textSize="16sp"
+            android:visibility="gone"
             app:layout_constraintBaseline_toBaselineOf="@id/tvBTitle"
             app:layout_constraintStart_toEndOf="@id/tvATitle" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvUnit"
+            android:id="@+id/tvTemperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
-            android:text="Unit"
+            android:text="T:"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:visibility="invisible"
             app:layout_constraintStart_toStartOf="@id/tvB"
             app:layout_constraintTop_toBottomOf="@id/tvB" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/spUnit"
+            android:id="@+id/tvTemperatureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
             android:text="mm"
             android:textSize="18sp"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/tvUnit"
-            app:layout_constraintStart_toStartOf="@id/radioGroupDirection"
-            app:layout_constraintTop_toTopOf="@id/tvUnit" />
+            app:layout_constraintBottom_toBottomOf="@id/tvTemperature"
+            app:layout_constraintStart_toEndOf="@id/tvTemperature"
+            app:layout_constraintTop_toTopOf="@id/tvTemperature" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHumidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:text="W:"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvTemperatureValue"
+            app:layout_constraintStart_toEndOf="@id/tvTemperatureValue"
+            app:layout_constraintTop_toTopOf="@id/tvTemperatureValue" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvHumidityValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:text="mm"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvHumidity"
+            app:layout_constraintStart_toEndOf="@id/tvHumidity"
+            app:layout_constraintTop_toTopOf="@id/tvHumidity" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/tvDirection"
@@ -199,8 +220,8 @@
             android:text="Direction"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="@id/tvUnit"
-            app:layout_constraintTop_toBottomOf="@id/tvUnit" />
+            app:layout_constraintStart_toStartOf="@id/tvTemperature"
+            app:layout_constraintTop_toBottomOf="@id/tvTemperature" />
 
         <RadioGroup
             android:id="@+id/radioGroupDirection"
