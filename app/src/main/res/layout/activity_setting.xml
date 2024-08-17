@@ -147,13 +147,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="1.15"
+            android:text="1.16"
             android:textColor="@color/black"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@id/tvSoftwareVersion"
             app:layout_constraintStart_toEndOf="@id/tvSoftwareVersion"
             app:layout_constraintTop_toTopOf="@id/tvSoftwareVersion"
-            tools:text="1.15" />
+            tools:text="1.16" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnSite"
@@ -451,11 +451,54 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#35549B"
-            android:text="UPDATE"
+            android:text="Apply"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/tvConfig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Hole Configuration:"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="@id/tvTimeOut"
+            app:layout_constraintTop_toBottomOf="@id/tvTimeOut" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnExport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/radius_btn_48dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Export"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/tvConfig"
+            app:layout_constraintStart_toEndOf="@id/tvConfig"
+            app:layout_constraintTop_toTopOf="@id/tvConfig" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnImport"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/radius_btn_48dp"
+            android:minHeight="0dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:text="Import"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@id/btnExport"
+            app:layout_constraintStart_toEndOf="@id/btnExport"
+            app:layout_constraintTop_toTopOf="@id/btnExport" />
+
 
         <androidx.constraintlayout.widget.Group
             android:layout_width="wrap_content"

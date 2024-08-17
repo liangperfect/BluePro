@@ -305,6 +305,8 @@ public class Constants {
 
     //tilemeter的根目录
     public static String PRO_ROOT_PATH = "/storage/emulated/0/inclinometer";
+    //配置文件的目录
+    public static String PRO_CONFIG_ROOT_PATH = "/storage/emulated/0/inclinometer_config";
     //sd卡根目录的名称是
     public static String PRO_ROOT_DIR_PATH = "/inclinometer";
     //从哪里跳转到实时界面的Survey

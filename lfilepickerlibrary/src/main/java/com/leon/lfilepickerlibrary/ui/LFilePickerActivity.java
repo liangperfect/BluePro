@@ -217,9 +217,9 @@ public class LFilePickerActivity extends AppCompatActivity {
                 } else {
                     //单选模式直接返回
                     if (mListFiles.get(position).isDirectory()) {
-                        Log.d("chenliang", "选择的文件夹是" + mListFiles.get(position).getName()
-                                + "  它的父文件夹的名称是" + mListFiles.get(position).getParentFile().getName()
-                                + " 上以及的Stris:" + mListFiles.get(position).getParent());
+//                        Log.d("chenliang", "选择的文件夹是" + mListFiles.get(position).getName()
+//                                + "  它的父文件夹的名称是" + mListFiles.get(position).getParentFile().getName()
+//                                + " 上以及的Stris:" + mListFiles.get(position).getParent());
                         if (mParamEntity.getSelectormode() == Constant.SELECTOR_MODE_2) {
 //                            if (mListFiles.get(position).getName().startsWith("Namber")) {
                             if (mListFiles.get(position).getName().startsWith("#")) {
@@ -330,7 +330,7 @@ public class LFilePickerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final EditText inputServer = new EditText(LFilePickerActivity.this);
                 inputServer.setBackgroundResource(R.drawable.edittext_border);
-                String email = (String) SharedPreferencesUtil.getData("email","");
+                String email = (String) SharedPreferencesUtil.getData("email", "");
                 inputServer.setText(email);
                 AlertDialog.Builder builder = new AlertDialog.Builder(LFilePickerActivity.this);
                 builder.setTitle("發送郵箱地址").setView(inputServer)
@@ -350,6 +350,7 @@ public class LFilePickerActivity extends AppCompatActivity {
             }
         });
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void SendFielsToEmail(final String email) {
         final ArrayList<File> files = new ArrayList<File>();
@@ -367,8 +368,8 @@ public class LFilePickerActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<BaseResponse<String>> call, Response<BaseResponse<String>> response) {
 
-                if (response.isSuccessful()){
-                    SharedPreferencesUtil.putData("email",email);
+                if (response.isSuccessful()) {
+                    SharedPreferencesUtil.putData("email", email);
                     LoadingDialog.getInstance(LFilePickerActivity.this).hide();
                     assert response.body() != null;
                     Toast.makeText(LFilePickerActivity.this, response.body().msg, Toast.LENGTH_SHORT).show();
@@ -414,6 +415,7 @@ public class LFilePickerActivity extends AppCompatActivity {
         }
         return parts;
     }
+
     /**
      * 点击进入目录
      *

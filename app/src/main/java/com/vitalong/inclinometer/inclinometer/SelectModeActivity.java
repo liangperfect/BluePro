@@ -1,22 +1,27 @@
 package com.vitalong.inclinometer.inclinometer;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.gson.Gson;
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.leon.lfilepickerlibrary.utils.Constant;
 import com.leon.lfilepickerlibrary.utils.FileUtils;
@@ -28,7 +33,11 @@ import com.vitalong.inclinometer.bean.SurveyDataTable;
 import com.vitalong.inclinometer.greendaodb.BoreholeInfoTableDao;
 import com.vitalong.inclinometer.greendaodb.SurveyDataTableDao;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -37,9 +46,12 @@ public class SelectModeActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private Button btnHistory;
     private Button btnNew;
+    private Button btnConfigRefresh;
+    private Button btnConfigSave;
     private BoreholeInfoTableDao boreholeInfoTableDao;
     private SurveyDataTableDao surveyDataTableDao;
     private CsvUtil csvUtil;
+    private final String configName = "conf";//配置文件夹名字
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +68,8 @@ public class SelectModeActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar);
         btnHistory = findViewById(R.id.btnHistory);
         btnNew = findViewById(R.id.btnNew);
+        btnConfigRefresh = findViewById(R.id.btnConfigRefresh);
+        btnConfigSave = findViewById(R.id.btnConfigSave);
         btnHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +92,106 @@ public class SelectModeActivity extends AppCompatActivity {
                 startActivity(new Intent(SelectModeActivity.this, BoreholeInfoActivity.class));
             }
         });
+
+        btnConfigRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showTipDialog(new RefreshCallBack() {
+                    @Override
+                    public void execute() {
+
+                        Toast.makeText(SelectModeActivity.this, "点击了确定按钮", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+        btnConfigSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                saveHoleConfig();
+                Toast.makeText(SelectModeActivity.this, "配置保存成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void showTipDialog(RefreshCallBack refreshCallBack) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("請注意，更新後數據將被清空！！！");
+
+        // 创建输入框
+        final EditText input = new EditText(this);
+        input.setHint("請輸入YES");
+        input.setInputType(InputType.TYPE_CLASS_TEXT); // 设置输入类型，如普通文本
+        builder.setView(input);
+
+        // 设置按钮
+        builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String userInput = input.getText().toString();
+                // 处理用户输入
+                if (userInput.equals("YES")) {
+
+                } else {
+                    Toast.makeText(getApplicationContext(), "請輸入YES，進行更新", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel(); // 关闭对话框
+            }
+        });
+
+// 显示对话框
+        builder.show();
+    }
+
+    /**
+     * 孔洞配置保存
+     */
+    private void saveHoleConfig() {
+
+        //判断配置文件夹是否存在
+        String sdPath = FileUtils.getSDCardPath();
+        String configPathDir = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + configName;
+        File confFile = new File(configPathDir);
+        if (!confFile.exists()) {
+            FileUtils.createSDDirection(configPathDir);
+        }
+
+        ArrayList<BoreholeInfoTable> boreholeInfoTables = (ArrayList<BoreholeInfoTable>) boreholeInfoTableDao.queryBuilder().list();
+        saveConfigTxt(configPathDir, boreholeInfoTables);
+    }
+
+    private void saveConfigTxt(String configDir, List<BoreholeInfoTable> binfs) {
+        Gson gson = new Gson();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (BoreholeInfoTable bi :
+                binfs) {
+
+            stringBuilder.append(gson.toJson(bi) + "\n");
+        }
+
+        File file = new File(configDir, "config.txt");
+        // 将字符串保存到文件中
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(stringBuilder.toString().getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    private interface RefreshCallBack {
+
+        void execute();
     }
 
     private void bindToolBar() {
@@ -125,8 +239,8 @@ public class SelectModeActivity extends AppCompatActivity {
                 //在已有的工地号和孔号里面创建新的csv进行测量
                 String siteName = data.getStringExtra("siteName");
                 String holeName = data.getStringExtra("holeName");
-                Log.d("chenliang", "onActivityResult : siteName:" + siteName + "   holeName:" + holeName)
-                ;
+//                Log.d("chenliang", "onActivityResult : siteName:" + siteName + "   holeName:" + holeName)
+//                ;
                 String sdPath = FileUtils.getSDCardPath();
                 String sitePath = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + siteName;
                 //给孔洞的文件夹加Namber_前缀是为了在选择文件时候点击的时候判断是否是孔号的文件夹
@@ -136,9 +250,9 @@ public class SelectModeActivity extends AppCompatActivity {
                 String de = sdf.format(date);
                 String csvFileName = siteName + "_" + holeName + "_" + de + ".csv";
                 String csvPath = holePath + "/" + csvFileName;
-                Log.d("chenliang", "onActivityResult:" + sitePath + "  holePath:" + holePath
-                        + "  csvFileName:" + csvFileName
-                        + "  csvPath:" + csvPath);
+//                Log.d("chenliang", "onActivityResult:" + sitePath + "  holePath:" + holePath
+//                        + "  csvFileName:" + csvFileName
+//                        + "  csvPath:" + csvPath);
                 //进行测试
                 FileUtils.createFile(csvPath);
                 //根据间隔点位来初实话数据库表，根据csv的文件名为唯一键值对
@@ -155,16 +269,16 @@ public class SelectModeActivity extends AppCompatActivity {
                 startActivity(intent1);
             } else {
                 //这里进行参数传递
-                //对原有的csv文件进行修盖
+                //对原有的csv文件进行修改
                 try {
                     List<String> list = data.getStringArrayListExtra("paths");
                     String csvFileName = data.getStringExtra("csvFileName");
                     Intent intent2 = new Intent(SelectModeActivity.this, Survey2Activity.class);
                     //从csv文件中拆分出工地名称及孔号
                     String[] splitArr = csvFileName.split("_");
-                    for (int i = 0; i < splitArr.length; i++) {
-                        Log.d("chenliang", "splitArr:" + splitArr[i]);
-                    }
+//                    for (int i = 0; i < splitArr.length; i++) {
+//                        Log.d("chenliang", "splitArr:" + splitArr[i]);
+//                    }
                     intent2.putExtra("constructionSiteName", splitArr[0]);
                     intent2.putExtra("holeName", FileUtils.fetchHoleName(splitArr[1]));
                     intent2.putExtra("fromWhich", Constants.FROM_MODIFY_CSV);

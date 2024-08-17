@@ -174,4 +174,38 @@ public class FileUtils {
 //        return "Namber_" + holeName;
         return "#" + holeName;
     }
+
+
+    /**
+     * 删除指定目录下的所有文件和子目录，保留指定的子目录
+     *
+     * @param dir             需要清除的目录
+     * @param preserveDirName 要保留的子目录名称
+     * @return true 表示成功，false 表示失败
+     */
+    public static boolean deleteDirectoryContent(File dir, String preserveDirName) {
+        if (dir != null && dir.isDirectory()) {
+            File[] children = dir.listFiles();
+            if (children != null) {
+                for (File child : children) {
+                    // 如果是需要保留的目录，跳过
+                    if (child.isDirectory() && child.getName().equals(preserveDirName)) {
+                        continue;
+                    }
+
+                    // 如果是目录，递归删除
+                    if (child.isDirectory()) {
+                        deleteDirectoryContent(child, preserveDirName);
+                    }
+
+                    // 删除文件或空目录
+                    if (!child.delete()) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
 }

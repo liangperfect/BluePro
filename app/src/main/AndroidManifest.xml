@@ -34,7 +34,7 @@
         <activity android:name=".StartActivity"></activity>
         <activity android:name=".inclinometer.TestMainActivity" />
         <activity android:name=".inclinometer.InclinometerSurveyListActivity" />
-        <activity android:name=".inclinometer.Graph3Activity" >
+        <activity android:name=".inclinometer.Graph3Activity">
 
         </activity>
         <activity
@@ -52,7 +52,13 @@
         <activity
             android:name=".inclinometer.SelectModeActivity"
             android:screenOrientation="portrait"
-            android:turnScreenOn="true" />
+            android:turnScreenOn="true">
+            <!--            <intent-filter>-->
+            <!--                <action android:name="android.intent.action.MAIN" />-->
+
+            <!--                <category android:name="android.intent.category.LAUNCHER" />-->
+            <!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".inclinometer.AboutUsActivity"
             android:screenOrientation="portrait" />
@@ -75,11 +81,11 @@
         <activity android:name=".bluepro.CoefficientsActivity" />
         <activity
             android:name=".bluepro.SettingActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"></activity>
         <activity
             android:name=".OperationPanelActivity"
             android:screenOrientation="portrait"
-            android:turnScreenOn="true" />
+            android:turnScreenOn="true"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait">

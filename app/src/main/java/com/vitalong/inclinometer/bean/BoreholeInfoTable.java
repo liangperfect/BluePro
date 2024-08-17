@@ -114,4 +114,18 @@ public class BoreholeInfoTable {
     public void setCsvFileName(float csvFileName) {
         this.csvFileName = csvFileName;
     }
+
+    @Override
+    public String toString() {
+        return "BoreholeInfoTable{" +
+                "constructionSite='" + constructionSite + '\'' +
+                ", holeName='" + holeName + '\'' +
+                ", a0Des='" + a0Des + '\'' +
+                ", topValue=" + topValue +
+                ", bottomValue=" + bottomValue +
+                ", pointsNumber=" + pointsNumber +
+                ", duration=" + duration +
+                ", csvFileName=" + csvFileName +
+                '}';
+    }
 }

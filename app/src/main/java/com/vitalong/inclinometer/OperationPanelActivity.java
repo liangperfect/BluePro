@@ -359,19 +359,23 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
     private void judgeFirstLaunch() {
 
         boolean isFirst = (boolean) SharedPreferencesUtil.getData(Constants.IS_FIRST_START, false);
-        Log.d("chenliang", "isFirst:" + isFirst);
         if (!isFirst) {
             //第一次启动
 //            showClearDialog();
             clearHandler.sendEmptyMessage(0);
             SharedPreferencesUtil.putData(Constants.IS_FIRST_START, true);
         }
+
+        File configDir = new File(Constants.PRO_CONFIG_ROOT_PATH);
+        if (!configDir.exists()) {
+            configDir.mkdir();
+        }
     }
 
     /**
      * 将之前的inclionmeter文件夹里面的文件转存到inclionmeter_日期的文件夹里面去
      */
-   private static class ClearHandler extends Handler {
+    private static class ClearHandler extends Handler {
 
         @Override
         public void handleMessage(@NonNull Message msg) {
@@ -381,9 +385,9 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
             //根据当前时间来
             Date d = new Date();
             SimpleDateFormat simpleData = new SimpleDateFormat("yyyy-MM-dd_hh:mm:ss");
-            String newFileName = Constants.PRO_ROOT_PATH+"_"+simpleData.format(d);
+            String newFileName = Constants.PRO_ROOT_PATH + "_" + simpleData.format(d);
             try {
-                FileUtils.copyFolder(Constants.PRO_ROOT_PATH,newFileName);//复制文件夹
+                FileUtils.copyFolder(Constants.PRO_ROOT_PATH, newFileName);//复制文件夹
                 FileUtils.deleteFile(new File(Constants.PRO_ROOT_PATH)); //删除原来的文件夹
             } catch (Exception e) {
                 e.printStackTrace();
@@ -402,10 +406,10 @@ public class OperationPanelActivity extends MyBaseActivity2 implements View.OnCl
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK && requestCode == FILE_SELECTOR_SHARE) {
             List<String> list = data.getStringArrayListExtra("paths");
-            Toast.makeText(getApplicationContext(), "选中了" + list.size() + "个文件", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "選中了" + list.size() + "個文件", Toast.LENGTH_SHORT).show();
             //如果是文件夹选择模式，需要获取选择的文件夹路径
             String path = data.getStringExtra("path");
-            Toast.makeText(getApplicationContext(), "选中的路径为" + path, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "選中路徑為" + path, Toast.LENGTH_SHORT).show();
         }
 
 //        if (resultCode == Activity.RESULT_OK && requestCode == 123) {

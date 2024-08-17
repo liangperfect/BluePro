@@ -1,10 +1,13 @@
 package com.vitalong.inclinometer.bluepro;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.InputType;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,12 +23,29 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 
+import com.google.gson.Gson;
+import com.leon.lfilepickerlibrary.utils.FileUtils;
+import com.vitalong.inclinometer.MyApplication;
 import com.vitalong.inclinometer.MyBaseActivity2;
 import com.vitalong.inclinometer.R;
 import com.vitalong.inclinometer.Utils.Constants;
+import com.vitalong.inclinometer.Utils.GreenDaoUtil;
 import com.vitalong.inclinometer.Utils.SharedPreferencesUtil;
 import com.vitalong.inclinometer.Utils.Utils;
+import com.vitalong.inclinometer.bean.BoreholeInfoTable;
+import com.vitalong.inclinometer.greendaodb.BoreholeInfoTableDao;
+import com.vitalong.inclinometer.greendaodb.SurveyDataTableDao;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 
@@ -67,6 +87,10 @@ public class SettingActivity extends MyBaseActivity2 {
     public TextView tvSurveyMode;
     @Bind(R.id.spSurveySelectMode)
     public Spinner spSurveyMode;
+    @Bind(R.id.btnExport)
+    public Button btnExport;
+    @Bind(R.id.btnImport)
+    public Button btnImport;
     private int sensorModeValue = 0;
     private int sensitivityValue = 0;
     private int beepValue = 0;
@@ -90,6 +114,11 @@ public class SettingActivity extends MyBaseActivity2 {
     //String[] ctype4ByDeg = new String[]{"3", "4"};
     //String[] ctype4ByRaw = new String[]{"0"};
     boolean isPause = false;
+    private final String configDirName = "conf";//配置文件夹名字
+    private final String configFileName = "config.txt";
+
+    private BoreholeInfoTableDao boreholeInfoTableDao;
+    private SurveyDataTableDao surveyDataTableDao;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -98,6 +127,8 @@ public class SettingActivity extends MyBaseActivity2 {
         bindToolBar();
         makeStatusBar(R.color.white);
         settingHandler = new SettingHandler();
+        boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
+        surveyDataTableDao = ((MyApplication) getApplication()).surveyDataTableDao;
         initViewAndDatas();
         initListener();
         settingHandler.sendEmptyMessageDelayed(0, 400);
@@ -268,11 +299,45 @@ public class SettingActivity extends MyBaseActivity2 {
 
     private void initListener() {
 
+        btnExport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveHoleConfig();
+                Toast.makeText(SettingActivity.this, "配置保存成功", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        btnImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTipDialog(new RefreshCallBack() {
+                    @Override
+                    public void execute() {
+                        //先清除sqllite数据
+                        boreholeInfoTableDao.deleteAll();
+                        //清除原有的文件夹
+                        String sdPath = FileUtils.getSDCardPath();
+                        String configPathDir = Constants.PRO_CONFIG_ROOT_PATH;
+                        File configDir = new File(configPathDir);
+                        FileUtils.deleteDirectoryContent(configDir, "");
+                        //将新配置文件导入到数据库里面
+                        List<BoreholeInfoTable> boinfos = importHoleConfig();
+//                        boreholeInfoTableDao.insertInTx(boinfos);
+                        GreenDaoUtil.batchInsert(boreholeInfoTableDao, boinfos);
+                        //创建对应文件夹
+                        createHoleDir(boinfos);
+                        Toast.makeText(SettingActivity.this, "導入完成", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
         btnSite.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                Uri uri = Uri.parse("https://drive.google.com/file/d/1uJ6p5G9bKu1p4TYKo55zPrGyxOJu8gMq/view");
-                Uri uri = Uri.parse("https://drive.google.com/file/d/1SAnS_4UEruJJTLn-MFzK5sGKi0Bl3B12/view?usp=sharing");
+//                Uri uri = Uri.parse("https://drive.google.com/file/d/1SAnS_4UEruJJTLn-MFzK5sGKi0Bl3B12/view?usp=sharing");
+                Uri uri = Uri.parse("https://drive.google.com/file/d/1zhw2xUQpX8fVfYmHm8ZIa1PpV7tiiSRz/view");
                 Intent it = new Intent(Intent.ACTION_VIEW, uri);
                 startActivity(it);
             }
@@ -313,6 +378,140 @@ public class SettingActivity extends MyBaseActivity2 {
                 }
             }
         });
+    }
+
+
+    /**
+     * 创建对应文件夹
+     */
+    private void createHoleDir(List<BoreholeInfoTable> boinfos) {
+
+        List<String> siteDirPaths = new ArrayList<>();
+        List<String> holeDirPaths = new ArrayList<>();
+        for (BoreholeInfoTable bi : boinfos
+        ) {
+            siteDirPaths.add(bi.getConstructionSite());
+            holeDirPaths.add(bi.getConstructionSite() + "/" + bi.getHoleName());
+        }
+        //先创建site的文件夹
+        for (String sitePath : siteDirPaths
+        ) {
+            File dir = new File(Constants.PRO_ROOT_PATH + "/" + sitePath);
+            dir.mkdir();
+        }
+        //创建子空的子文件夹
+        for (String holePath : holeDirPaths
+        ) {
+            File hole = new File(Constants.PRO_ROOT_PATH + "/" + holePath);
+            hole.mkdir();
+        }
+        //创建完毕
+    }
+
+    private void showTipDialog(SettingActivity.RefreshCallBack refreshCallBack) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("請注意，更新後數據將被清空！！！");
+
+        // 创建输入框
+        final EditText input = new EditText(this);
+        input.setHint("請輸入YES");
+        input.setText("YES");
+        input.setInputType(InputType.TYPE_CLASS_TEXT); // 设置输入类型，如普通文本
+        builder.setView(input);
+
+        // 设置按钮
+        builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String userInput = input.getText().toString();
+                // 处理用户输入
+                if (userInput.equals("YES")) {
+                    refreshCallBack.execute();
+                } else {
+                    Toast.makeText(getApplicationContext(), "請輸入YES，進行更新", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel(); // 关闭对话框
+            }
+        });
+
+// 显示对话框
+        builder.show();
+    }
+
+    /**
+     * 孔洞配置导入
+     */
+    private List<BoreholeInfoTable> importHoleConfig() {
+        String sdPath = FileUtils.getSDCardPath();
+        String configPathDir = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + configDirName;
+
+        String configFilePath = configPathDir + "/" + configFileName;
+        File confFile = new File(configFilePath);
+        if (!confFile.exists()) {
+
+            Toast.makeText(getApplicationContext(), "請先導入配置文件", Toast.LENGTH_LONG).show();
+            return null;
+        }
+        Gson gson = new Gson();
+        List<BoreholeInfoTable> list = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(confFile)))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                BoreholeInfoTable bi = gson.fromJson(line, BoreholeInfoTable.class);
+                list.add(bi);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * 孔洞配置保存
+     */
+    private void saveHoleConfig() {
+
+        //判断配置文件夹是否存在
+//        String sdPath = FileUtils.getSDCardPath();
+        String configPathDir = Constants.PRO_CONFIG_ROOT_PATH + "/" + configDirName;
+        File confFile = new File(configPathDir);
+        Log.d("chenliang", confFile.exists() + "");
+        if (!confFile.exists()) {
+            FileUtils.createSDDirection(configPathDir);
+        }
+
+        ArrayList<BoreholeInfoTable> boreholeInfoTables = (ArrayList<BoreholeInfoTable>) boreholeInfoTableDao.queryBuilder().list();
+        saveConfigTxt(configPathDir, boreholeInfoTables);
+    }
+
+    private void saveConfigTxt(String configDir, List<BoreholeInfoTable> binfs) {
+        Gson gson = new Gson();
+        StringBuilder stringBuilder = new StringBuilder();
+        for (BoreholeInfoTable bi :
+                binfs) {
+
+            stringBuilder.append(gson.toJson(bi) + "\n");
+        }
+
+        File file = new File(configDir, configFileName);
+        // 将字符串保存到文件中
+        try (FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(stringBuilder.toString().getBytes());
+            fos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private interface RefreshCallBack {
+
+        void execute();
     }
 
     @Override

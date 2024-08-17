@@ -180,7 +180,7 @@ public class Survey2Activity extends MyBaseActivity2 {
         holeName = getIntent().getStringExtra("holeName");
         csvFileName = getIntent().getStringExtra("csvFileName");
         csvFilePath = getIntent().getStringExtra("csvFilePath");
-        //初始化数据
+        //初始化孔的属性
         boreholeInfoTableDao = ((MyApplication) getApplication()).boreholeInfoTableDao;
         try {
             BoreholeInfoTable boreholeInfoTable = boreholeInfoTableDao.queryBuilder()
