@@ -18,6 +18,9 @@ public class GreenDaoUtil {
      */
     public static void batchInsert(BoreholeInfoTableDao dao, List<BoreholeInfoTable> dataList) {
         // 获取可写的数据库实例
+        if (dataList == null || dataList.isEmpty()) {
+            return;
+        }
         Database db = dao.getDatabase();
         // 开始事务
         db.beginTransaction();

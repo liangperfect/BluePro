@@ -472,6 +472,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/radius_btn_48dp"
             android:minHeight="0dp"
             android:paddingTop="8dp"
@@ -479,9 +480,8 @@
             android:text="Export"
             android:textColor="@color/white"
             android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvConfig"
-            app:layout_constraintStart_toEndOf="@id/tvConfig"
-            app:layout_constraintTop_toTopOf="@id/tvConfig" />
+            app:layout_constraintStart_toStartOf="@id/tvConfig"
+            app:layout_constraintTop_toBottomOf="@id/tvConfig" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnImport"

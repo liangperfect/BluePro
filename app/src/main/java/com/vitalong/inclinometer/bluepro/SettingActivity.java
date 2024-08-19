@@ -313,16 +313,15 @@ public class SettingActivity extends MyBaseActivity2 {
                 showTipDialog(new RefreshCallBack() {
                     @Override
                     public void execute() {
-                        //先清除sqllite数据
-                        boreholeInfoTableDao.deleteAll();
-                        //清除原有的文件夹
-                        String sdPath = FileUtils.getSDCardPath();
-                        String configPathDir = Constants.PRO_CONFIG_ROOT_PATH;
-                        File configDir = new File(configPathDir);
-                        FileUtils.deleteDirectoryContent(configDir, "");
+
                         //将新配置文件导入到数据库里面
                         List<BoreholeInfoTable> boinfos = importHoleConfig();
-//                        boreholeInfoTableDao.insertInTx(boinfos);
+                        //先清除sqllite数据
+                        boreholeInfoTableDao.deleteAll();
+                        //清除原有的文件夹的文件和文档
+                        String holePath = Constants.PRO_ROOT_PATH;
+                        File holeFilePaths = new File(holePath);
+                        FileUtils.deleteDirectoryContent(holeFilePaths, "");
                         GreenDaoUtil.batchInsert(boreholeInfoTableDao, boinfos);
                         //创建对应文件夹
                         createHoleDir(boinfos);
@@ -448,9 +447,7 @@ public class SettingActivity extends MyBaseActivity2 {
      * 孔洞配置导入
      */
     private List<BoreholeInfoTable> importHoleConfig() {
-        String sdPath = FileUtils.getSDCardPath();
-        String configPathDir = sdPath + Constants.PRO_ROOT_DIR_PATH + "/" + configDirName;
-
+        String configPathDir = Constants.PRO_CONFIG_ROOT_PATH + "/" + configDirName;
         String configFilePath = configPathDir + "/" + configFileName;
         File confFile = new File(configFilePath);
         if (!confFile.exists()) {
